@@ -1,0 +1,62 @@
+﻿html, body {
+    font-family: 'Inter', sans-serif;
+}
+
+.sakura-loading {
+    width: 100vw;
+    height: 100vh;
+
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.sakura-subheading {
+    display: flex;
+    font-size: medium;
+    align-items: center;
+
+    gap: 0.75rem;
+    margin-bottom: .75rem;
+}
+
+.sakura-subheading > * {
+    color: inherit !important;
+}
+
+.sakura-action-button {
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    display: inline-block;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    user-select: none;
+    vertical-align: middle;
+    text-decoration: none;
+}
+
+.sakura-product-section-hr {
+    border: none;
+    height: 2px;
+    width: 100%;
+    background-color: #fff;
+    mix-blend-mode: difference;
+
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+
+.dragonfruit-icon {
+    height: 75px;
+    width: 75px;
+}
