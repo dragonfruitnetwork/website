@@ -45,60 +45,7 @@
 
     <PageHeader Title="OnionFruit&trade;">
         <MudButton Variant="Variant.Text">Countries</MudButton>
+        <MudButton Variant="Variant.Text">Bridges</MudButton>
         <MudButton Variant="Variant.Text">API</MudButton>
     </PageHeader>
 </div>
-
-<MudPaper Elevation="0">
-
-    @* primary feature *@
-    <MudContainer MaxWidth="MaxWidth.Large" Class="py-5">
-        <SakuraProductFeature Colour="#dc3545"
-                              SectionTitle="Countries"
-                              Title="Choose the country you want"
-                              SectionIcon="fa-solid fa-earth-americas">
-            <MudText>
-                OnionFruit™ maintains an open source database and API to find high-speed servers to route your encrypted traffic through.
-                You can choose from over 7,000 servers in 75+ countries to have your data directed through before you connect, or let Tor® decide for you with the random option.
-            </MudText>
-        </SakuraProductFeature>
-    </MudContainer>
-
-    @* other features *@
-    <MudContainer MaxWidth="MaxWidth.Large" Class="pt-4 pb-5">
-        <MudGrid>
-            <MudItem xs="12" lg="6">
-                <SakuraSubheading Text="SecurDNS" Icon="fa-solid fa-book-atlas" Colour="#4c6ef5"/>
-                <MudText Typo="Typo.h5">Protect against DNS leaks</MudText>
-                <MudText Class="pt-2">
-                    SecurDNS helps to stop ISPs from learning about your browsing history by changing your DNS servers to faster, anonymous ones.
-                    Some operating systems can also route DNS via Tor&reg;, allowing access to <code>.onion</code> sites
-                </MudText>
-            </MudItem>
-
-            <MudItem xs="12" lg="6">
-                <SakuraSubheading Text="Bridges" Icon="fa-solid fa-location-arrow" Colour="#ff8f00"/>
-                <MudText Typo="Typo.h5">Need a bridge to connect? No problem</MudText>
-                <MudText Class="pt-2">
-                    OnionFruit&trade; comes with built in support for plain, obfs4, meek and snowflake bridges as standard.
-                </MudText>
-            </MudItem>
-
-            <MudItem xs="12" lg="6">
-                <SakuraSubheading Text="Discord" Icon="fa-brands fa-discord" Colour="#5865f2"/>
-                <MudText Typo="Typo.h5">Looks like there's a new game in town...</MudText>
-                <MudText Class="pt-2">
-                    OnionFruit&trade; integrates itself with Discord to provide you a first-class experience when exploring different places.
-                </MudText>
-            </MudItem>
-
-            <MudItem xs="12" lg="6">
-                <SakuraSubheading Text="Tor Control" Icon="fa-solid fa-satellite-dish" Colour="#9c27b0"/>
-                <MudText Typo="Typo.h5">Communicate directly with the Tor Process</MudText>
-                <MudText Class="pt-2">
-                    During active connection time, OnionFruit&trade; provides a direct connection to the Tor process to allow advanced users to execute commands directly.
-                </MudText>
-            </MudItem>
-        </MudGrid>
-    </MudContainer>
-</MudPaper>
