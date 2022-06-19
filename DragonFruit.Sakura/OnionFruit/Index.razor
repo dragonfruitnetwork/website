@@ -8,8 +8,8 @@
 </HeadContent>
 
 <div class="d-flex flex-column align-items-center justify-content-center" style="height: calc(100vh - 72px)">
-
     <MudSpacer/>
+
     <MudImage Fluid="true" Src="/assets/onionfruit-ui.png" Alt="OnionFruit&trade; Connect - UI"/>
 
     @* title *@
@@ -24,16 +24,17 @@
     </div>
 
     @* download and guides *@
-    <div class="d-flex pt-3" style="gap:0.5rem">
+    <div class="d-flex flex-wrap pt-3" style="gap:0.5rem">
         <MudButton Color="Color.Success"
                    Variant="Variant.Text"
-                   Class="sakura-action-button"
+                   Class="flex-shrink-0"
                    StartIcon="fa-solid fa-file-arrow-down"
                    Href="https://github.com/dragonfruitnetwork/onionfruit/releases/latest/download/install.exe">
             Download Latest Version
         </MudButton>
         <MudButton Color="Color.Info"
                    Variant="Variant.Text"
+                   Class="flex-shrink-0"
                    StartIcon="fa-solid fa-leaf"
                    Href="https://github.com/dragonfruitnetwork/onionfruit/wiki/Getting-Started">
             View Getting Started Guide
@@ -41,6 +42,7 @@
     </div>
 
     <MudSpacer/>
+
     <PageHeader Title="OnionFruit&trade;">
         <MudButton Variant="Variant.Text">Countries</MudButton>
         <MudButton Variant="Variant.Text">API</MudButton>
