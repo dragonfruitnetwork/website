@@ -1,0 +1,26 @@
+﻿<SakuraSubheading Text="@SectionTitle" Icon="@SectionIcon" Colour="@Colour"/>
+<MudText Typo="@Typo">@Title</MudText>
+<hr class="sakura-product-section-hr"/>
+@ChildContent
+
+@code {
+
+    [Parameter]
+    public string SectionTitle { get; set; }
+
+    [Parameter]
+    public string Colour { get; set; }
+
+    [Parameter]
+    public string SectionIcon { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public Typo Typo { get; set; } = Typo.h4;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+}

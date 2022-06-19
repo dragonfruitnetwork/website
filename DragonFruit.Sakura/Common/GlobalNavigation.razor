@@ -1,0 +1,44 @@
+﻿<MudAppBar Class="justify-content-center pt-2" Fixed="false" Color="Color.Transparent" Elevation="0">
+    <a href="/">
+        <MudImage Src="/assets/dragonfruit.png" Height="48"/>
+    </a>
+    <MudDivider Vertical="true" FlexItem="true" Style="margin: 1rem; height: 50%"/>
+
+    @* main product links *@
+    <MudButton Variant="Variant.Text" Href="/onionfruit">OnionFruit&trade;</MudButton>
+    <MudButton Variant="Variant.Text" Href="/dragon6">Dragon6</MudButton>
+    <MudButton Variant="Variant.Text" Href="/orbit">Orbit</MudButton>
+
+    <MudSpacer/>
+
+    @* external links *@
+    <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
+        <MudTooltip Text="Discord">
+            <MudIconButton Target="_blank"
+                           Size="Size.Medium"
+                           Color="Color.Inherit"
+                           Icon="fa-brands fa-discord"
+                           Href="https://discord.gg/mcYJQNe"/>
+        </MudTooltip>
+        <MudTooltip Text="GitHub">
+            <MudIconButton Target="_blank"
+                           Size="Size.Medium"
+                           Color="Color.Inherit"
+                           Icon="fa-brands fa-github"
+                           Href="https://github.com/dragonfruitnetwork"/>
+        </MudTooltip>
+        <MudTooltip Text="Email">
+            <MudIconButton Size="Size.Medium"
+                           Color="Color.Inherit"
+                           Icon="fa-solid fa-envelope"
+                           Href="mailto:inbox@dragonfruit.network"/>
+        </MudTooltip>
+        <MudTooltip Text="Account">
+            <MudIconButton Target="_blank"
+                           Size="Size.Medium"
+                           Color="Color.Inherit"
+                           Icon="fa-solid fa-user"
+                           Href="https://id.dragonfruit.network"/>
+        </MudTooltip>
+    </MudHidden>
+</MudAppBar>

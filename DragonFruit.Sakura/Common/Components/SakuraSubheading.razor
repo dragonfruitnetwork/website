@@ -1,0 +1,27 @@
+﻿<div class="sakura-subheading" style="color: @Colour">
+    @if (IconHtml != null)
+    {
+        @IconHtml
+    }
+    else
+    {
+        <i class="@Icon"></i>
+    }
+    <span>@Text</span>
+</div>
+
+
+@code {
+    
+    [Parameter]
+    public string Text { get; set; }
+    
+    [Parameter]
+    public string Icon { get; set; }
+    
+    [Parameter]
+    public string Colour { get; set; }
+    
+    [Parameter]
+    public RenderFragment? IconHtml { get; set; }
+}

@@ -1,0 +1,21 @@
+﻿<MudAppBar Color="@Background" Elevation="0" Bottom="true" Fixed="@Fixed">
+        <MudText Typo="Typo.h4" Style="font-size: 20px">@Title</MudText>
+    <MudSpacer/>
+    @ChildContent
+</MudAppBar>
+
+@code {
+
+    [Parameter]
+    public string Title { get; set; }
+    
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public Color Background { get; set; } = Color.Transparent;
+
+    [Parameter]
+    public bool Fixed { get; set; }
+    
+}
