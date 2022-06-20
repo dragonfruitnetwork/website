@@ -58,22 +58,21 @@
     </PageHeader>
 </SakuraHero>
 
-<div class="sakura-full-height-section">
-    <MudContainer MaxWidth="MaxWidth.Large" Class="d-flex flex-column py-5" Style="gap: 0.75rem">
-        <MudAvatar Size="Size.Medium" Color="Color.Secondary">A</MudAvatar>
-        <MudText Typo="Typo.h5">
-            Access the Tor network in the blink of an eye by resorting to this lightweight app that ensures your anonymity while surfing the web, regardless of your choice of browser.
-        </MudText>
-        <MudText Typo="Typo.subtitle1">
-            Anca Roman &middot; Software Reviewer, Softpedia
-        </MudText>
-    </MudContainer>
+<div class="sakura-full-height-section pt-5">
+    <MudContainer MaxWidth="MaxWidth.Large" Class="d-flex flex-column">
+        <MudStack Spacing="3">
+            <MudAvatar Size="Size.Medium" Color="Color.Secondary">A</MudAvatar>
+            <MudText Typo="Typo.h5">
+                Access the Tor network in the blink of an eye by resorting to this lightweight app that ensures your anonymity while surfing the web, regardless of your choice of browser.
+            </MudText>
+            <MudText Typo="Typo.subtitle1">
+                Anca Roman &middot; Software Reviewer, Softpedia
+            </MudText>
+        </MudStack>
 
-    <MudPaper Class="py-4" Elevation="0" Outlined="false">
-        <MudContainer MaxWidth="MaxWidth.Large">
-            <MudText Typo="Typo.h5">Features</MudText>
-            <hr class="sakura-section-hr"/>
-            <MudGrid Justify="Justify.FlexStart" Spacing="5">
+        @* core features *@
+        <MudPaper Elevation="4" Class="my-4">
+            <MudGrid Justify="Justify.FlexStart" Spacing="5" Class="p-4">
                 <OnionFruitFeature Title="Country Selection" Colour="#d81b60" Icon="fa-solid fa-earth-americas">
                     Choose from a large variety of countries to route your Internet traffic through, or let Tor&reg; create the most optimised path with the random option
                 </OnionFruitFeature>
@@ -83,7 +82,6 @@
                 <OnionFruitFeature Title="Bridges" Colour="#ff8f00" Icon="fa-solid fa-location-arrow">
                     OnionFruit&trade; has built-in support for standard, obfs4, meek and snowflake bridges, with some requiring no additional configuration
                 </OnionFruitFeature>
-
                 <OnionFruitFeature Title="Tor Control" Colour="#651fff" Icon="fa-solid fa-satellite-dish">
                     Advanced users can execute direct commands on the Tor&reg; client while connected
                 </OnionFruitFeature>
@@ -96,11 +94,9 @@
                     Our databases and APIs are publicly on GitHub for anybody to use in their own applications.
                 </OnionFruitFeature>
             </MudGrid>
-        </MudContainer>
-    </MudPaper>
+        </MudPaper>
 
-    <MudContainer MaxWidth="MaxWidth.Large" class="py-4">
-        <MudStack AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
+        <MudStack AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Row="true">
             <MudText Typo="Typo.h5">OnionFruit&trade; is supported on all major browsers out-the-box</MudText>
             <MudStack Class="flex-shrink-0" Row="true" AlignItems="AlignItems.Center" Spacing="4">
                 <MudIcon Icon="fa-brands fa-chrome"/>
