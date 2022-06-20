@@ -18,4 +18,8 @@
       <Content Remove="Common\Components\SakuraActionButton.razor" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Common\Layouts" />
+    </ItemGroup>
+
 </Project>

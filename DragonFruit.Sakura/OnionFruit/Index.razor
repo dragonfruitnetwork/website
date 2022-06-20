@@ -1,20 +1,28 @@
 ﻿@page "/onionfruit"
+@using DragonFruit.Sakura.OnionFruit.Components
 
 <PageTitle>OnionFruit&trade; Connect &middot; DragonFruit Network</PageTitle>
 <HeadContent>
     <meta property="og:title" content="OnionFruit™ Connect by DragonFruit Network"/>
     <meta property="og:description" content="OnionFruit™ Connect: A free Tor access gateway"/>
     <meta name="keywords" content="Tor, Onion, Onionfruit, onion fruit, onionfruit connect, onion buddy, dragonfruit onionfruit"/>
+
+    <style>
+        .sakura-hero {
+            background: linear-gradient(to bottom, #c33764, #1d2671);
+            /*background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(https://images.pexels.com/photos/7135028/pexels-photo-7135028.jpeg?cs=srgb&dl=pexels-gradienta-7135028.jpg&fm=jpg&w=1920&h=1280);*/
+        }
+    </style>
 </HeadContent>
 
-<div class="d-flex flex-column align-items-center justify-content-center" style="height: calc(100vh - 72px)">
+<SakuraHero>
     <MudSpacer/>
 
     <MudImage Fluid="true" Src="/assets/onionfruit-ui.png" Alt="OnionFruit&trade; Connect - UI"/>
 
     @* title *@
     <div class="pt-5 d-flex flex-column align-items-center justify-content-center">
-        <SakuraSubheading Text="OnionFruit&trade; Connect" Colour="#673ab7">
+        <SakuraSubheading Text="OnionFruit&trade; Connect" Colour="#9940ec">
             <IconHtml>
                 <MudIcon Icon="@Icons.Rounded.WifiLock"/>
             </IconHtml>
@@ -48,4 +56,61 @@
         <MudButton Variant="Variant.Text">Bridges</MudButton>
         <MudButton Variant="Variant.Text">API</MudButton>
     </PageHeader>
+</SakuraHero>
+
+<div class="sakura-full-height-section">
+    <MudContainer MaxWidth="MaxWidth.Large" Class="d-flex flex-column py-5" Style="gap: 0.75rem">
+        <MudAvatar Size="Size.Medium" Color="Color.Secondary">A</MudAvatar>
+        <MudText Typo="Typo.h5">
+            Access the Tor network in the blink of an eye by resorting to this lightweight app that ensures your anonymity while surfing the web, regardless of your choice of browser.
+        </MudText>
+        <MudText Typo="Typo.subtitle1">
+            Anca Roman &middot; Software Reviewer, Softpedia
+        </MudText>
+    </MudContainer>
+
+    <MudPaper Class="py-4" Elevation="0" Outlined="false">
+        <MudContainer MaxWidth="MaxWidth.Large">
+            <MudText Typo="Typo.h5">Features</MudText>
+            <hr class="sakura-section-hr"/>
+            <MudGrid Justify="Justify.FlexStart" Spacing="5">
+                <OnionFruitFeature Title="Country Selection" Colour="#d81b60" Icon="fa-solid fa-earth-americas">
+                    Choose from a large variety of countries to route your Internet traffic through, or let Tor&reg; create the most optimised path with the random option
+                </OnionFruitFeature>
+                <OnionFruitFeature Title="SecurDNS" Colour="#1de9b6" Icon="fa-solid fa-book-atlas">
+                    Prevent DNS requests being sent to your ISP by automatically rerouting requests to another provider. Additionally, supported versions of Window can route DNS queries through Tor&reg;
+                </OnionFruitFeature>
+                <OnionFruitFeature Title="Bridges" Colour="#ff8f00" Icon="fa-solid fa-location-arrow">
+                    OnionFruit&trade; has built-in support for standard, obfs4, meek and snowflake bridges, with some requiring no additional configuration
+                </OnionFruitFeature>
+
+                <OnionFruitFeature Title="Tor Control" Colour="#651fff" Icon="fa-solid fa-satellite-dish">
+                    Advanced users can execute direct commands on the Tor&reg; client while connected
+                </OnionFruitFeature>
+                <OnionFruitFeature Title="Discord" Colour="#5865f2" Icon="fa-brands fa-discord">
+                    OnionFruit&trade; integrates nicely with Discord, providing a game card while using the app.
+                    <br/>
+                    <span class="text-muted">This can be disabled in settings if desired</span>
+                </OnionFruitFeature>
+                <OnionFruitFeature Title="Open Source" Colour="#56ab2f" Icon="fa-brands fa-github">
+                    Our databases and APIs are publicly on GitHub for anybody to use in their own applications.
+                </OnionFruitFeature>
+            </MudGrid>
+        </MudContainer>
+    </MudPaper>
+
+    <MudContainer MaxWidth="MaxWidth.Large" class="py-4">
+        <MudStack AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
+            <MudText Typo="Typo.h5">OnionFruit&trade; is supported on all major browsers out-the-box</MudText>
+            <MudStack Class="flex-shrink-0" Row="true" AlignItems="AlignItems.Center" Spacing="4">
+                <MudIcon Icon="fa-brands fa-chrome"/>
+                <MudIcon Icon="fa-brands fa-edge"/>
+                <MudIcon Icon="fa-brands fa-firefox-browser"/>
+                <MudIcon Icon="fa-brands fa-opera"/>
+            </MudStack>
+        </MudStack>
+    </MudContainer>
+
+    <MudSpacer/>
+    <SakuraFooter/>
 </div>

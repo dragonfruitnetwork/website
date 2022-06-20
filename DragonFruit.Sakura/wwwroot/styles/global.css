@@ -6,6 +6,11 @@
     min-height: 100vh;
 }
 
+.sakura-full-height-section {
+    display: flex;
+    flex-direction: column;
+}
+
 .sakura-loading {
     width: 100vw;
     height: 100vh;
