@@ -1,9 +1,9 @@
 ﻿@inherits LayoutComponentBase
-@layout LayoutBase
+
+<MudThemeProvider Theme="Program.Theme" IsDarkMode="true"/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
 
 <MudLayout>
-    <GlobalNavigation/>
-    <MudMainContent Class="pt-0">
-        @Body
-    </MudMainContent>
+    @Body
 </MudLayout>

@@ -1,5 +1,4 @@
 ﻿@page "/"
-@layout LayoutBase
 
 <PageTitle>DragonFruit Network</PageTitle>
 <HeadContent>
@@ -8,18 +7,16 @@
     <meta name="keywords" content="DragonFruit Network,DragonFruit,OnionFruit,Dragon6,Orbit,osu,R6,Rainbow Six"/>
 
     <style>
-        body {
+        .sakura-hero {
             background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(https://dragonfruit.network/backgrounds/dragonfruit.jpg);
         }
     </style>
 </HeadContent>
 
-<MudLayout>
-    <GlobalNavigation/>
-    <MudMainContent>
-        <PageHeader Title="DragonFruit Network" Fixed="true">
-            <MudButton Variant="Variant.Text">Changelogs</MudButton>
-            <MudButton Variant="Variant.Text">Wiki</MudButton>
-        </PageHeader>
-    </MudMainContent>
-</MudLayout>
+<SakuraHero>
+    <MudSpacer/>
+    <PageHeader Title="DragonFruit Network">
+        <MudButton Variant="Variant.Text">Changelogs</MudButton>
+        <MudButton Variant="Variant.Text">Wiki</MudButton>
+    </PageHeader>
+</SakuraHero>

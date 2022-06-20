@@ -1,0 +1,11 @@
+﻿<div class="sakura-hero d-flex flex-column align-items-center">
+    <GlobalNavigation/>
+    @ChildContent
+</div>
+
+@code {
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+}
