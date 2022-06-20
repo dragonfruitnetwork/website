@@ -21,7 +21,7 @@
     <MudImage Fluid="true" Src="/assets/onionfruit-ui.png" Alt="OnionFruit&trade; Connect - UI"/>
 
     @* title *@
-    <div class="pt-5 d-flex flex-column align-items-center justify-content-center">
+    <MudStack Spacing="1" Class="pt-5" Justify="Justify.Center" AlignItems="AlignItems.Center">
         <SakuraSubheading Text="OnionFruit&trade; Connect" Colour="#9940ec">
             <IconHtml>
                 <MudIcon Icon="@Icons.Rounded.WifiLock"/>
@@ -29,7 +29,7 @@
         </SakuraSubheading>
         <MudText Typo="Typo.h4">Connect to Tor in seconds</MudText>
         <MudText>Free and no-fuss Tor&reg; access client</MudText>
-    </div>
+    </MudStack>
 
     @* download and guides *@
     <div class="d-flex flex-wrap pt-3" style="gap:0.5rem">
@@ -72,11 +72,15 @@
             </MudStack>
 
             @* core features *@
-            <MudPaper Elevation="4" Class="my-4">
-                <MudGrid Justify="Justify.FlexStart" Spacing="5" Class="p-4">
-                    <OnionFruitFeature Title="Country Selection" Colour="#d81b60" Icon="fa-solid fa-earth-americas">
+            <MudPaper Elevation="4" Class="my-4 p-4">
+                <div class="mb-5">
+                    <SakuraSubheading Text="Country Selection" Colour="#d81b60" Icon="fa-solid fa-earth-americas"/>
+                    <MudText>
                         Choose from a large variety of countries to route your Internet traffic through, or let Tor&reg; create the most optimised path with the random option
-                    </OnionFruitFeature>
+                    </MudText>
+                </div>
+
+                <MudGrid Justify="Justify.FlexStart" Spacing="5">
                     <OnionFruitFeature Title="SecurDNS" Colour="#1de9b6" Icon="fa-solid fa-book-atlas">
                         Prevent DNS requests being sent to your ISP by automatically rerouting requests to another provider. Additionally, supported versions of Window can route DNS queries through Tor&reg;
                     </OnionFruitFeature>
@@ -85,6 +89,9 @@
                     </OnionFruitFeature>
                     <OnionFruitFeature Title="Tor Control" Colour="#651fff" Icon="fa-solid fa-satellite-dish">
                         Advanced users can execute direct commands on the Tor&reg; client while connected
+                    </OnionFruitFeature>
+                    <OnionFruitFeature Title="Ease of use" Colour="#56ab2f" Icon="fa-solid fa-check">
+                        OnionFruit&trade; is designed with ease-of-use in mind. No complicated stuff, right down to the installation.
                     </OnionFruitFeature>
                     <OnionFruitFeature Title="Discord" Colour="#5865f2" Icon="fa-brands fa-discord">
                         OnionFruit&trade; integrates nicely with Discord, providing a game card while using the app.
@@ -106,8 +113,38 @@
                     <MudIcon Icon="fa-brands fa-opera"/>
                 </MudStack>
             </MudStack>
-            
-            
+
+            <hr class="sakura-section-hr mb-3"/>
+
+            @* <MudStack Spacing="1"> *@
+            @*     <SakuraSubheading Text="Countries" Colour="#9940ec" Icon="fa-solid fa-globe-americas"/> *@
+            @*     <MudText Typo="Typo.h6">Choose where you would like to go next with OnionFruit™ Connect</MudText> *@
+            @*     <MudText>Powered by the OnionFruit&trade; API - an open-source Tor® network status library.</MudText> *@
+            @* </MudStack> *@
+            @* *@
+            @* <MudStack Class="mt-3" Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween"> *@
+            @*     @for (var i = 0; i < 8; i++) *@
+            @*     { *@
+            @*         <div> *@
+            @*             <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="120px" Height="140px"/> *@
+            @*         </div> *@
+            @*     } *@
+            @* </MudStack> *@
+
+            <MudGrid Spacing="5">
+                <MudItem xs="12" lg="6">
+                    <MudStack Spacing="1" Class="mt-3">
+                        <SakuraSubheading Text="Updates" Colour="#00B0FF" Icon="fa-solid fa-wrench"/>
+                        <MudText>DragonFruit is comitted to maintaining OnionFruit&trade; and its related projects including APIs, databases and client updates</MudText>
+                    </MudStack>
+                </MudItem>
+                <MudItem xs="12" lg="6">
+                    <MudStack Spacing="1" Class="mt-3">
+                        <SakuraSubheading Text="Support" Colour="#00E676" Icon="fa-solid fa-life-ring"/>
+                        <MudText>Support is available at any time through GitHub, Discord or Email (links at the top of the page)</MudText>
+                    </MudStack>
+                </MudItem>
+            </MudGrid>
         </MudStack>
     </MudContainer>
 
