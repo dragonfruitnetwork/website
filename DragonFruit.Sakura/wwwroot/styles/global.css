@@ -2,6 +2,10 @@
     font-family: 'Inter', sans-serif;
 }
 
+.sakura-hero, .sakura-full-height-section {
+    min-height: 100vh;
+}
+
 .sakura-loading {
     width: 100vw;
     height: 100vh;
@@ -27,15 +31,15 @@
     color: inherit !important;
 }
 
-.sakura-product-section-hr {
+.sakura-section-hr {
     border: none;
     height: 2px;
     width: 100%;
     background-color: #fff;
     mix-blend-mode: difference;
 
-    margin-bottom: 1rem;
-    margin-top: 1rem;
+    margin-bottom: 1.25rem;
+    margin-top: .5rem;
 }
 
 .dragonfruit-icon {
