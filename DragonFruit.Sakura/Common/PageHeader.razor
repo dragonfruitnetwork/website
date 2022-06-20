@@ -1,4 +1,4 @@
-﻿<MudAppBar Color="@Background" Elevation="0" Bottom="true" Fixed="@Fixed">
+﻿<MudAppBar Color="@Background" Elevation="0" Bottom="true" Fixed="@Fixed" Class="sakura-sticky">
         <MudText Typo="Typo.h4" Style="font-size: 20px">@Title</MudText>
     <MudSpacer/>
     @ChildContent
@@ -17,5 +17,5 @@
 
     [Parameter]
     public bool Fixed { get; set; }
-    
+
 }
