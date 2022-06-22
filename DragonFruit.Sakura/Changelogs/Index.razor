@@ -1,0 +1,50 @@
+﻿@page "/changelogs/{AppName}/{VersionName?}"
+@using DragonFruit.Sakura.Changelogs.Components
+
+<PageTitle>Changelogs &middot; DragonFruit Network</PageTitle>
+<HeadContent></HeadContent>
+
+<GlobalNavigation/>
+
+<MudContainer MaxWidth="MaxWidth.Large">
+    <MudPaper Elevation="1">
+        <MudContainer>
+            <MudTimeline TimelinePosition="TimelinePosition.Start" Class="py-4">
+                <ChangelogNavigationItem Release="Release" Type="NavigationType.Next"/>
+                <MudTimelineItem Color="Color.Primary" HideDot="true">
+                    <ItemContent>
+                        @if (Release == null)
+                        {
+                            <MudStack>
+                                @for (var i = 0; i < 10; i++)
+                                {
+                                    <MudSkeleton SkeletonType="SkeletonType.Text" Height="50px" Width="850px"/>
+                                }
+                            </MudStack>
+                        }
+                        else
+                        {
+                            <MudStack Row="true" Spacing="1" Class="mb-4">
+                                <MudText Typo="Typo.h5">Version</MudText>
+                                <MudText Typo="Typo.h5" Color="Color.Error">@Release.VersionName</MudText>
+                            </MudStack>
+                            @foreach (var category in Release.Modifications.OrderBy(x => x.Id).GroupBy(x => x.Category, comparer: StringComparer.OrdinalIgnoreCase))
+                            {
+                                <MudStack Class="mb-4" AlignItems="AlignItems.Start">
+                                    <MudText Typo="Typo.h6">@category.Key</MudText>
+                                    <MudStack AlignItems="AlignItems.Start">
+                                        @foreach (var entry in category)
+                                        {
+                                            <ChangelogEntry Entry="entry"/>
+                                        }
+                                    </MudStack>
+                                </MudStack>
+                            }
+                        }
+                    </ItemContent>
+                </MudTimelineItem>
+                <ChangelogNavigationItem Release="Release" Type="NavigationType.Previous"/>
+            </MudTimeline>
+        </MudContainer>
+    </MudPaper>
+</MudContainer>
