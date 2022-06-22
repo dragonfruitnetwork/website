@@ -1,0 +1,40 @@
+﻿@using DragonFruit.Sakura.Network
+
+@if (!string.IsNullOrEmpty(TargetVersion))
+{
+    <MudTimelineItem Size="Size.Small" Variant="Variant.Outlined" Color="Color.Dark" Elevation="0">
+        <ItemContent>
+            @if (Release == null)
+            {
+                <MudSkeleton SkeletonType="SkeletonType.Text" Width="250px" Height="24px"/>
+            }
+            else
+            {
+                <a href="/changelogs/@Release.AppId/@TargetVersion">
+                    <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                        <MudText>@Type Version @TargetVersion</MudText>
+                        <MudIcon Icon="@Icons.Rounded.KeyboardArrowRight"/>
+                    </MudStack>
+                </a>
+            }
+        </ItemContent>
+    </MudTimelineItem>
+}
+
+@code {
+    
+    [Parameter]
+    public ApiChangelogRelease Release { get; set; }
+
+    [Parameter]
+    public NavigationType Type { get; set; }
+
+    private string TargetVersion => Type switch
+    {
+        NavigationType.Next => Release?.NextRelease,
+        NavigationType.Previous => Release?.PreviousRelease,
+        
+        _ => throw new ArgumentOutOfRangeException()
+    };
+
+}

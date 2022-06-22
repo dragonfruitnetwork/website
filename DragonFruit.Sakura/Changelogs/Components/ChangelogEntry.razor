@@ -1,0 +1,22 @@
+﻿@using DragonFruit.Sakura.Network
+
+<div>
+  <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+      <MudIcon Icon="@Entry.Icon" Color="@(Entry.Major ? Color.Warning : Color.Default)"/>
+      <MudText Color="@(Entry.Major ? Color.Warning : Color.Default)">@Entry.Title</MudText>
+  </MudStack>
+  
+  @if (!string.IsNullOrEmpty(Entry.Description))
+  {
+      <div class="mt-2" style="margin-left: calc(24px + .5rem)">
+          <MudText Typo="Typo.body2" Class="text-muted">@Entry.HtmlDescription</MudText>
+      </div>
+  }
+</div>
+
+@code {
+
+    [Parameter]
+    public ApiChangelogModification Entry { get; set; }
+
+}
