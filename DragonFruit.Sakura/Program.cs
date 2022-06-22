@@ -7,7 +7,7 @@ using MudBlazor.Services;
 
 namespace DragonFruit.Sakura
 {
-    static class Program
+    public static class Program
     {
         public static readonly MudTheme Theme = new()
         {
