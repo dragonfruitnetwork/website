@@ -40,8 +40,8 @@
                     }
                     else
                     {
-                        <MudStack Row="true" Spacing="1" Class="mb-4">
-                            <MudText Typo="Typo.h5">Version</MudText>
+                        <MudStack Row="true" Spacing="2" Class="mb-4">
+                            <MudText Typo="Typo.h5">@Release.AppName</MudText>
                             <MudText Typo="Typo.h5" Color="Color.Error">@Release.VersionName</MudText>
                         </MudStack>
                         @foreach (var category in Release.Modifications.OrderBy(x => x.Id).GroupBy(x => x.Category, comparer: StringComparer.OrdinalIgnoreCase))
