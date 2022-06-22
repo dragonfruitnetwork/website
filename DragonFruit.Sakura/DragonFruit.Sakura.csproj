@@ -14,12 +14,4 @@
         <PackageReference Include="MudBlazor.Markdown" Version="0.0.10" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Content Remove="Common\Components\SakuraActionButton.razor" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Common\Layouts" />
-    </ItemGroup>
-
 </Project>
