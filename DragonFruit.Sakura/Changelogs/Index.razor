@@ -1,4 +1,5 @@
-﻿@page "/changelogs/{AppName}/{VersionName?}"
+﻿@page "/changelogs"
+@page "/changelogs/{AppName}/{VersionName?}"
 @using DragonFruit.Sakura.Changelogs.Components
 
 <PageTitle>Changelogs &middot; DragonFruit Network</PageTitle>
@@ -6,45 +7,61 @@
 
 <GlobalNavigation/>
 
-<MudContainer MaxWidth="MaxWidth.Large">
-    <MudPaper Elevation="1">
-        <MudContainer>
-            <MudTimeline TimelinePosition="TimelinePosition.Start" Class="py-4">
-                <ChangelogNavigationItem Release="Release" Type="NavigationType.Next"/>
-                <MudTimelineItem Color="Color.Primary" HideDot="true">
-                    <ItemContent>
-                        @if (Release == null)
-                        {
-                            <MudStack>
-                                @for (var i = 0; i < 10; i++)
-                                {
-                                    <MudSkeleton SkeletonType="SkeletonType.Text" Height="50px" Width="850px"/>
-                                }
-                            </MudStack>
-                        }
-                        else
-                        {
-                            <MudStack Row="true" Spacing="1" Class="mb-4">
-                                <MudText Typo="Typo.h5">Version</MudText>
-                                <MudText Typo="Typo.h5" Color="Color.Error">@Release.VersionName</MudText>
-                            </MudStack>
-                            @foreach (var category in Release.Modifications.OrderBy(x => x.Id).GroupBy(x => x.Category, comparer: StringComparer.OrdinalIgnoreCase))
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
+    <MudStack Class="flex-wrap" Spacing="4" Row="true" AlignItems="AlignItems.Center" Justify="Justify.Center">
+        <MudText Align="Align.Center" Typo="Typo.h5">Changelogs</MudText>
+        <MudSpacer/>
+        <ChangelogApplication Id="onionfruit" Name="OnionFruit&trade;" Colour="#9940ec">
+            <MudIcon Icon="@Icons.Rounded.WifiLock" Size="Size.Medium" Color="Color.Inherit"/>
+        </ChangelogApplication>
+
+        <MudStack Row="true" AlignItems="AlignItems.Center">
+            <img src="/assets/appicons/dragon6.svg" height="24" style="filter: invert(13%) sepia(84%) saturate(3579%) hue-rotate(351deg) brightness(102%) contrast(95%);"/>
+            <MudDivider Vertical="true" FlexItem="true" Light="true"/>
+            <ChangelogApplication Id="dragon6" Name="Web" Colour="#bd1818"/>
+            <ChangelogApplication Id="dragon6electron" Name="Desktop" Colour="#f44336"/>
+            <ChangelogApplication Id="dragon6mobile" Name="Mobile" Colour="#00e676"/>
+        </MudStack>
+    </MudStack>
+
+    <MudPaper Elevation="0" class="my-4 py-4">
+        <MudTimeline TimelinePosition="TimelinePosition.Start" Class="py-4">
+            <ChangelogNavigationItem Release="Release" Type="NavigationType.Next"/>
+            <MudTimelineItem Color="Color.Primary" HideDot="true">
+                <ItemContent>
+                    @if (Release == null)
+                    {
+                        <MudStack>
+                            @for (var i = 0; i < 8; i++)
                             {
-                                <MudStack Class="mb-4" AlignItems="AlignItems.Start">
-                                    <MudText Typo="Typo.h6">@category.Key</MudText>
-                                    <MudStack AlignItems="AlignItems.Start">
-                                        @foreach (var entry in category)
-                                        {
-                                            <ChangelogEntry Entry="entry"/>
-                                        }
-                                    </MudStack>
-                                </MudStack>
+                                <MudSkeleton SkeletonType="SkeletonType.Text" Height="30px" Width="850px"/>
                             }
+                        </MudStack>
+                    }
+                    else
+                    {
+                        <MudStack Row="true" Spacing="1" Class="mb-4">
+                            <MudText Typo="Typo.h5">Version</MudText>
+                            <MudText Typo="Typo.h5" Color="Color.Error">@Release.VersionName</MudText>
+                        </MudStack>
+                        @foreach (var category in Release.Modifications.OrderBy(x => x.Id).GroupBy(x => x.Category, comparer: StringComparer.OrdinalIgnoreCase))
+                        {
+                            <MudStack Class="mb-4" AlignItems="AlignItems.Start">
+                                <MudText Typo="Typo.h6">@category.Key</MudText>
+                                <MudStack AlignItems="AlignItems.Start">
+                                    @foreach (var entry in category)
+                                    {
+                                        <ChangelogEntry Entry="entry"/>
+                                    }
+                                </MudStack>
+                            </MudStack>
                         }
-                    </ItemContent>
-                </MudTimelineItem>
-                <ChangelogNavigationItem Release="Release" Type="NavigationType.Previous"/>
-            </MudTimeline>
-        </MudContainer>
+                    }
+                </ItemContent>
+            </MudTimelineItem>
+            <ChangelogNavigationItem Release="Release" Type="NavigationType.Previous"/>
+        </MudTimeline>
     </MudPaper>
 </MudContainer>
+
+<SakuraFooter/>

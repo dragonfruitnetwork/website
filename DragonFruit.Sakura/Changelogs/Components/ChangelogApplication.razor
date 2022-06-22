@@ -1,0 +1,26 @@
+﻿@{
+    var style = $"color: {Colour}";
+}
+
+<a href="/changelogs/@Id">
+    <MudStack Row="true" AlignItems="AlignItems.Center" Style="@style">
+        @ChildContent
+        <MudText Typo="Typo.subtitle1" Color="Color.Inherit">@((MarkupString)Name)</MudText>
+    </MudStack>
+</a>
+
+@code {
+
+    [Parameter]
+    public string Id { get; set; }
+
+    [Parameter]
+    public string Name { get; set; }
+    
+    [Parameter]
+    public string Colour { get; set; }
+    
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+}
