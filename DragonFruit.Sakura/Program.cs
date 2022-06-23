@@ -28,7 +28,7 @@ namespace DragonFruit.Sakura
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
             builder.Services.AddMudServices();
-            builder.Services.AddSingleton<ApiClient>(new ApiClient<ApiSystemTextJsonSerializer>());
+            builder.Services.AddSingleton<ApiClient, ApiClient<ApiSystemTextJsonSerializer>>();
 
             await builder.Build().RunAsync();
         }
