@@ -1,0 +1,58 @@
+﻿@page "/onionfruit/status"
+@using DragonFruit.Sakura.OnionFruit.Components
+
+<PageTitle>Connection Status &middot; DragonFruit Network</PageTitle>
+<HeadContent>
+    <meta property="theme-color" content="#673ab7"/>
+    <meta property="og:title" content="OnionFruit™ Connection Status"/>
+    <meta property="og:description" content="Check whether you're connected to the Tor network"/>
+    <meta name="keywords" content="Tor, Onion, Onionfruit, onion fruit, onionfruit connect, onion buddy, dragonfruit onionfruit"/>
+
+    @switch (ConnectionInfo?.IsConnectedToTor)
+    {
+        case false:
+            <style>
+                .sakura-hero {
+                     background: #240b36; 
+                }
+            </style>
+            break;
+
+        case true:
+            <style>
+                .sakura-hero {
+                     background: #004a1a;
+                }
+            </style>
+            break;
+    }
+
+</HeadContent>
+
+<SakuraHero>
+    <MudSpacer/>
+
+    <MudContainer MaxWidth="MaxWidth.Large">
+        @{
+            var (icon, title, colour) = ConnectionDisplay;
+            var iconColour = ConnectionInfo?.IsConnectedToTor switch {
+                true => Color.Success,
+                false => Color.Primary,
+                null => Color.Surface
+            };
+        }
+        <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.Center" Spacing="5" Class="flex-wrap">
+            <MudIcon Icon="@icon" Color="@iconColour" Style="font-size: 20vh"/>
+            <MudStack Justify="Justify.Center">
+                <MudText Typo="Typo.h4">OnionFruit&trade; Connection Status</MudText>
+                <MudStack Row="true" AlignItems="AlignItems.Start">
+                    <OnionFruitStatusCard Title="Tor Network" Value="@title" Colour="@colour"/>
+                    <OnionFruitStatusCard Title="Country" Value="@ConnectionInfo?.Country"/>
+                </MudStack>
+            </MudStack>
+        </MudStack>
+    </MudContainer>
+
+    <MudSpacer/>
+    <OnionFruitHeader/>
+</SakuraHero>
