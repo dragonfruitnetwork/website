@@ -1,0 +1,27 @@
+﻿<MudStack Spacing="1">
+    @if (Value == null)
+    {
+        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="30px" Width="90px"/>
+        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="30px" Width="120px"/>
+    }
+    else
+    {
+        var textStyle = string.IsNullOrEmpty(Colour) ? null : $"color: {Colour}";
+        <MudText Typo="Typo.h6" Style="@textStyle">@Value</MudText>
+        <MudText>@Title</MudText>
+    }
+</MudStack>
+
+
+@code {
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public string Value { get; set; }
+
+    [Parameter]
+    public string Colour { get; set; }
+
+}
