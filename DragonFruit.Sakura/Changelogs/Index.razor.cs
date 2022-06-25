@@ -1,4 +1,5 @@
-﻿using DragonFruit.Data;
+﻿using System.Net;
+using DragonFruit.Data;
 using DragonFruit.Sakura.Network;
 using DragonFruit.Sakura.Network.Requests;
 using Microsoft.AspNetCore.Components;
@@ -11,6 +12,9 @@ namespace DragonFruit.Sakura.Changelogs
 
         [Inject]
         private ApiClient Client { get; set; }
+        
+        [Inject]
+        private NavigationManager Navigation { get; set; }
 
         [Parameter]
         public string AppName { get; set; }
@@ -27,7 +31,15 @@ namespace DragonFruit.Sakura.Changelogs
                 ? new ApiDefaultChangelogsRequest()
                 : new ApiChangelogsRequest(AppName, VersionName) as ApiRequest;
 
-            Release = await Client.PerformAsync<ApiChangelogRelease>(releaseRequest).ConfigureAwait(false);
+            try
+            {
+                Release = await Client.PerformAsync<ApiChangelogRelease>(releaseRequest).ConfigureAwait(false);
+            }
+            catch (HttpRequestException e) when (e.StatusCode == HttpStatusCode.NotFound)
+            {
+                // redirect to the generic changelogs page
+                Navigation.NavigateTo("/changelogs");
+            }
         }
     }
 }
