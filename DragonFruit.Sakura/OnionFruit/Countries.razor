@@ -1,4 +1,5 @@
 ﻿@page "/onionfruit/countries"
+@using DragonFruit.Sakura.OnionFruit.Components
 
 <PageTitle>OnionFruit&trade; Countries List &middot; DragonFruit Network</PageTitle>
 <HeadContent>
@@ -20,15 +21,25 @@
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-4 mb-3">
     <MudPaper Elevation="0" Class="p-4">
-        <div style="display: grid; gap: 2rem; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))">
-            @for (int i = 0; i < 12; i++)
+        <div style="display: grid; column-gap: 2rem; row-gap: 3rem; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))">
+            @if (NodeCountries?.Any() == true)
             {
-                <MudStack>
-                    <MudSkeleton SkeletonType="SkeletonType.Circle" Height="50px" Width="50px"/>
-                    <MudSkeleton SkeletonType="SkeletonType.Text" Height="30px" Width="100px"/>
-                    <MudSkeleton SkeletonType="SkeletonType.Text" Height="20px" Width="75%"/>
-                    <MudSkeleton SkeletonType="SkeletonType.Text" Height="20px" Width="100%"/>
-                </MudStack>
+                @foreach (var country in NodeCountries.Where(x => x.TotalNodeCount >= 5).OrderByDescending(x => x.TotalNodeCount))
+                {
+                    <OnionFruitCountryInfo CountryInfo="@country"/>
+                }
+            }
+            else
+            {
+                @for (int i = 0; i < 12; i++)
+                {
+                    <MudStack>
+                        <MudSkeleton SkeletonType="SkeletonType.Circle" Height="50px" Width="50px"/>
+                        <MudSkeleton SkeletonType="SkeletonType.Text" Height="30px" Width="100px"/>
+                        <MudSkeleton SkeletonType="SkeletonType.Text" Height="20px" Width="75%"/>
+                        <MudSkeleton SkeletonType="SkeletonType.Text" Height="20px" Width="100%"/>
+                    </MudStack>
+                }
             }
         </div>
     </MudPaper>
