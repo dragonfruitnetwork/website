@@ -1,0 +1,37 @@
+﻿@page "/onionfruit/countries"
+
+<PageTitle>OnionFruit&trade; Countries List &middot; DragonFruit Network</PageTitle>
+<HeadContent>
+    <meta property="theme-color" content="#673ab7"/>
+    <meta property="og:title" content="OnionFruit™ Countries List"/>
+    <meta name="keywords" content="Tor, Onion, Onionfruit, onion fruit, onionfruit connect, onion buddy, dragonfruit onionfruit"/>
+</HeadContent>
+
+<GlobalNavigation/>
+
+<MudStack Spacing="1" Class="my-4" Justify="Justify.Center" AlignItems="AlignItems.Center">
+    <SakuraSubheading Text="Countries" Colour="#28a745" Icon="fa-solid fa-globe-americas"/>
+    <MudText Typo="Typo.h4">Choose where you would like to go next with OnionFruit&trade; Connect</MudText>
+    <MudText>Powered by the <strong>OnionFruit&trade; API</strong> - an open-source Tor® network status library</MudText>
+    <MudButton StartIcon="@Icons.Custom.Brands.GitHub" Color="Color.Success" Href="https://github.com/dragonfruitnetwork/onionfruit-api" Target="_blank" Class="mt-3">
+        View on GitHub
+    </MudButton>
+</MudStack>
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4 mb-3">
+    <MudPaper Elevation="0" Class="p-4">
+        <div style="display: grid; gap: 2rem; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))">
+            @for (int i = 0; i < 12; i++)
+            {
+                <MudStack>
+                    <MudSkeleton SkeletonType="SkeletonType.Circle" Height="50px" Width="50px"/>
+                    <MudSkeleton SkeletonType="SkeletonType.Text" Height="30px" Width="100px"/>
+                    <MudSkeleton SkeletonType="SkeletonType.Text" Height="20px" Width="75%"/>
+                    <MudSkeleton SkeletonType="SkeletonType.Text" Height="20px" Width="100%"/>
+                </MudStack>
+            }
+        </div>
+    </MudPaper>
+</MudContainer>
+
+<SakuraFooter/>
