@@ -12,7 +12,7 @@ namespace DragonFruit.Sakura.Changelogs
 
         [Inject]
         private ApiClient Client { get; set; }
-        
+
         [Inject]
         private NavigationManager Navigation { get; set; }
 
