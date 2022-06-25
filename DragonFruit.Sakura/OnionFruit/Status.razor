@@ -34,7 +34,7 @@
 
     <MudContainer MaxWidth="MaxWidth.Large">
         @{
-            var (icon, title, colour) = ConnectionDisplay;
+            var (icon, title, colour) = GetConnectionDisplay();
             var iconColour = ConnectionInfo?.IsConnectedToTor switch {
                 true => Color.Success,
                 false => Color.Primary,

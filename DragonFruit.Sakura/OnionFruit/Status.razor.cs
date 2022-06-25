@@ -21,7 +21,7 @@ namespace DragonFruit.Sakura.OnionFruit
             ConnectionInfo = await Client.PerformAsync<ApiGeolocationInfo>(new ApiGeolocationInfoRequest()).ConfigureAwait(false);
         }
 
-        private (string icon, string title, string colour) ConnectionDisplay => ConnectionInfo?.IsConnectedToTor switch
+        private (string icon, string title, string colour) GetConnectionDisplay() => ConnectionInfo?.IsConnectedToTor switch
         {
             true => (Icons.Rounded.WifiLock, "Connected", "#76FF03"),
             false => (Icons.Rounded.SignalWifi4Bar, "Disconnected", "#D50000"),
