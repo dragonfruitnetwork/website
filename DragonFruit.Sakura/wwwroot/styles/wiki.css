@@ -11,18 +11,15 @@
 }
 
 .contents-table td {
-    vertical-align: middle !important;
-}
-
-.contents-table td {
     padding: 1rem;
+    vertical-align: middle !important;
 }
 
 .contents-table td:not(:first-child) {
     margin-right: 1rem;
 }
 
-.contents-table td > * {
+.contents-table td * {
     margin-top: 0 !important;
 }
 
@@ -80,6 +77,14 @@
 #wiki-content a {
     color: #c33764;
     text-decoration: none;
+}
+
+#wiki-content .mud-alert {
+    margin: .75rem 0;
+}
+
+#wiki-content .mud-alert-message * {
+    margin: 0 !important;
 }
 
 #wiki-content a:only-child::after {
