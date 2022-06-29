@@ -42,7 +42,7 @@ namespace DragonFruit.Sakura.Wiki.Renderers
     {
         public void Setup(MarkdownPipelineBuilder pipeline)
         {
-            throw new NotSupportedException();
+            // do nothing
         }
 
         public void Setup(MarkdownPipeline pipeline, IMarkdownRenderer renderer)
