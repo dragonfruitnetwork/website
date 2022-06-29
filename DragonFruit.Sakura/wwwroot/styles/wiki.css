@@ -1,8 +1,28 @@
-﻿.contents-table > tbody > tr > td {
+﻿.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid var(--mud-palette-divider);
+}
+
+.contents-table td {
     vertical-align: middle !important;
 }
 
-.contents-table > tbody > tr > td > * {
+.contents-table td {
+    padding: 1rem;
+}
+
+.contents-table td:not(:first-child) {
+    margin-right: 1rem;
+}
+
+.contents-table td > * {
     margin-top: 0 !important;
 }
 
@@ -10,34 +30,70 @@
     font-family: 'JetBrains Mono', monospace !important;
 }
 
-#wiki-content > pre {
+#wiki-content pre {
     margin-bottom: 1.25rem !important;
 }
 
-#wiki-content > h1, h2, h3, h4, h5, h6 {
+#wiki-content h1, h2 {
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--mud-palette-divider);
+}
+
+#wiki-content h1 {
+    font-size: 30px;
+    margin: 0 0 20px;
+}
+
+#wiki-content h2 {
+    font-size: 26px;
+    font-weight: 600;
     margin: 20px 0 10px;
 }
 
-#wiki-content > h1, h2 {
-    font-size: 26px;
-}
-
-#wiki-content > h3 {
+#wiki-content h3 {
     font-size: 20px;
     margin: 30px 0 10px;
 }
 
-#wiki-content > h4 {
+#wiki-content h4 {
     font-size: 18px;
     margin: 30px 0 10px;
 }
 
-#wiki-content > h5 {
+#wiki-content h5 {
     font-size: 16px;
     margin-top: 20px;
 }
 
-#wiki-content > h6 {
+#wiki-content h6 {
     font-size: 14px;
     margin-top: 20px;
+}
+
+#wiki-content p {
+    font-size: 14px;
+    word-wrap: break-word;
+    margin-bottom: 1.5em;
+    line-height: 1.5;
+}
+
+#wiki-content a {
+    color: #c33764;
+    text-decoration: none;
+}
+
+#wiki-content a:only-child::after {
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    padding-left: 5px;
+    font-size: 10px;
+    vertical-align: middle;
+    content: "\f08e";
+}
+
+#wiki-content ul, ol {
+    margin-left: 1rem;
+    margin-top: 0.75rem;
+    margin-bottom: 1rem;
+    list-style: unset !important;
 }
