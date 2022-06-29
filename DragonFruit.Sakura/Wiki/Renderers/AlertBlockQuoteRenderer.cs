@@ -19,9 +19,17 @@ namespace DragonFruit.Sakura.Wiki.Renderers
 
             if (renderer.EnableHtmlForBlock)
             {
-                obj.GetAttributes().AddClass("alert alert-primary d-flex align-items-center");
+                // open content
+                obj.GetAttributes().AddClass("mud-alert mud-alert-text-info mud-elevation-0");
                 renderer.Write("<div").WriteAttributes(obj).WriteLine(">");
-                renderer.WriteLine("<i class=\"far fa-lightbulb mr-3 text-secondary\"></i>");
+
+                // write icon
+                renderer.WriteLine("<div class=\"mud-alert-icon mud-alert-icon-left\">");
+                renderer.WriteLine("<i class=\"far fa-lightbulb\"></i>");
+                renderer.WriteLine("</div>");
+
+                // open message body
+                renderer.WriteLine("<div class=\"mud-alert-message\">");
             }
 
             var savedImplicitParagraph = renderer.ImplicitParagraph;
@@ -31,7 +39,8 @@ namespace DragonFruit.Sakura.Wiki.Renderers
 
             if (renderer.EnableHtmlForBlock)
             {
-                renderer.WriteLine("</div>");
+                // close message body, content and container
+                renderer.WriteLine("</div></div>");
             }
 
             renderer.EnsureLine();
