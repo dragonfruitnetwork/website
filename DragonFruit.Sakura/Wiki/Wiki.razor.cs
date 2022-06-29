@@ -7,6 +7,7 @@ using DragonFruit.Data;
 using DragonFruit.Sakura.Network;
 using DragonFruit.Sakura.Network.Requests;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using MudBlazor;
 
 namespace DragonFruit.Sakura.Wiki
@@ -24,6 +25,9 @@ namespace DragonFruit.Sakura.Wiki
 
         [Inject]
         private NavigationManager Navigation { get; set; }
+
+        [Inject]
+        private IJSRuntime JavaRuntime { get; set; }
 
         private WikiPage Page { get; set; }
 
@@ -62,6 +66,12 @@ namespace DragonFruit.Sakura.Wiki
                     Content = new MarkupString(errorStringBuilder.ToString())
                 };
             }
+        }
+
+        protected override void OnAfterRender(bool firstRender)
+        {
+            // enable syntax highlighting
+            JavaRuntime.InvokeVoidAsync("Prism.highlightAll");
         }
 
         private List<BreadcrumbItem> GenerateBreadcrumbs()
