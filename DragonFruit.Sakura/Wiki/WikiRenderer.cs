@@ -26,7 +26,10 @@ namespace DragonFruit.Sakura.Wiki
                         .Use<AlertQuoteBlockRendererExtension>()
                         .Build();
 
+            // ReSharper disable once UseObjectOrCollectionInitializer
+
             _yamlSerializer = new Serializer();
+            _yamlSerializer.Settings.IgnoreUnmatchedProperties = true;
             _yamlSerializer.Settings.NamingConvention = new FlatNamingConvention();
         }
 
