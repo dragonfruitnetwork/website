@@ -12,7 +12,7 @@ namespace DragonFruit.Sakura.Wiki
 
         public bool Stub { get; set; }
         public bool Outdated { get; set; }
-        public IReadOnlyCollection<string> Tags { get; set; }
+        public string[] Tags { get; set; }
 
         public MarkupString Content { get; set; }
     }
