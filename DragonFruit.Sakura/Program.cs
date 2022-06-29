@@ -1,5 +1,6 @@
 using DragonFruit.Data;
 using DragonFruit.Data.Serializers.SystemJson;
+using DragonFruit.Sakura.Wiki;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor;
@@ -28,6 +29,7 @@ namespace DragonFruit.Sakura
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
             builder.Services.AddMudServices();
+            builder.Services.AddSingleton<WikiRenderer>();
             builder.Services.AddSingleton<ApiClient, ApiClient<ApiSystemTextJsonSerializer>>();
 
             await builder.Build().RunAsync();
