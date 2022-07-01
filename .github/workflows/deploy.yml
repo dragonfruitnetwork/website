@@ -1,0 +1,36 @@
+name: Build and Deploy
+
+on:
+  release:
+    types: [ published ]
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: Setup .NET 6
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '6.0.x'
+        
+      - name: Restore NuGet Packages
+        run: dotnet restore
+        
+      - name: Prepare Output Directory
+        run: mkdir ~/out
+        
+      - name: Publish Project
+        run: dotnet publish ./DragonFruit.Sakura/DragonFruit.Sakura.csproj --configuration Release -p:Version=${{ github.ref_name }} -o ~/out
+        
+      - name: Upload to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.3.4
+        with:
+          branch: prod
+          folder: ~/out/wwwroot
