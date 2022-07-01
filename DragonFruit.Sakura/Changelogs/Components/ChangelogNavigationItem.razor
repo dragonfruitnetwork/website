@@ -1,5 +1,4 @@
 ﻿@using DragonFruit.Sakura.Network
-
 @if (!string.IsNullOrEmpty(TargetVersion))
 {
     <MudTimelineItem Size="Size.Small" Variant="Variant.Outlined" Color="Color.Dark" Elevation="0">
@@ -22,7 +21,7 @@
 }
 
 @code {
-    
+
     [Parameter]
     public ApiChangelogRelease Release { get; set; }
 
@@ -35,6 +34,6 @@
         NavigationType.Previous => Release?.PreviousRelease,
         
         _ => throw new ArgumentOutOfRangeException()
-    };
+        };
 
 }

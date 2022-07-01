@@ -1,8 +1,12 @@
-﻿using DragonFruit.Data;
+﻿// DragonFruit Sakura Copyright (c) DragonFruit Network <inbox@dragonfruit.network>
+// Licensed under GNU AGPLv3. Refer to the LICENSE file for more info
 
-namespace DragonFruit.Sakura.Network.Requests;
+using DragonFruit.Data;
 
-public class ApiDefaultChangelogsRequest : ApiRequest
+namespace DragonFruit.Sakura.Network.Requests
 {
-    public override string Path => "https://dragonfruit.network/api/changelogs/latest";
+    public class ApiDefaultChangelogsRequest : ApiRequest
+    {
+        public override string Path => "https://dragonfruit.network/api/changelogs/latest";
+    }
 }
