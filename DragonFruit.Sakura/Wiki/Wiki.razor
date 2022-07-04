@@ -26,8 +26,11 @@ else
     <MudStack Spacing="4">
 
         <MudStack Row="true" Class="flex-wrap">
-            <MudLink Underline="Underline.None" Color="Color.Default" Href="/wiki">
-                <MudText Typo="Typo.h5">Wiki</MudText>
+            <MudLink Href="/wiki"
+                     Typo="Typo.h5"
+                     Color="Color.Default"
+                     Underline="Underline.None">
+                Wiki
             </MudLink>
             @if (PageContent != null)
             {
