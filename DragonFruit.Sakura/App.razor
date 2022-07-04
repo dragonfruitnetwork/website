@@ -4,9 +4,21 @@
         <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
     </Found>
     <NotFound>
-        <PageTitle>Not found</PageTitle>
+        <PageTitle>Page Not Found &middot; DragonFruit Network</PageTitle>
         <LayoutView Layout="@typeof(DefaultLayout)">
-            <p role="alert">Sorry, there's nothing at this address.</p>
+            <div class="d-flex flex-column" style="min-height: 100vh">
+                <GlobalNavigation/>
+
+                <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center" Spacing="2">
+                    <MudText Typo="Typo.h5">Page not found</MudText>
+                    <MudText>We couldn't find the requested page...</MudText>
+                    <MudButton Class="mt-3" Href="/" StartIcon="@Icons.Rounded.Home">Go to homepage</MudButton>
+                </MudStack>
+    
+                <MudSpacer/>
+    
+                <SakuraFooter/>
+            </div>
         </LayoutView>
     </NotFound>
 </Router>
