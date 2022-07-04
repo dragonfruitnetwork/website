@@ -10,7 +10,25 @@ namespace DragonFruit.Sakura.Network
         [JsonPropertyName("path")]
         public string Path { get; set; }
 
+        [JsonPropertyName("page_locale")]
+        public string Locale { get; set; }
+
         [JsonPropertyName("page_content")]
-        public string PageContent { get; set; }
+        public string Content { get; set; }
+
+        [JsonPropertyName("last_commit_message")]
+        public string LastCommitMessage { get; set; }
+
+        [JsonPropertyName("github_commit_url")]
+        public string LastCommitUrl { get; set; }
+
+        [JsonPropertyName("last_updated")]
+        public DateTimeOffset LastUpdated { get; set; }
+
+        [JsonPropertyName("authors")]
+        public IReadOnlyCollection<ApiWikiContributor> Authors { get; set; }
+
+        [JsonPropertyName("locales_available")]
+        public IReadOnlyCollection<string> AvailableLocales { get; set; }
     }
 }

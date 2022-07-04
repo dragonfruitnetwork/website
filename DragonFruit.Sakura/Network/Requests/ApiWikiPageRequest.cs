@@ -7,7 +7,7 @@ namespace DragonFruit.Sakura.Network.Requests
 {
     public class ApiWikiPageRequest : ApiRequest
     {
-        public override string Path => $"https://dragonfruit.network/api/wiki/{PagePath?.TrimStart('/')}";
+        public override string Path => $"https://dragonfruit.network/api/wiki/en/{PagePath?.TrimStart('/')}";
 
         public ApiWikiPageRequest(string pagePath)
         {
