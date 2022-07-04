@@ -46,6 +46,8 @@ namespace DragonFruit.Sakura.Wiki
             }
             catch (Exception ex)
             {
+                await JavaRuntime.InvokeVoidAsync("console.error", ex.ToString());
+
                 var errorStringBuilder = new StringBuilder();
                 errorStringBuilder.AppendLine("<div class=\"mt-3\"></div>");
                 errorStringBuilder.AppendLine("There was an issue loading the requested page. Try refreshing and if it's still not working, try again later.");
