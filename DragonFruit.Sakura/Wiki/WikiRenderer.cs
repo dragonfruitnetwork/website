@@ -3,7 +3,7 @@
 
 using System.Text.RegularExpressions;
 using DragonFruit.Sakura.Network;
-using DragonFruit.Sakura.Wiki.Renderers;
+using DragonFruit.Sakura.Wiki.Renderers.Extensions;
 using Markdig;
 using Microsoft.AspNetCore.Components;
 using SharpYaml;
@@ -22,9 +22,10 @@ namespace DragonFruit.Sakura.Wiki
         public WikiRenderer()
         {
             _pipeline = new MarkdownPipelineBuilder()
-                        .UseAdvancedExtensions()
                         .UseBootstrap()
-                        .Use<AlertQuoteBlockRendererExtension>()
+                        .UseAdvancedExtensions()
+                        .Use<SakuraLinkRendererExtension>()
+                        .Use<SakuraAlertRendererExtension>()
                         .Build();
 
             // ReSharper disable once UseObjectOrCollectionInitializer
