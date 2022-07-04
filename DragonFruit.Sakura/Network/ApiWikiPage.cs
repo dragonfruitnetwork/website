@@ -16,19 +16,22 @@ namespace DragonFruit.Sakura.Network
         [JsonPropertyName("page_content")]
         public string Content { get; set; }
 
-        [JsonPropertyName("last_commit_message")]
-        public string LastCommitMessage { get; set; }
+        [JsonPropertyName("github_url")]
+        public string GitHubPageUrl { get; set; }
 
         [JsonPropertyName("github_commit_url")]
-        public string LastCommitUrl { get; set; }
+        public string GitHubCommitUrl { get; set; }
+
+        [JsonPropertyName("last_commit_message")]
+        public string LastCommitMessage { get; set; }
 
         [JsonPropertyName("last_updated")]
         public DateTimeOffset LastUpdated { get; set; }
 
-        [JsonPropertyName("authors")]
-        public IReadOnlyCollection<ApiWikiContributor> Authors { get; set; }
-
         [JsonPropertyName("locales_available")]
         public IReadOnlyCollection<string> AvailableLocales { get; set; }
+
+        [JsonPropertyName("authors")]
+        public IReadOnlyCollection<ApiWikiContributor> Authors { get; set; }
     }
 }
