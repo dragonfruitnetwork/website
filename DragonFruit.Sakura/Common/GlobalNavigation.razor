@@ -1,13 +1,15 @@
 ﻿<MudAppBar Class="justify-content-center pt-2" Fixed="false" Color="Color.Transparent" Elevation="0">
-    <a href="/">
+    <MudLink Href="/" Underline="Underline.None">
         <MudImage Src="/assets/dragonfruit.png" Height="48"/>
-    </a>
-    <MudDivider Vertical="true" FlexItem="true" Style="margin: 1rem; height: 50%"/>
+    </MudLink>
+    
+    <MudDivider Vertical="true" FlexItem="true" Style="margin: auto 1rem; height: 50%"/>
 
     @* main product links *@
-    <MudButton Variant="Variant.Text" Href="/onionfruit">OnionFruit&trade;</MudButton>
-    <MudButton Variant="Variant.Text" Href="/dragon6">Dragon6</MudButton>
-    <MudButton Variant="Variant.Text" Href="/orbit">Orbit</MudButton>
+    <MudStack Row="true" Spacing="2">
+        <MudButton Variant="Variant.Text" Href="/onionfruit">OnionFruit&trade;</MudButton>
+        <MudButton Variant="Variant.Text" Href="/dragon6" StartIcon="@Icons.Rounded.AccessTime">Dragon6</MudButton>
+    </MudStack>
 
     <MudSpacer/>
 
