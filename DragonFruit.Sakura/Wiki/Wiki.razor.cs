@@ -29,18 +29,20 @@ namespace DragonFruit.Sakura.Wiki
         [Inject]
         private IJSRuntime JavaRuntime { get; set; }
 
-        private WikiPage Page { get; set; }
+        private ApiWikiPage PageMetadata { get; set; }
+        private WikiPageContent PageContent { get; set; }
 
         protected override async Task OnParametersSetAsync()
         {
-            Page = null;
+            PageMetadata = null;
+            PageContent = null;
 
             try
             {
                 var request = new ApiWikiPageRequest(Path);
-                var response = await Client.PerformAsync<ApiWikiPage>(request).ConfigureAwait(false);
 
-                Page = Renderer.ProcessPage(response);
+                PageMetadata = await Client.PerformAsync<ApiWikiPage>(request).ConfigureAwait(false);
+                PageContent = Renderer.ProcessPage(PageMetadata);
             }
             catch (Exception ex)
             {
@@ -59,7 +61,7 @@ namespace DragonFruit.Sakura.Wiki
                     errorStringBuilder.Append($" ({webException.StatusCode})");
                 }
 
-                Page = new WikiPage
+                PageContent = new WikiPageContent
                 {
                     PagePath = string.Empty,
                     Title = "DragonFruit Wiki",
@@ -76,7 +78,7 @@ namespace DragonFruit.Sakura.Wiki
 
         private List<BreadcrumbItem> GenerateBreadcrumbs()
         {
-            var pathSegments = Page?.PagePath?.Split('/');
+            var pathSegments = PageContent?.PagePath?.Split('/');
             var homeSegment = new BreadcrumbItem("home", "/wiki");
 
             if (pathSegments is null || !pathSegments.Any())

@@ -1,20 +1,19 @@
 ﻿@page "/wiki/"
 @page "/wiki/{*path}"
 
-@if (Page == null)
+@if (PageContent == null)
 {
     <PageTitle>Wiki &middot; DragonFruit Network</PageTitle>
 }
 else
 {
-    <PageTitle>@Page.Title &middot; DragonFruit Wiki</PageTitle>
+    <PageTitle>@PageContent.Title &middot; DragonFruit Wiki</PageTitle>
 }
 
 <HeadContent>
     <meta property="theme-color" content="#9c27b0"/>
-    <meta property="og:title" content="@(Page?.Title ?? "Wiki") &middot; DragonFruit Network"/>
-    <meta name="keywords" content="@string.Join(", ", Page?.Tags ?? Enumerable.Empty<string>())"/>
-
+    <meta property="og:title" content="@(PageContent?.Title ?? "Wiki") &middot; DragonFruit Network"/>
+    <meta name="keywords" content="@string.Join(", ", PageContent?.Tags ?? Enumerable.Empty<string>())"/>
 
     <link rel="stylesheet" href="/styles/wiki.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.css"/>
@@ -28,7 +27,7 @@ else
 
         <MudStack Row="true">
             <MudText Typo="Typo.h5">Wiki</MudText>
-            @if (Page != null)
+            @if (PageContent != null)
             {
                 <MudSpacer/>
                 <MudBreadcrumbs Items="GenerateBreadcrumbs()" MaxItems="5" Class="p-0"/>
@@ -36,7 +35,7 @@ else
         </MudStack>
 
         <MudPaper Elevation="0" Class="px-4 py-3" Style="min-height: 75vh">
-            @if (Page == null)
+            @if (PageContent == null)
             {
                 // dummy content
                 <MudSkeleton SkeletonType="SkeletonType.Text" Height="50px" Width="250px"/>
@@ -51,14 +50,14 @@ else
             else
             {
                 // main content
-                <MudStack>
-                    @if (Page?.Stub == true)
+                <MudStack Style="min-height: inherit">
+                    @if (PageContent?.Stub == true)
                     {
                         <MudAlert Severity="Severity.Warning" Icon="@Icons.Rounded.PieChart">
                             This article is a stub and is waiting for expansion.
                         </MudAlert>
                     }
-                    else if (Page?.Outdated == true)
+                    else if (PageContent?.Outdated == true)
                     {
                         <MudAlert Severity="Severity.Info" Icon="@Icons.Rounded.History">
                             This article is outdated and needs reviewing to ensure the content is up-to-date.
@@ -66,8 +65,24 @@ else
                     }
 
                     <div id="wiki-content">
-                        @Page.Content
+                        @PageContent.Content
                     </div>
+
+                    <MudSpacer/>
+
+                    <MudDivider/>
+
+                    <MudStack Row="true" AlignItems="AlignItems.Center">
+                        <MudText Typo="Typo.caption">Last updated @PageMetadata.LastUpdated.ToString("D")</MudText>
+                        <MudSpacer/>
+                        <MudAvatarGroup Max="5" Spacing="2">
+                            @foreach (var author in PageMetadata.Authors)
+                            {
+                                <MudAvatar Image="@author.AvatarUrl" Size="Size.Small">@author.Username[0]</MudAvatar>
+                            }
+                        </MudAvatarGroup>
+                        @* <MudButton Color="Color.Transparent" StartIcon="@Icons.Custom.Brands.GitHub" Href="">View on GitHub</MudButton> *@
+                    </MudStack>
                 </MudStack>
             }
         </MudPaper>
