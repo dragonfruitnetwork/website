@@ -74,7 +74,10 @@ else
                         <MudDivider/>
 
                         <MudStack Row="true" AlignItems="AlignItems.Center">
-                            <MudText Typo="Typo.caption">Last updated @PageMetadata.LastUpdated.ToString("D")</MudText>
+                            <MudTooltip Text="@PageMetadata.LastCommitMessage" Placement="Placement.End">
+                                <MudText Typo="Typo.caption">Last updated @PageMetadata.LastUpdated.ToString("D")</MudText>
+                            </MudTooltip>
+
                             <MudSpacer/>
                             <MudAvatarGroup Max="5" Spacing="2">
                                 @foreach (var author in PageMetadata.Authors)
