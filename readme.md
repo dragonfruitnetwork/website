@@ -52,5 +52,5 @@ Feedback is welcome and helps the project advance and enables more people to get
 
 ## License
 DragonFruit Sakura is licensed under AGPL version 3 or later. Refer to [the licence file](license.md) for more information. In short, if you want to use any resource from this project, you must open source your project under the same licence and provide attribution.Note this doesn't include the DragonFruit Network name or logo, these shouldn't be used.
-If you are unsure about this, drop us a line at inbox@dragonfruit.network or join our [Discord](https://discord.gg/VA26u5Z) server and ask there.
 
+If you are unsure about any of the license terms, drop us a line at inbox@dragonfruit.network or join our [Discord](https://discord.gg/VA26u5Z) server and ask there.
