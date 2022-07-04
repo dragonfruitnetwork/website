@@ -1,7 +1,9 @@
 ﻿<MudAppBar Color="@Background" Elevation="0" Bottom="true" Fixed="@Fixed" Class="sakura-sticky">
     <MudText Typo="Typo.h4" Style="font-size: 20px">@Title</MudText>
     <MudSpacer/>
-    @ChildContent
+    <MudStack Row="true" Spacing="2">
+        @ChildContent
+    </MudStack>
 </MudAppBar>
 
 @code {
