@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace DragonFruit.Sakura.Wiki
 {
-    public class WikiPage
+    public class WikiPageContent
     {
         public string Title { get; set; }
         public string PagePath { get; set; }

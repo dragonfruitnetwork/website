@@ -34,15 +34,15 @@ namespace DragonFruit.Sakura.Wiki
         }
 
         /// <summary>
-        /// Processes a <see cref="ApiWikiPage"/>, converting it into a usable <see cref="WikiPage"/>
+        /// Processes a <see cref="ApiWikiPage"/>, converting it into a usable <see cref="WikiPageContent"/>
         /// </summary>
-        public WikiPage ProcessPage(ApiWikiPage apiPage)
+        public WikiPageContent ProcessPage(ApiWikiPage apiPage)
         {
-            var pageStructure = _pageFormat.Match(apiPage.PageContent);
+            var pageStructure = _pageFormat.Match(apiPage.Content);
 
             // process to get header
             var header = pageStructure.Groups["header"];
-            var page = header.Success ? _yamlSerializer.Deserialize<WikiPage>(header.Value) : new WikiPage();
+            var page = header.Success ? _yamlSerializer.Deserialize<WikiPageContent>(header.Value) : new WikiPageContent();
 
             // then get the content
             var rawContent = pageStructure.Groups["document"].Value;
