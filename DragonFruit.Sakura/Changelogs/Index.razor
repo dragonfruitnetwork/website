@@ -9,7 +9,13 @@
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
     <MudStack Class="flex-wrap" Spacing="4" Row="true" AlignItems="AlignItems.Center" Justify="Justify.Center">
-        <MudText Align="Align.Center" Typo="Typo.h5">Changelogs</MudText>
+        <MudLink Typo="Typo.h5"
+                 Href="/changelogs"
+                 Color="Color.Default"
+                 Underline="Underline.None">
+            Changelogs
+        </MudLink>
+        
         <MudSpacer/>
         <ChangelogApplication Id="onionfruit" Name="OnionFruit&trade;" Colour="#9940ec">
             <MudIcon Icon="@Icons.Rounded.WifiLock" Size="Size.Medium" Color="Color.Inherit"/>
