@@ -79,13 +79,25 @@ else
                             </MudTooltip>
 
                             <MudSpacer/>
-                            <MudAvatarGroup Max="5" Spacing="2">
-                                @foreach (var author in PageMetadata.Authors)
-                                {
-                                    <MudAvatar Image="@author.AvatarUrl" Size="Size.Small">@author.Username[0]</MudAvatar>
-                                }
-                            </MudAvatarGroup>
-                            @* <MudButton Color="Color.Transparent" StartIcon="@Icons.Custom.Brands.GitHub" Href="">View on GitHub</MudButton> *@
+
+                            <MudTooltip Text="Page Authors" Placement="Placement.Start">
+                                <MudAvatarGroup Max="5" Spacing="2">
+                                    @foreach (var author in PageMetadata.Authors)
+                                    {
+                                        <MudAvatar Image="@author.AvatarUrl" Size="Size.Small">@author.Username[0]</MudAvatar>
+                                    }
+                                </MudAvatarGroup>
+                            </MudTooltip>
+
+                            <MudDivider Vertical="true" FlexItem="true"/>
+
+                            <MudButton Target="_blank"
+                                       Size="Size.Small"
+                                       Color="Color.Transparent"
+                                       Href="@PageMetadata.GitHubPageUrl"
+                                       StartIcon="@Icons.Custom.Brands.GitHub">
+                                View on GitHub
+                            </MudButton>
                         </MudStack>
                     }
                 </MudStack>
