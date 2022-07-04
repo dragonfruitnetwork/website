@@ -68,21 +68,23 @@ else
                         @PageContent.Content
                     </div>
 
-                    <MudSpacer/>
-
-                    <MudDivider/>
-
-                    <MudStack Row="true" AlignItems="AlignItems.Center">
-                        <MudText Typo="Typo.caption">Last updated @PageMetadata.LastUpdated.ToString("D")</MudText>
+                    @if (PageMetadata != null)
+                    {
                         <MudSpacer/>
-                        <MudAvatarGroup Max="5" Spacing="2">
-                            @foreach (var author in PageMetadata.Authors)
-                            {
-                                <MudAvatar Image="@author.AvatarUrl" Size="Size.Small">@author.Username[0]</MudAvatar>
-                            }
-                        </MudAvatarGroup>
-                        @* <MudButton Color="Color.Transparent" StartIcon="@Icons.Custom.Brands.GitHub" Href="">View on GitHub</MudButton> *@
-                    </MudStack>
+                        <MudDivider/>
+
+                        <MudStack Row="true" AlignItems="AlignItems.Center">
+                            <MudText Typo="Typo.caption">Last updated @PageMetadata.LastUpdated.ToString("D")</MudText>
+                            <MudSpacer/>
+                            <MudAvatarGroup Max="5" Spacing="2">
+                                @foreach (var author in PageMetadata.Authors)
+                                {
+                                    <MudAvatar Image="@author.AvatarUrl" Size="Size.Small">@author.Username[0]</MudAvatar>
+                                }
+                            </MudAvatarGroup>
+                            @* <MudButton Color="Color.Transparent" StartIcon="@Icons.Custom.Brands.GitHub" Href="">View on GitHub</MudButton> *@
+                        </MudStack>
+                    }
                 </MudStack>
             }
         </MudPaper>
