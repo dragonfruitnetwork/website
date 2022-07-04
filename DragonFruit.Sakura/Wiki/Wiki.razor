@@ -25,12 +25,12 @@ else
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
     <MudStack Spacing="4">
 
-        <MudStack Row="true">
+        <MudStack Row="true" Class="flex-wrap">
             <MudText Typo="Typo.h5">Wiki</MudText>
             @if (PageContent != null)
             {
                 <MudSpacer/>
-                <MudBreadcrumbs Items="GenerateBreadcrumbs()" MaxItems="5" Class="p-0"/>
+                <MudBreadcrumbs Items="GenerateBreadcrumbs()" Class="p-0"/>
             }
         </MudStack>
 
