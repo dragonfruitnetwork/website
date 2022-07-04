@@ -26,7 +26,9 @@ else
     <MudStack Spacing="4">
 
         <MudStack Row="true" Class="flex-wrap">
-            <MudText Typo="Typo.h5">Wiki</MudText>
+            <MudLink Underline="Underline.None" Color="Color.Default" Href="/wiki">
+                <MudText Typo="Typo.h5">Wiki</MudText>
+            </MudLink>
             @if (PageContent != null)
             {
                 <MudSpacer/>
