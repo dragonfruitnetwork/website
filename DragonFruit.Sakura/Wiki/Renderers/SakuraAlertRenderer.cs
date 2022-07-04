@@ -1,7 +1,6 @@
 ﻿// DragonFruit Sakura Copyright (c) DragonFruit Network <inbox@dragonfruit.network>
 // Licensed under GNU AGPLv3. Refer to the LICENSE file for more info
 
-using Markdig;
 using Markdig.Renderers;
 using Markdig.Renderers.Html;
 using Markdig.Syntax;
@@ -11,7 +10,7 @@ namespace DragonFruit.Sakura.Wiki.Renderers
     /// <summary>
     /// A HTML renderer for a <see cref="QuoteBlock"/> that produces a bootstrap alert box
     /// </summary>
-    public class AlertQuoteBlockRenderer : HtmlObjectRenderer<QuoteBlock>
+    public class SakuraAlertRenderer : HtmlObjectRenderer<QuoteBlock>
     {
         protected override void Write(HtmlRenderer renderer, QuoteBlock obj)
         {
@@ -44,20 +43,6 @@ namespace DragonFruit.Sakura.Wiki.Renderers
             }
 
             renderer.EnsureLine();
-        }
-    }
-
-    public class AlertQuoteBlockRendererExtension : IMarkdownExtension
-    {
-        public void Setup(MarkdownPipelineBuilder pipeline)
-        {
-            // do nothing
-        }
-
-        public void Setup(MarkdownPipeline pipeline, IMarkdownRenderer renderer)
-        {
-            // swap the built-in renderer with our own
-            renderer.ObjectRenderers.Replace<QuoteBlockRenderer>(new AlertQuoteBlockRenderer());
         }
     }
 }
