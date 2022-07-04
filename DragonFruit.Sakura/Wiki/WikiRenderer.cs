@@ -6,6 +6,7 @@ using DragonFruit.Sakura.Network;
 using DragonFruit.Sakura.Wiki.Renderers;
 using Markdig;
 using Microsoft.AspNetCore.Components;
+using SharpYaml;
 using SharpYaml.Serialization;
 
 namespace DragonFruit.Sakura.Wiki
@@ -29,8 +30,8 @@ namespace DragonFruit.Sakura.Wiki
             // ReSharper disable once UseObjectOrCollectionInitializer
 
             _yamlSerializer = new Serializer();
+            _yamlSerializer.Settings.DefaultStyle = YamlStyle.Block;
             _yamlSerializer.Settings.IgnoreUnmatchedProperties = true;
-            _yamlSerializer.Settings.NamingConvention = new FlatNamingConvention();
         }
 
         /// <summary>
