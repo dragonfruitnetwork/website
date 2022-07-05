@@ -42,6 +42,7 @@ jobs:
       - name: Publish
         uses: JamesIves/github-pages-deploy-action@v4.3.4
         with:
+          branch: master
           single-commit: true
           folder: ~/out/wwwroot
           git-config-name: sakura-deploy
