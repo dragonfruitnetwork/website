@@ -9,7 +9,7 @@ While this is still being built, development is occuring at a steady pace and al
 
 Bug reports are being accepted (provided they provide enough detail to diagnose the issue), and can be opened using GitHub issues. Feature requests are welcome, but will be low priority until the main site has been built to match the legacy site (codenamed Yuna).
 
-The latest build of the master site can be found at https://sakura.dragonfruit.network
+The latest build of the master site can be found at https://preview.dragonfruit.network
 
 ## Development
 Sakura is built using ASP.NET Blazor WebAssembly using [MudBlazor](https://mudblazor.com/) as the component design provider. It runs almost entirely client-side with Yuna providing an API to provide data as needed.
