@@ -10,6 +10,9 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: 
+      name: production
+      url: https://preview.dragonfruit.network
     
     steps:
       - name: Checkout
