@@ -15,6 +15,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         
+      - id: sakura-deploy-key
+        name: Get Deploy Token
+        uses: getsentry/action-github-app-token@v1
+        with:
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.APP_PRIVATE_KEY }}
+
       - name: Setup .NET 6
         uses: actions/setup-dotnet@v2
         with:
@@ -26,12 +33,15 @@ jobs:
       - name: Prepare Output Directory
         run: mkdir ~/out
         
-      - name: Publish Project
+      - name: Build Project
         run: dotnet publish ./DragonFruit.Sakura/DragonFruit.Sakura.csproj --configuration Release -p:Version=${{ github.ref_name }} -o ~/out
         
-      - name: Upload to GitHub Pages
+      - name: Publish
         uses: JamesIves/github-pages-deploy-action@v4.3.4
         with:
-          branch: prod
           single-commit: true
           folder: ~/out/wwwroot
+          git-config-name: sakura-deploy
+          git-config-email: inbox@dragonfruit.network
+          token: ${{ steps.sakura-deploy-key.outputs.token }}
+          repository-name: dragonfruitnetwork/sakura-${{ !github.event.release.prerelease && 'production' || 'preview' }}
