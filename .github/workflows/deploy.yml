@@ -30,7 +30,8 @@ jobs:
         run: dotnet publish ./DragonFruit.Sakura/DragonFruit.Sakura.csproj --configuration Release -p:Version=${{ github.ref_name }} -o ~/out
         
       - name: Upload to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@4.3.4
+        uses: JamesIves/github-pages-deploy-action@v4.3.4
         with:
           branch: prod
+          single-commit: true
           folder: ~/out/wwwroot
