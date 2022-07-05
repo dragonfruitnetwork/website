@@ -6,11 +6,6 @@ on:
 
 permissions:
   contents: write
-  
-env:
-  DEPLOY_USER: sakura-deploy
-  DEPLOY_EMAIL: inbox@dragonfruitnetwork
-  DEPLOY_FOLDER: ~/out/wwwroot
 
 jobs:
   deploy:
@@ -41,23 +36,12 @@ jobs:
       - name: Build Project
         run: dotnet publish ./DragonFruit.Sakura/DragonFruit.Sakura.csproj --configuration Release -p:Version=${{ github.ref_name }} -o ~/out
         
-      - name: Publish (Preview)
+      - name: Publish
         uses: JamesIves/github-pages-deploy-action@v4.3.4
         with:
           single-commit: true
-          folder: ${{ env.DEPLOY_FOLDER }}
-          git-config-name: ${{ env.DEPLOY_USER }}
-          git-config-email: ${{ env.DEPLOY_EMAIL }}
+          folder: ~/out/wwwroot
+          git-config-name: sakura-deploy
+          git-config-email: inbox@dragonfruit.network
+          repository-name: dragonfruitnetwork/sakura-web
           token: ${{ steps.sakura-deploy-key.outputs.token }}
-          repository-name: dragonfruitnetwork/sakura-preview
-        
-      - name: Publish (Production)
-        if: "!github.event.release.prerelease"
-        uses: JamesIves/github-pages-deploy-action@v4.3.4
-        with:
-          single-commit: true
-          folder: ${{ env.DEPLOY_FOLDER }}
-          git-config-name: ${{ env.DEPLOY_USER }}
-          git-config-email: ${{ env.DEPLOY_EMAIL }}
-          token: ${{ steps.sakura-deploy-key.outputs.token }}
-          repository-name: dragonfruitnetwork/sakura-production
