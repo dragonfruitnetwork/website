@@ -108,39 +108,44 @@
                     <MudIcon Icon="fa-brands fa-opera"/>
                 </MudStack>
             </MudStack>
+            <hr class="sakura-section-hr mb-2"/>
 
-            <hr class="sakura-section-hr mb-3"/>
-
-            @* <MudStack Spacing="1"> *@
-            @*     <SakuraSubheading Text="Countries" Colour="#9940ec" Icon="fa-solid fa-globe-americas"/> *@
-            @*     <MudText Typo="Typo.h6">Choose where you would like to go next with OnionFruit™ Connect</MudText> *@
-            @*     <MudText>Powered by the OnionFruit&trade; API - an open-source Tor® network status library.</MudText> *@
-            @* </MudStack> *@
-            @* *@
-            @* <MudStack Class="mt-3" Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween"> *@
-            @*     @for (var i = 0; i < 8; i++) *@
-            @*     { *@
-            @*         <div> *@
-            @*             <MudSkeleton SkeletonType="SkeletonType.Rectangle" Width="120px" Height="140px"/> *@
-            @*         </div> *@
-            @*     } *@
-            @* </MudStack> *@
-
-            <MudGrid Spacing="5" Class="mb-3">
-                <MudItem xs="12" lg="6">
-                    <MudStack Spacing="1" Class="mt-3">
-                        <SakuraSubheading Text="Updates" Colour="#00B0FF" Icon="fa-solid fa-wrench"/>
-                        <MudText>DragonFruit is comitted to maintaining OnionFruit&trade; and its related projects including APIs, databases and client updates</MudText>
-                    </MudStack>
-                </MudItem>
-                <MudItem xs="12" lg="6">
-                    <MudStack Spacing="1" Class="mt-3">
-                        <SakuraSubheading Text="Support" Colour="#00E676" Icon="fa-solid fa-life-ring"/>
-                        <MudText>Support is available at any time through GitHub, Discord or Email (links at the top of the page)</MudText>
-                    </MudStack>
-                </MudItem>
-            </MudGrid>
+            @* FAQ section *@
+            <MudExpansionPanels MultiExpansion="true" Class="mb-3">
+                <MudExpansionPanel Text="Can you connect any app through Tor?">
+                    Yes, providing the app is capable of using SOCKS5 and is set to use the system proxy.
+                </MudExpansionPanel>
+                <MudExpansionPanel Text="Are .onion sites supported?">
+                    Newer versions of OnionFruit&trade; support SecurDNS, which is an optional addon that allows browsers to connect to `.onion` sites.
+                    Note some restrictions may stop this from working, for example the version of Windows or the site itself.
+                </MudExpansionPanel>
+                <MudExpansionPanel Text="Is there a portable version available?">
+                    No, because the installer uses Squirrel you don't need admin rights to install/use it.
+                    If you still need a portable copy then it's highly likely the target machine won't allow the program to change the appropriate settings.
+                </MudExpansionPanel>
+                <MudExpansionPanel Text="What data is collected?">
+                    The only data we collect are crash reports, compromised of the .NET Framework Version, Windows Version and the last 25/50 lines of the log before the error occurred.
+                </MudExpansionPanel>
+                <MudExpansionPanel Text="Is the app actively updated?">
+                    DragonFruit is comitted to maintaining OnionFruit™ and its related projects including delivering updates to APIs, databases and client updates.
+                </MudExpansionPanel>
+            </MudExpansionPanels>
         </MudStack>
+
+        <MudGrid Spacing="5" Class="mb-3">
+            <MudItem xs="12" lg="6">
+                <MudStack Spacing="1" Class="mt-3">
+                    <SakuraSubheading Text="Updates" Colour="#00B0FF" Icon="fa-solid fa-wrench"/>
+                    <MudText>DragonFruit is comitted to maintaining OnionFruit&trade; and its related projects including APIs, databases and client updates</MudText>
+                </MudStack>
+            </MudItem>
+            <MudItem xs="12" lg="6">
+                <MudStack Spacing="1" Class="mt-3">
+                    <SakuraSubheading Text="Support" Colour="#00E676" Icon="fa-solid fa-life-ring"/>
+                    <MudText>Support is available at any time through GitHub, Discord or Email (links at the top of the page)</MudText>
+                </MudStack>
+            </MudItem>
+        </MudGrid>
     </MudContainer>
 
     <MudSpacer/>
