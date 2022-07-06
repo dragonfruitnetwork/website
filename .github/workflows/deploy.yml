@@ -49,3 +49,13 @@ jobs:
           git-config-email: inbox@dragonfruit.network
           repository-name: dragonfruitnetwork/sakura-web
           token: ${{ steps.sakura-deploy-key.outputs.token }}
+          
+      - name: Create Sentry release
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_ORG: dragonfruit
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        with:
+          projects: sakura
+          version: ${{ github.ref_name }}
+          
