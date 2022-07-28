@@ -5,27 +5,26 @@ on:
     types: [ published ]
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: 
       name: production
-      url: https://preview.dragonfruit.network
+      url: ${{ steps.deployment.output.page_url }}
     
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-        
-      - id: sakura-deploy-key
-        name: Get Deploy Token
-        uses: getsentry/action-github-app-token@v1
-        with:
-          app_id: ${{ secrets.APP_ID }}
-          private_key: ${{ secrets.APP_PRIVATE_KEY }}
 
       - name: Setup .NET 6
         uses: actions/setup-dotnet@v2
@@ -41,17 +40,18 @@ jobs:
       - name: Build Project
         run: dotnet publish ./DragonFruit.Sakura/DragonFruit.Sakura.csproj --configuration Release -p:Version=${{ github.ref_name }} -o ~/out
         
-      - name: Publish
-        uses: JamesIves/github-pages-deploy-action@v4.3.4
+      - name: Setup Pages
+        uses: actions/configure-pages@v1
+        
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
         with:
-          branch: master
-          single-commit: true
-          folder: ~/out/wwwroot
-          git-config-name: sakura-deploy
-          git-config-email: inbox@dragonfruit.network
-          repository-name: dragonfruitnetwork/sakura-web
-          token: ${{ steps.sakura-deploy-key.outputs.token }}
+          path: ~/out/wwwroot
           
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@main
+
       - name: Create Sentry release
         uses: getsentry/action-release@v1
         env:
