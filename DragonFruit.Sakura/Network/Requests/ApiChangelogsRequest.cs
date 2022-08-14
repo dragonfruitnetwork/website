@@ -10,7 +10,7 @@ namespace DragonFruit.Sakura.Network.Requests
         public ApiChangelogsRequest(string appName, string versionName)
         {
             AppName = appName;
-            VersionName = versionName;
+            VersionName = versionName ?? "latest";
         }
 
         public string AppName { get; }
