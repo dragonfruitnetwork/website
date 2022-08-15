@@ -24,8 +24,7 @@ else
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
     <MudStack Spacing="4">
-
-        <MudStack Row="true" Class="flex-wrap">
+        <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Spacing="3" Class="flex-wrap">
             <MudLink Href="/wiki"
                      Typo="Typo.h5"
                      Color="Color.Default"
@@ -34,7 +33,6 @@ else
             </MudLink>
             @if (PageContent != null)
             {
-                <MudSpacer/>
                 <MudBreadcrumbs Items="GenerateBreadcrumbs()" Class="p-0"/>
             }
         </MudStack>
@@ -78,31 +76,31 @@ else
                         <MudSpacer/>
                         <MudDivider/>
 
-                        <MudStack Row="true" AlignItems="AlignItems.Center">
+                        <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Spacing="3" Class="flex-wrap-reverse">
                             <MudTooltip Text="@PageMetadata.LastCommitMessage" Placement="Placement.End">
                                 <MudText Typo="Typo.caption">Last updated @PageMetadata.LastUpdated.ToString("D")</MudText>
                             </MudTooltip>
 
-                            <MudSpacer/>
+                            <MudStack Row="true" AlignItems="AlignItems.Center">
+                                <MudTooltip Text="Page Authors" Placement="Placement.Start">
+                                    <MudAvatarGroup Max="5" Spacing="2">
+                                        @foreach (var author in PageMetadata.Authors)
+                                        {
+                                            <MudAvatar Image="@author.AvatarUrl" Size="Size.Small">@author.Username[0]</MudAvatar>
+                                        }
+                                    </MudAvatarGroup>
+                                </MudTooltip>
 
-                            <MudTooltip Text="Page Authors" Placement="Placement.Start">
-                                <MudAvatarGroup Max="5" Spacing="2">
-                                    @foreach (var author in PageMetadata.Authors)
-                                    {
-                                        <MudAvatar Image="@author.AvatarUrl" Size="Size.Small">@author.Username[0]</MudAvatar>
-                                    }
-                                </MudAvatarGroup>
-                            </MudTooltip>
+                                <MudDivider Vertical="true" FlexItem="true"/>
 
-                            <MudDivider Vertical="true" FlexItem="true"/>
-
-                            <MudButton Target="_blank"
-                                       Size="Size.Small"
-                                       Color="Color.Transparent"
-                                       Href="@PageMetadata.GitHubPageUrl"
-                                       StartIcon="@Icons.Custom.Brands.GitHub">
-                                View on GitHub
-                            </MudButton>
+                                <MudButton Target="_blank"
+                                           Size="Size.Small"
+                                           Color="Color.Transparent"
+                                           Href="@PageMetadata.GitHubPageUrl"
+                                           StartIcon="@Icons.Custom.Brands.GitHub">
+                                    View on GitHub
+                                </MudButton>
+                            </MudStack>
                         </MudStack>
                     }
                 </MudStack>
