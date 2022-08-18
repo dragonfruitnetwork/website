@@ -1,6 +1,7 @@
 ﻿@using DragonFruit.Sakura.Network
+@using DragonFruit.Sakura.Utils
 <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center" Spacing="1">
-    <MudImage Src="@FlagUrl" Height="40" Elevation="0" Class="mb-2 rounded"/>
+    <MudImage Src="@FlagUtils.GetFlagUrl(CountryInfo.CountryCode)" Height="40" Elevation="0" Class="mb-2 rounded"/>
     <MudText Typo="Typo.h6">@CountryInfo.CountryName</MudText>
     <MudText>
         <strong>@CountryInfo.TotalNodeCount.ToString("N0")</strong> nodes &middot; <strong>@((CountryInfo.GlobalShare * 100).ToString("F2"))%</strong> global share
@@ -14,7 +15,5 @@
 
     [Parameter]
     public OnionCountryInfo CountryInfo { get; set; }
-
-    private string FlagUrl => $"https://raw.githubusercontent.com/ppy/osu-resources/master/osu.Game.Resources/Textures/Flags/{CountryInfo.CountryCode}.png";
 
 }
