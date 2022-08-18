@@ -1,5 +1,6 @@
 ﻿@page "/onionfruit"
 @using DragonFruit.Sakura.OnionFruit.Components
+@using DragonFruit.Sakura.OnionFruit.Features
 
 <PageTitle>OnionFruit&trade; Connect &middot; DragonFruit Network</PageTitle>
 <HeadContent>
@@ -56,16 +57,11 @@
     <MudContainer MaxWidth="MaxWidth.Large">
         <MudStack>
             <OnionFruitTestimony/>
+            
+            <OnionFruitCountriesFeature/>
 
             @* core features *@
             <MudPaper Elevation="4" Class="my-4 p-4">
-                <div class="mb-5">
-                    <SakuraSubheading Text="Country Selection" Colour="#d81b60" Icon="fa-solid fa-earth-americas"/>
-                    <MudText>
-                        Choose from a large variety of countries to route your Internet traffic through, or let Tor&reg; create the most optimised path with the random option
-                    </MudText>
-                </div>
-
                 <MudGrid Justify="Justify.FlexStart" Spacing="5">
                     <OnionFruitFeature Title="SecurDNS" Colour="#1de9b6" Icon="fa-solid fa-book-atlas">
                         Prevent DNS requests being sent to your ISP by automatically rerouting requests to another provider. Additionally, supported versions of Window can route DNS queries through Tor&reg;

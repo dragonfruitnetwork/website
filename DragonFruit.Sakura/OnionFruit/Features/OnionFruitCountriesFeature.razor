@@ -1,0 +1,63 @@
+﻿@using DragonFruit.Sakura.Network.Requests
+@using DragonFruit.Data
+@using DragonFruit.Sakura.Network
+@using Serilog
+
+<MudGrid Class="mt-5" Justify="Justify.Center">
+    <MudItem xs="12" lg="7">
+        <MudStack Spacing="2">
+            <SakuraSubheading Text="Country Selection" Colour="#d81b60" Icon="fa-solid fa-earth-americas"/>
+            <MudText Typo="Typo.h5">
+                Choose from @(Countries == null ? "a wide variety of locations" : $"{Countries.Count} countries") providing entry and exit servers, or let Tor pick the best servers from the pool.
+            </MudText>
+        </MudStack>
+    </MudItem>
+    <MudItem xs="12" lg="5">
+        <MudPaper Class="pa-5">
+            <MudTimeline TimelinePosition="TimelinePosition.Start">
+                @if (Countries == null)
+                {
+                    for (int i = 0; i < 3; i++)
+                    {
+                        <MudSkeleton Height="30" Width="100%" SkeletonType="SkeletonType.Rectangle"/>
+                    }
+                }
+                else
+                {
+                    foreach (var country in Countries.OrderByDescending(x => x.GlobalShare).Take(3))
+                    {
+                        <MudTimelineItem>
+                            <MudStack>
+                                <MudText Typo="Typo.h6">@country.CountryName</MudText>
+                                <MudText>@country.TotalNodeCount.ToString("N0") servers, @country.GlobalShare.ToString("0.00")% share</MudText>
+                            </MudStack>
+                        </MudTimelineItem>
+                    }
+                }
+            </MudTimeline>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+
+@code {
+
+    [Inject]
+    private ApiClient Client { get; set; }
+
+    private IReadOnlyCollection<OnionCountryInfo> Countries { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var request = new OnionCountryInfoRequest();
+            Countries = await Client.PerformAsync<IReadOnlyCollection<OnionCountryInfo>>(request).ConfigureAwait(false);
+        }
+        catch (HttpRequestException ex)
+        {
+            Log.Error("OnionFruit countries info request failed: {@ex}", ex);
+        }
+    }
+
+}
