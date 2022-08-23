@@ -1,5 +1,4 @@
 ﻿@page "/onionfruit/countries"
-@using DragonFruit.Sakura.OnionFruit.Components
 
 <PageTitle>OnionFruit&trade; Countries List &middot; DragonFruit Network</PageTitle>
 <HeadContent>
@@ -21,27 +20,33 @@
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-4 mb-3">
     <MudPaper Elevation="0" Class="p-4">
-        <div style="display: grid; column-gap: 2rem; row-gap: 3rem; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))">
-            @if (NodeCountries?.Any() == true)
-            {
-                @foreach (var country in NodeCountries.Where(x => x.TotalNodeCount >= 5).OrderByDescending(x => x.TotalNodeCount))
-                {
-                    <OnionFruitCountryInfo CountryInfo="@country"/>
-                }
-            }
-            else
-            {
-                @for (var i = 0; i < 12; i++)
-                {
-                    <MudStack>
-                        <MudSkeleton SkeletonType="SkeletonType.Circle" Height="50px" Width="50px"/>
-                        <MudSkeleton SkeletonType="SkeletonType.Text" Height="30px" Width="100px"/>
-                        <MudSkeleton SkeletonType="SkeletonType.Text" Height="20px" Width="75%"/>
-                        <MudSkeleton SkeletonType="SkeletonType.Text" Height="20px" Width="100%"/>
-                    </MudStack>
-                }
-            }
-        </div>
+        @if (NodeCountries?.Any() == true)
+        {
+            <MudTable Items="NodeCountries.Where(x => x.TotalNodeCount >= 5).OrderByDescending(x => x.TotalNodeCount)"
+                      Breakpoint="Breakpoint.Sm"
+                      ReadOnly="true"
+                      Elevation="0"
+                      Hover="false">
+                <HeaderContent>
+                    <MudTh Style="visibility: hidden">Flag</MudTh>
+                    <MudTh>Country</MudTh>
+                    <MudTh>Total Servers</MudTh>
+                    <MudTh>Entry Servers</MudTh>
+                    <MudTh>Exit Servers</MudTh>
+                    <MudTh>Global Share</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd Class="d-flex">
+                        <MudImage Src="@($"https://raw.githubusercontent.com/ppy/osu-resources/master/osu.Game.Resources/Textures/Flags/{context.CountryCode}.png")" Height="30"/>
+                    </MudTd>
+                    <MudTd DataLabel="Country">@context.CountryName</MudTd>
+                    <MudTd DataLabel="Total Servers">@context.TotalNodeCount.ToString("N0")</MudTd>
+                    <MudTd DataLabel="Entry Servers">@(context.EntryNodeCount == 0 ? "❌" : context.EntryNodeCount.ToString("N0"))</MudTd>
+                    <MudTd DataLabel="Exit Servers">@(context.ExitNodeCount == 0 ? "❌" : context.ExitNodeCount.ToString("N0"))</MudTd>
+                    <MudTd DataLabel="Global Share">@((context.GlobalShare * 100).ToString("F2"))%</MudTd>
+                </RowTemplate>
+            </MudTable>
+        }
     </MudPaper>
 </MudContainer>
 
