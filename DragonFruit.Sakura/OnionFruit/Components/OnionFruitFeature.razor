@@ -1,8 +1,22 @@
-﻿<MudItem xs="12" md="6" lg="4">
-    <SakuraSubheading Text="@Title" Colour="@Colour" Icon="@Icon"/>
-    <MudText>
-        @ChildContent
-    </MudText>
+﻿<MudItem xs="12" md="4">
+    <MudPaper Elevation="0" Class="p-4 h-100">
+        <MudStack Spacing="2">
+            <div class="d-flex align-content-center justify-content-center mb-3">
+                @if (string.IsNullOrEmpty(Icon))
+                {
+                    @Visuals
+                }
+                else
+                {
+                    <i class="@Icon fa-3x" style="color: @IconColour"></i>
+                }
+            </div>
+            <MudSpacer/>
+            <MudText Typo="Typo.h6">@Title</MudText>
+            <MudText Class="text-muted">@Content</MudText>
+            <MudStack Row="true" Class="mt-3">@Actions</MudStack>
+        </MudStack>
+    </MudPaper>
 </MudItem>
 
 @code {
@@ -11,12 +25,18 @@
     public string Title { get; set; }
 
     [Parameter]
-    public string Colour { get; set; }
+    public string Content { get; set; }
 
     [Parameter]
     public string Icon { get; set; }
 
     [Parameter]
-    public RenderFragment ChildContent { get; set; }
+    public string IconColour { get; set; }
+
+    [Parameter]
+    public RenderFragment Visuals { get; set; }
+
+    [Parameter]
+    public RenderFragment Actions { get; set; }
 
 }
