@@ -1,4 +1,4 @@
-﻿<MudItem xs="12" md="4">
+﻿<MudItem xs="12" md="@MaxColumnWidth.GetValueOrDefault(4)">
     <MudPaper Elevation="0" Class="p-4 h-100">
         <MudStack Spacing="2">
             <div class="d-flex align-content-center justify-content-center mb-3">
@@ -20,6 +20,9 @@
 </MudItem>
 
 @code {
+
+    [Parameter]
+    public int? MaxColumnWidth { get; set; }
 
     [Parameter]
     public string Title { get; set; }
