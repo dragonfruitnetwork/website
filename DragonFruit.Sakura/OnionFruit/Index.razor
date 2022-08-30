@@ -18,7 +18,7 @@
 <SakuraHero>
     <MudSpacer/>
 
-    <MudImage Fluid="true" Src="/assets/onionfruit-ui.png" Alt="OnionFruit&trade; Connect - UI"/>
+    <MudImage Fluid="true" Style="max-width: 95vw" Src="/assets/onionfruit-ui.png" Alt="OnionFruit&trade; Connect - UI"/>
 
     @* title *@
     <MudStack Spacing="1" Class="pt-5" Justify="Justify.Center" AlignItems="AlignItems.Center">
@@ -27,12 +27,12 @@
                 <MudIcon Icon="@Icons.Rounded.WifiLock"/>
             </IconHtml>
         </SakuraSubheading>
-        <MudText Typo="Typo.h4">Connect to Tor in seconds</MudText>
-        <MudText>Free and no-fuss Tor&reg; access client</MudText>
+        <MudText Align="Align.Center" Typo="Typo.h4">Connect to Tor in seconds</MudText>
+        <MudText Align="Align.Center">Free and no-fuss Tor&reg; access client</MudText>
     </MudStack>
 
     @* download and guides *@
-    <div class="d-flex flex-wrap pt-3" style="gap:0.5rem">
+    <MudStack Row="true" Spacing="2" AlignItems="AlignItems.Center" Justify="Justify.Center" Class="flex-wrap pt-3">
         <MudButton Color="Color.Success"
                    Variant="Variant.Text"
                    Class="flex-shrink-0"
@@ -47,7 +47,7 @@
                    Href="/wiki/onionfruit/getting-started">
             View Getting Started Guide
         </MudButton>
-    </div>
+    </MudStack>
 
     <MudSpacer/>
     <OnionFruitHeader/>
@@ -107,7 +107,7 @@
                                    Content="Our databases and APIs are publicly on GitHub for anybody to use in their own applications."/>
 
             </MudGrid>
-            
+
             <MudStack Row="true" Spacing="4" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Class="flex-wrap-reverse">
                 <MudText Typo="Typo.h5">OnionFruit&trade; supports all major browsers out-the-box</MudText>
                 <MudStack Class="flex-shrink-0" Row="true" AlignItems="AlignItems.Center" Spacing="4">
