@@ -1,5 +1,6 @@
 ﻿@page "/onionfruit/countries"
 @using DragonFruit.Sakura.Network
+@using DragonFruit.Sakura.Utils
 
 <PageTitle>OnionFruit&trade; Countries List &middot; DragonFruit Network</PageTitle>
 <HeadContent>
@@ -38,7 +39,7 @@
             </HeaderContent>
             <RowTemplate>
                 <MudTd Class="d-flex">
-                    <MudImage Src="@($"https://raw.githubusercontent.com/ppy/osu-resources/master/osu.Game.Resources/Textures/Flags/{context.CountryCode}.png")" Height="30"/>
+                    <MudImage Src="@FlagUtils.GetFlagUrl(context.CountryCode.ToUpperInvariant())" Height="30"/>
                 </MudTd>
                 <MudTd DataLabel="Country">@context.CountryName</MudTd>
                 <MudTd DataLabel="Total Servers">@context.TotalNodeCount.ToString("N0")</MudTd>
