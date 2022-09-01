@@ -1,5 +1,6 @@
 ﻿@page "/onionfruit"
 @using DragonFruit.Sakura.OnionFruit.Components
+@using DragonFruit.Sakura.Utils
 
 <PageTitle>OnionFruit&trade; Connect &middot; DragonFruit Network</PageTitle>
 <HeadContent>
@@ -17,7 +18,7 @@
 <SakuraHero>
     <MudSpacer/>
 
-    <MudImage Fluid="true" Src="/assets/onionfruit-ui.png" Alt="OnionFruit&trade; Connect - UI"/>
+    <MudImage Fluid="true" Style="max-width: 95vw" Src="/assets/onionfruit-ui.png" Alt="OnionFruit&trade; Connect - UI"/>
 
     @* title *@
     <MudStack Spacing="1" Class="pt-5" Justify="Justify.Center" AlignItems="AlignItems.Center">
@@ -26,12 +27,12 @@
                 <MudIcon Icon="@Icons.Rounded.WifiLock"/>
             </IconHtml>
         </SakuraSubheading>
-        <MudText Typo="Typo.h4">Connect to Tor in seconds</MudText>
-        <MudText>Free and no-fuss Tor&reg; access client</MudText>
+        <MudText Align="Align.Center" Typo="Typo.h4">Connect to Tor in seconds</MudText>
+        <MudText Align="Align.Center">Free and no-fuss Tor&reg; access client</MudText>
     </MudStack>
 
     @* download and guides *@
-    <div class="d-flex flex-wrap pt-3" style="gap:0.5rem">
+    <MudStack Row="true" Spacing="2" AlignItems="AlignItems.Center" Justify="Justify.Center" Class="flex-wrap pt-3">
         <MudButton Color="Color.Success"
                    Variant="Variant.Text"
                    Class="flex-shrink-0"
@@ -46,7 +47,7 @@
                    Href="/wiki/onionfruit/getting-started">
             View Getting Started Guide
         </MudButton>
-    </div>
+    </MudStack>
 
     <MudSpacer/>
     <OnionFruitHeader/>
@@ -55,50 +56,59 @@
 <div class="sakura-full-height-section pt-5">
     <MudContainer MaxWidth="MaxWidth.Large">
         <MudStack>
-            <MudStack Spacing="3">
-                <MudAvatar Size="Size.Medium" Color="Color.Secondary">A</MudAvatar>
-                <MudText Typo="Typo.h5">
-                    "Access the Tor network in the blink of an eye by resorting to this lightweight app that ensures your anonymity while surfing the web, regardless of your choice of browser."
-                </MudText>
-                <MudText Typo="Typo.subtitle1">
-                    Anca Roman &middot; Software Reviewer, Softpedia
-                </MudText>
-            </MudStack>
+            <OnionFruitTestimony/>
 
-            @* core features *@
-            <MudPaper Elevation="4" Class="my-4 p-4">
-                <div class="mb-5">
-                    <SakuraSubheading Text="Country Selection" Colour="#d81b60" Icon="fa-solid fa-earth-americas"/>
-                    <MudText>
-                        Choose from a large variety of countries to route your Internet traffic through, or let Tor&reg; create the most optimised path with the random option
-                    </MudText>
-                </div>
+            <MudGrid Justify="Justify.FlexStart" Class="my-4">
+                <OnionFruitFeature MaxColumnWidth="6" Title="Countries" Content="Choose from a large range of countries to pass data in or out of, or let the app pick the best ones for you">
+                    <Visuals>
+                        <MudAvatarGroup Spacing="4" Max="int.MaxValue">
+                            <MudAvatar Image="@FlagUtils.GetFlagUrl("DE")"/>
+                            <MudAvatar Image="@FlagUtils.GetFlagUrl("GB")"/>
+                            <MudAvatar Image="@FlagUtils.GetFlagUrl("US")"/>
+                            <MudAvatar Image="@FlagUtils.GetFlagUrl("NL")"/>
+                        </MudAvatarGroup>
+                    </Visuals>
+                    <Actions>
+                        <MudButton Color="Color.Primary"
+                                   Href="/onionfruit/countries"
+                                   EndIcon="@Icons.Rounded.KeyboardArrowRight">
+                            View Countries
+                        </MudButton>
+                    </Actions>
+                </OnionFruitFeature>
 
-                <MudGrid Justify="Justify.FlexStart" Spacing="5">
-                    <OnionFruitFeature Title="SecurDNS" Colour="#1de9b6" Icon="fa-solid fa-book-atlas">
-                        Prevent DNS requests being sent to your ISP by automatically rerouting requests to another provider. Additionally, supported versions of Window can route DNS queries through Tor&reg;
-                    </OnionFruitFeature>
-                    <OnionFruitFeature Title="Bridges" Colour="#ff8f00" Icon="fa-solid fa-location-arrow">
-                        OnionFruit&trade; has built-in support for standard, obfs4, meek and snowflake bridges, with some requiring no additional configuration
-                    </OnionFruitFeature>
-                    <OnionFruitFeature Title="Tor Control" Colour="#651fff" Icon="fa-solid fa-satellite-dish">
-                        Advanced users can execute direct commands on the Tor&reg; client while connected
-                    </OnionFruitFeature>
-                    <OnionFruitFeature Title="Ease of use" Colour="#56ab2f" Icon="fa-solid fa-check">
-                        OnionFruit&trade; is designed with ease-of-use in mind. No complicated stuff, right down to the installation.
-                    </OnionFruitFeature>
-                    <OnionFruitFeature Title="Discord" Colour="#5865f2" Icon="fa-brands fa-discord">
-                        OnionFruit&trade; integrates nicely with Discord, providing a game card while using the app.
-                        <br/>
-                        <span class="text-muted">This can be disabled in settings if desired</span>
-                    </OnionFruitFeature>
-                    <OnionFruitFeature Title="Open Source" Colour="#56ab2f" Icon="fa-brands fa-github">
-                        Our databases and APIs are publicly on GitHub for anybody to use in their own applications.
-                    </OnionFruitFeature>
-                </MudGrid>
-            </MudPaper>
+                <OnionFruitFeature MaxColumnWidth="6"
+                                   Title="Bridges"
+                                   IconColour="#ff8f00"
+                                   Icon="fa-solid fa-location-arrow"
+                                   Content="OnionFruit&trade; provides built-in support for various bridges, with some requiring no additional configuration">
+                    <Actions>
+                        <MudButton Color="Color.Secondary"
+                                   Href="/wiki/onionfruit/bridges"
+                                   EndIcon="@Icons.Rounded.KeyboardArrowRight">
+                            Learn More
+                        </MudButton>
+                    </Actions>
+                </OnionFruitFeature>
 
-            <MudStack AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Row="true">
+                <OnionFruitFeature Title="SecurDNS"
+                                   IconColour="#1de9b6"
+                                   Icon="fa-solid fa-book-atlas"
+                                   Content="Prevent DNS requests being sent to your ISP by automatically rerouting requests through Tor"/>
+
+                <OnionFruitFeature Title="Tor Control"
+                                   IconColour="#651fff"
+                                   Icon="fa-solid fa-satellite-dish"
+                                   Content="Execute direct commands on the Tor&reg; client while connected"/>
+
+                <OnionFruitFeature Title="Open Source"
+                                   IconColour="#56ab2f"
+                                   Icon="fa-brands fa-github"
+                                   Content="Our databases and APIs are publicly on GitHub for anybody to use in their own applications."/>
+
+            </MudGrid>
+
+            <MudStack Row="true" Spacing="4" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Class="flex-wrap-reverse">
                 <MudText Typo="Typo.h5">OnionFruit&trade; supports all major browsers out-the-box</MudText>
                 <MudStack Class="flex-shrink-0" Row="true" AlignItems="AlignItems.Center" Spacing="4">
                     <MudIcon Icon="fa-brands fa-chrome"/>
