@@ -8,29 +8,30 @@
 <GlobalNavigation/>
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
-    <MudStack Class="flex-wrap" Spacing="4" Row="true" AlignItems="AlignItems.Center" Justify="Justify.Center">
+    <MudStack Class="flex-wrap justify-content-sm-between" Spacing="4" Row="true" AlignItems="AlignItems.Center" Justify="Justify.Center">
         <MudLink Typo="Typo.h5"
                  Href="/changelogs"
                  Color="Color.Default"
                  Underline="Underline.None">
             Changelogs
         </MudLink>
-        
-        <MudSpacer/>
-        <ChangelogApplication Id="onionfruit" Name="OnionFruit&trade;" Colour="#9940ec">
-            <MudIcon Icon="@Icons.Rounded.WifiLock" Size="Size.Medium" Color="Color.Inherit"/>
-        </ChangelogApplication>
 
-        <MudStack Row="true" AlignItems="AlignItems.Center">
-            <img src="/assets/appicons/dragon6.svg" height="24" style="filter: invert(13%) sepia(84%) saturate(3579%) hue-rotate(351deg) brightness(102%) contrast(95%);"/>
-            <MudDivider Vertical="true" FlexItem="true" Light="true"/>
-            <ChangelogApplication Id="dragon6" Name="Web" Colour="#bd1818"/>
-            <ChangelogApplication Id="dragon6electron" Name="Desktop" Colour="#f44336"/>
-            <ChangelogApplication Id="dragon6mobile" Name="Mobile" Colour="#00e676"/>
+        <MudStack Row="true" Spacing="4" Class="flex-wrap" AlignItems="AlignItems.Center" Justify="Justify.Center">
+            <ChangelogApplication Id="onionfruit" Name="OnionFruit&trade;" Colour="#9940ec">
+                <MudIcon Icon="@Icons.Rounded.WifiLock" Size="Size.Medium" Color="Color.Inherit"/>
+            </ChangelogApplication>
+
+            <MudStack Row="true" AlignItems="AlignItems.Center">
+                <img src="/assets/appicons/dragon6.svg" height="24" style="filter: invert(13%) sepia(84%) saturate(3579%) hue-rotate(351deg) brightness(102%) contrast(95%);"/>
+                <MudDivider Vertical="true" FlexItem="true" Light="true"/>
+                <ChangelogApplication Id="dragon6" Name="Web" Colour="#bd1818"/>
+                <ChangelogApplication Id="dragon6electron" Name="Desktop" Colour="#f44336"/>
+                <ChangelogApplication Id="dragon6mobile" Name="Mobile" Colour="#00e676"/>
+            </MudStack>
         </MudStack>
     </MudStack>
 
-    <MudPaper Elevation="0" Class="my-4 py-4">
+    <MudPaper Elevation="0" Class="my-4 py-4 pe-4">
         <MudTimeline TimelinePosition="TimelinePosition.Start" Class="py-4">
             <ChangelogNavigationItem Release="Release" Type="NavigationType.Next"/>
             <MudTimelineItem Color="Color.Primary" HideDot="true">
@@ -40,13 +41,13 @@
                         <MudStack>
                             @for (var i = 0; i < 8; i++)
                             {
-                                <MudSkeleton SkeletonType="SkeletonType.Text" Height="30px" Width="850px"/>
+                                <MudSkeleton SkeletonType="SkeletonType.Text" Height="30px" Width="100%"/>
                             }
                         </MudStack>
                     }
                     else
                     {
-                        <MudStack Row="true" Spacing="2" Class="mb-4">
+                        <MudStack Row="true" Spacing="2" Class="flex-wrap mb-4">
                             <MudText Typo="Typo.h5">@Release.AppName</MudText>
                             <MudText Typo="Typo.h5" Color="Color.Error">@Release.VersionName</MudText>
                         </MudStack>
