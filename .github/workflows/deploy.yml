@@ -62,5 +62,6 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         with:
           projects: sakura
+          ignore_missing: true
           version: ${{ github.ref_name }}
           
