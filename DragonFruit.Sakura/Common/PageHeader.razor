@@ -1,27 +1,29 @@
 ﻿<MudAppBar Color="@Background" Elevation="0" Bottom="true" Fixed="@Fixed" Class="sakura-sticky" ToolBarClass="justify-content-between">
     <MudText Typo="Typo.h4" Style="font-size: 20px">@Title</MudText>
 
-    @* menu for small screens *@
-    <MudHidden Breakpoint="Breakpoint.MdAndUp">
-        <MudMenu Icon="@Icons.Rounded.Menu"
-                 DisableRipple="true"
-                 AnchorOrigin="Origin.TopLeft"
-                 TransformOrigin="Origin.BottomCenter"
-                 ActivationEvent="MouseEvent.LeftClick">
-            <ChildContent>
-                <MudStack Spacing="2" AlignItems="AlignItems.Start" Class="sakura-header-menu">
-                    @ChildContent
-                </MudStack>
-            </ChildContent>
-        </MudMenu>
-    </MudHidden>
+    <MudBreakpointProvider>
+        @* menu for small screens *@
+        <MudHidden Breakpoint="Breakpoint" Invert="true">
+            <MudMenu Icon="@Icons.Rounded.Menu"
+                     DisableRipple="true"
+                     AnchorOrigin="Origin.TopLeft"
+                     TransformOrigin="Origin.BottomCenter"
+                     ActivationEvent="MouseEvent.LeftClick">
+                <ChildContent>
+                    <MudStack Spacing="2" AlignItems="AlignItems.Start" Class="sakura-header-menu">
+                        @ChildContent
+                    </MudStack>
+                </ChildContent>
+            </MudMenu>
+        </MudHidden>
 
-    @* default menu (stack) *@
-    <MudHidden Breakpoint="Breakpoint.SmAndDown">
-        <MudStack Row="true" Spacing="2">
-            @ChildContent
-        </MudStack>
-    </MudHidden>
+        @* default menu (stack) *@
+        <MudHidden Breakpoint="Breakpoint">
+            <MudStack Row="true" Spacing="2">
+                @ChildContent
+            </MudStack>
+        </MudHidden>
+    </MudBreakpointProvider>
 </MudAppBar>
 
 @code {
@@ -37,5 +39,8 @@
 
     [Parameter]
     public bool Fixed { get; set; }
+
+    [Parameter]
+    public Breakpoint Breakpoint { get; set; } = Breakpoint.SmAndDown;
 
 }
