@@ -31,7 +31,7 @@
         </MudStack>
     </MudStack>
 
-    <MudPaper Elevation="0" Class="my-4 py-4">
+    <MudPaper Elevation="0" Class="my-4 py-4 pe-4">
         <MudTimeline TimelinePosition="TimelinePosition.Start" Class="py-4">
             <ChangelogNavigationItem Release="Release" Type="NavigationType.Next"/>
             <MudTimelineItem Color="Color.Primary" HideDot="true">
@@ -41,7 +41,7 @@
                         <MudStack>
                             @for (var i = 0; i < 8; i++)
                             {
-                                <MudSkeleton SkeletonType="SkeletonType.Text" Height="30px" Width="850px"/>
+                                <MudSkeleton SkeletonType="SkeletonType.Text" Height="30px" Width="100%"/>
                             }
                         </MudStack>
                     }
