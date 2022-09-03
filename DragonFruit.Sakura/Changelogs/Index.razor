@@ -8,7 +8,7 @@
 <GlobalNavigation/>
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
-    <MudStack Class="flex-wrap" Spacing="4" Row="true" AlignItems="AlignItems.Center" Justify="Justify.Center">
+    <MudStack Class="flex-wrap justify-content-md-between" Spacing="4" Row="true" AlignItems="AlignItems.Center" Justify="Justify.Center">
         <MudLink Typo="Typo.h5"
                  Href="/changelogs"
                  Color="Color.Default"
@@ -16,17 +16,18 @@
             Changelogs
         </MudLink>
         
-        <MudSpacer/>
-        <ChangelogApplication Id="onionfruit" Name="OnionFruit&trade;" Colour="#9940ec">
-            <MudIcon Icon="@Icons.Rounded.WifiLock" Size="Size.Medium" Color="Color.Inherit"/>
-        </ChangelogApplication>
-
-        <MudStack Row="true" AlignItems="AlignItems.Center">
-            <img src="/assets/appicons/dragon6.svg" height="24" style="filter: invert(13%) sepia(84%) saturate(3579%) hue-rotate(351deg) brightness(102%) contrast(95%);"/>
-            <MudDivider Vertical="true" FlexItem="true" Light="true"/>
-            <ChangelogApplication Id="dragon6" Name="Web" Colour="#bd1818"/>
-            <ChangelogApplication Id="dragon6electron" Name="Desktop" Colour="#f44336"/>
-            <ChangelogApplication Id="dragon6mobile" Name="Mobile" Colour="#00e676"/>
+        <MudStack Row="true" Class="flex-wrap" AlignItems="AlignItems.Center" Justify="Justify.Center">
+            <ChangelogApplication Id="onionfruit" Name="OnionFruit&trade;" Colour="#9940ec">
+                <MudIcon Icon="@Icons.Rounded.WifiLock" Size="Size.Medium" Color="Color.Inherit"/>
+            </ChangelogApplication>
+    
+            <MudStack Row="true" AlignItems="AlignItems.Center">
+                <img src="/assets/appicons/dragon6.svg" height="24" style="filter: invert(13%) sepia(84%) saturate(3579%) hue-rotate(351deg) brightness(102%) contrast(95%);"/>
+                <MudDivider Vertical="true" FlexItem="true" Light="true"/>
+                <ChangelogApplication Id="dragon6" Name="Web" Colour="#bd1818"/>
+                <ChangelogApplication Id="dragon6electron" Name="Desktop" Colour="#f44336"/>
+                <ChangelogApplication Id="dragon6mobile" Name="Mobile" Colour="#00e676"/>
+            </MudStack>
         </MudStack>
     </MudStack>
 
