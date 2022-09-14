@@ -35,6 +35,16 @@ namespace DragonFruit.Sakura
             builder.RootComponents.Add<App>("#app");
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
+            builder.Services.AddOidcAuthentication(o =>
+            {
+                o.ProviderOptions.Authority = "https://id.dragonfruit.network/connect/authorize";
+                o.ProviderOptions.MetadataUrl = "https://id.dragonfruit.network/.well-known/openid-configuration";
+
+                o.ProviderOptions.ClientId = "00000000-0000-0000-0000-000000000001.dragonfruit.sakura.admin";
+                o.ProviderOptions.RedirectUri = "/login/callback";
+                o.ProviderOptions.ResponseType = "implicit";
+            });
+
             builder.Services.AddMudServices();
             builder.Services.AddSingleton<WikiRenderer>();
             builder.Services.AddSingleton<ApiClient, ApiClient<ApiSystemTextJsonSerializer>>();
