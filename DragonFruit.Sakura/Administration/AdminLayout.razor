@@ -1,19 +1,19 @@
 ﻿@inherits LayoutComponentBase
 @layout DefaultLayout
 
-<GlobalNavigation/>
-
 <AuthorizeView>
     <Authorized>
         @Body
     </Authorized>
     <NotAuthorized>
+        <GlobalNavigation/>
         <MudStack Spacing="2" AlignItems="AlignItems.Center" Justify="Justify.Center">
             <MudIcon Size="Size.Large" Icon="@Icons.Rounded.Badge"/>
-            <MudText Typo="Typo.h5">Authentication Required</MudText>
-            <MudText Typo="Typo.h5">This is an internal webpage. DragonFruit admins can login using the button below</MudText>
+            <MudText Typo="Typo.h6">Authentication Required</MudText>
+            <MudText>This is an internal webpage. DragonFruit admins can login using the button below</MudText>
 
-            <MudButton Color="Color.Secondary"
+            <MudButton Class="mt-4"
+                       Color="Color.Secondary"
                        OnClick="RedirectToLoginPage"
                        StartIcon="@Icons.Rounded.Fingerprint">
                 Login via DragonFruit
