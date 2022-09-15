@@ -41,8 +41,17 @@ namespace DragonFruit.Sakura
                 o.ProviderOptions.MetadataUrl = "https://id.dragonfruit.network/.well-known/openid-configuration";
 
                 o.ProviderOptions.ClientId = "00000000-0000-0000-0000-000000000001.dragonfruit.sakura.admin";
-                o.ProviderOptions.RedirectUri = "/login/callback";
-                o.ProviderOptions.ResponseType = "implicit";
+                o.ProviderOptions.ResponseType = "id_token";
+
+#if DEBUG
+                o.ProviderOptions.RedirectUri = "https://localhost:5001/auth/login-callback";
+#else
+                o.ProviderOptions.RedirectUri = "https://preview.dragonfruit.network/auth/login-callback";
+#endif
+
+                o.AuthenticationPaths.LogInPath = "/auth/login";
+                o.AuthenticationPaths.LogOutPath = "/auth/logout";
+                o.AuthenticationPaths.LogInCallbackPath = "/auth/login-callback";
             });
 
             builder.Services.AddMudServices();
