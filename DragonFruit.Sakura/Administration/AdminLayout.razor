@@ -1,0 +1,35 @@
+﻿@inherits LayoutComponentBase
+@layout DefaultLayout
+
+<GlobalNavigation/>
+
+<AuthorizeView>
+    <Authorized>
+        @Body
+    </Authorized>
+    <NotAuthorized>
+        <MudStack Spacing="2" AlignItems="AlignItems.Center" Justify="Justify.Center">
+            <MudIcon Size="Size.Large" Icon="@Icons.Rounded.Badge"/>
+            <MudText Typo="Typo.h5">Authentication Required</MudText>
+            <MudText Typo="Typo.h5">This is an internal webpage. DragonFruit admins can login using the button below</MudText>
+
+            <MudButton Color="Color.Secondary"
+                       OnClick="RedirectToLoginPage"
+                       StartIcon="@Icons.Rounded.Fingerprint">
+                Login via DragonFruit
+            </MudButton>
+        </MudStack>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+
+    [Inject]
+    private NavigationManager Navigation { get; set; }
+
+    private void RedirectToLoginPage()
+    {
+        Navigation.NavigateTo($"/auth/login?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");
+    }
+
+}
