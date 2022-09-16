@@ -15,5 +15,7 @@ namespace DragonFruit.Sakura.Network.Requests
         /// The request path.
         /// </summary>
         protected abstract string Stub { get; }
+
+        internal bool RequiresInteractiveToken => RequireAuth;
     }
 }
