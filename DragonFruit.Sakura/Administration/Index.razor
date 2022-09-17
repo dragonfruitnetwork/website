@@ -1,17 +1,25 @@
 ﻿@page "/admin"
+@using DragonFruit.Sakura.Network
 @layout AdminLayout
 
-<PageTitle>DragonFruit Network</PageTitle>
-<HeadContent>
-    <style>
-        .sakura-hero {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(https://dragonfruit.network/backgrounds/dragonfruit.jpg);
-        }
-    </style>
-</HeadContent>
+<MudContainer MaxWidth="MaxWidth.Large">
+    <MudGrid>
+        <MudItem xs="4">
+            <MudSelect T="AppFeatures" @bind-Value="SelectedAppFeature">
+                @foreach (var feature in Enum.GetValues<AppFeatures>())
+                {
+                    <MudSelectItem Value="feature">@feature.ToString()</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
 
-<SakuraHero>
-    <MudSpacer/>
-    <PageHeader Title="DragonFruit Network">
-    </PageHeader>
-</SakuraHero>
+        <MudItem xs="8">
+            <MudSelect T="ApiAppInfo" @bind-Value="SelectedApp" Placeholder="Target App">
+                @foreach (var app in Apps?.Where(x => x.Features.HasFlag(SelectedAppFeature)) ?? Enumerable.Empty<ApiAppInfo>())
+                {
+                    <MudSelectItem Value="app">@app.Name</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
