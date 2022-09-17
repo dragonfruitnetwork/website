@@ -1,20 +1,18 @@
 ﻿@inherits LayoutComponentBase
 @layout DefaultLayout
 
-<AuthorizeView>
-    <Authorized>
-        @Body
-    </Authorized>
-    <Authorizing>
-        <SakuraJumbotron>
+<SakuraJumbotron>
+    <AuthorizeView>
+        <Authorized>
+            @Body
+        </Authorized>
+        <Authorizing>
             <MudStack Spacing="2" AlignItems="AlignItems.Center" Justify="Justify.Center">
                 <MudIcon Size="Size.Large" Icon="@Icons.Rounded.Badge"/>
                 <MudText Typo="Typo.h6">Checking Authentication Status...</MudText>
             </MudStack>
-        </SakuraJumbotron>
-    </Authorizing>
-    <NotAuthorized>
-        <SakuraJumbotron>
+        </Authorizing>
+        <NotAuthorized>
             <MudStack Spacing="2" AlignItems="AlignItems.Center" Justify="Justify.Center">
                 <MudIcon Size="Size.Large" Icon="@Icons.Rounded.Badge"/>
                 <MudText Typo="Typo.h6">Authentication Required</MudText>
@@ -27,9 +25,9 @@
                     Login via DragonFruit
                 </MudButton>
             </MudStack>
-        </SakuraJumbotron>
-    </NotAuthorized>
-</AuthorizeView>
+        </NotAuthorized>
+    </AuthorizeView>
+</SakuraJumbotron>
 
 @code {
 
