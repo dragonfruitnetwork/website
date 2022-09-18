@@ -1,1 +1,10 @@
-﻿<MudAutocomplete @bind-Text="RequestVersion" Disabled=""></MudAutocomplete>
+﻿@using DragonFruit.Sakura.Network
+
+<MudAutocomplete T="string"
+                 Label="Version"
+                 CoerceText="true"
+                 CoerceValue="true"
+                 Variant="Variant.Outlined"
+                 @bind-Value="RequestVersion"
+                 ResetValueOnEmptyText="true"
+                 SearchFunc="SearchReleases"/>
