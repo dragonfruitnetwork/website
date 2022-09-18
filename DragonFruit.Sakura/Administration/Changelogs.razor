@@ -1,10 +1,94 @@
 ﻿@using DragonFruit.Sakura.Network
+@using DragonFruit.Sakura.Changelogs.Components
 
-<MudAutocomplete T="string"
-                 Label="Version"
-                 CoerceText="true"
-                 CoerceValue="true"
-                 Variant="Variant.Outlined"
-                 @bind-Value="RequestVersion"
-                 ResetValueOnEmptyText="true"
-                 SearchFunc="SearchReleases"/>
+<MudStack Row="true" AlignItems="AlignItems.Center" Spacing="3">
+    <MudAutocomplete T="string"
+                     Label="Version"
+                     CoerceText="true"
+                     CoerceValue="true"
+                     Variant="Variant.Outlined"
+                     @bind-Value="RequestVersion"
+                     ResetValueOnEmptyText="true"
+                     SearchFunc="SearchReleases"/>
+
+    <MudDivider FlexItem="true" Light="true" Vertical="true"/>
+
+    <MudButton Color="Color.Info"
+               OnClick="LoadRelease"
+               StartIcon="@Icons.Rounded.CloudSync">
+        @(VersionHints?.Contains(RequestVersion, StringComparer.OrdinalIgnoreCase) == true ? "Load" : "Validate")
+    </MudButton>
+</MudStack>
+
+@if (Target != null)
+{
+    <MudStack>
+        <MudExpansionPanels MultiExpansion="true" Class="mt-4" Elevation="0">
+            @foreach (var modification in Target.Modifications)
+            {
+                <MudExpansionPanel Text="@modification.Title">
+                    <TitleContent>
+                        <ChangelogEntry Entry="modification"/>
+                    </TitleContent>
+                    <ChildContent>
+                        <MudStack>
+                            <MudSelect Label="Change Type" Variant="Variant.Outlined" @bind-Value="modification.Type">
+                                @foreach (var type in Enum.GetValues<ChangelogModificationType>())
+                                {
+                                    <MudSelectItem Value="type">@type.ToString()</MudSelectItem>
+                                }
+                            </MudSelect>
+
+                            <MudTextField Label="Title" Variant="Variant.Outlined" @bind-Value="modification.Title"/>
+                            <MudTextField Label="Category" Variant="Variant.Outlined" @bind-Value="modification.Category"/>
+                            <MudTextField Label="Description" Variant="Variant.Outlined" Lines="6" @bind-Value="modification.Description"/>
+
+                            <MudStack Row="true">
+                                <MudSwitch Color="Color.Primary" Label="Major Change" @bind-Checked="modification.Major"/>
+
+                                <MudSpacer/>
+
+                                @if (!IsTargetNew)
+                                {
+                                    <MudButton Color="Color.Info"
+                                               StartIcon="@Icons.Rounded.Save"
+                                               OnClick="() => SaveModification(modification)">
+                                        Save
+                                    </MudButton>
+                                }
+                                <MudButton Color="Color.Error"
+                                           StartIcon="@Icons.Rounded.Delete"
+                                           OnClick="() => DeleteModification(modification)">
+                                    Delete
+                                </MudButton>
+                            </MudStack>
+                        </MudStack>
+                    </ChildContent>
+                </MudExpansionPanel>
+            }
+        </MudExpansionPanels>
+
+        <MudStack Row="true" Justify="Justify.FlexEnd">
+            <MudButton Color="Color.Success"
+                       StartIcon="@Icons.Rounded.Add"
+                       OnClick="() => Target.Modifications.Add(DefaultModification)">
+                Add Modification
+            </MudButton>
+
+            @if (IsTargetNew && Target.Modifications.Any())
+            {
+                <MudButton Color="Color.Info"
+                           OnClick="SaveNewRelease"
+                           StartIcon="@Icons.Rounded.Save">
+                    Save Release
+                </MudButton>
+            }
+
+            <MudButton Color="Color.Error"
+                       OnClick="DeleteRelease"
+                       StartIcon="@Icons.Rounded.DeleteForever">
+                Delete Release
+            </MudButton>
+        </MudStack>
+    </MudStack>
+}
