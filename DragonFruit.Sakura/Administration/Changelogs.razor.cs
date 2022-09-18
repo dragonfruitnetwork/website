@@ -27,7 +27,20 @@ namespace DragonFruit.Sakura.Administration
         protected override async Task OnParametersSetAsync()
         {
             var versionsRequest = new AdminApiChangelogVersionListingRequest(TargetApp.Id);
-            VersionHints = await Client.PerformAsync<IReadOnlyCollection<string>>(versionsRequest).ConfigureAwait(false);
+            var releases = await Client.PerformAsync<IReadOnlyCollection<ApiChangelogRelease>>(versionsRequest).ConfigureAwait(false);
+
+            VersionHints = releases.Select(x => x.VersionName).ToList();
+        }
+
+        private Task<IEnumerable<string>> SearchReleases(string searchText)
+        {
+            if (VersionHints?.Any() != true)
+                return Task.FromResult(Enumerable.Empty<string>());
+
+            if (string.IsNullOrWhiteSpace(searchText))
+                return Task.FromResult((IEnumerable<string>)VersionHints);
+
+            return Task.FromResult(VersionHints.Where(x => x.Contains(searchText)));
         }
 
         private async Task LoadTarget()
