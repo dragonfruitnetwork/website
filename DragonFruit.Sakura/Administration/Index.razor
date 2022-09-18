@@ -5,7 +5,7 @@
 <MudContainer MaxWidth="MaxWidth.Large">
     <MudGrid>
         <MudItem xs="4">
-            <MudSelect T="AppFeatures" @bind-Value="SelectedAppFeature">
+            <MudSelect T="AppFeatures" @bind-Value="SelectedAppFeature" Label="Feature" Variant="Variant.Outlined">
                 @foreach (var feature in Enum.GetValues<AppFeatures>())
                 {
                     <MudSelectItem Value="feature">@feature.ToString()</MudSelectItem>
@@ -14,7 +14,7 @@
         </MudItem>
 
         <MudItem xs="8">
-            <MudSelect T="ApiAppInfo" @bind-Value="SelectedApp" Placeholder="Target App">
+            <MudSelect T="ApiAppInfo" @bind-Value="SelectedApp" Label="App" Variant="Variant.Outlined">
                 @foreach (var app in Apps?.Where(x => x.Features.HasFlag(SelectedAppFeature)) ?? Enumerable.Empty<ApiAppInfo>())
                 {
                     <MudSelectItem Value="app">@app.Name</MudSelectItem>
@@ -22,4 +22,16 @@
             </MudSelect>
         </MudItem>
     </MudGrid>
+
+    <div class="mt-4">
+        @if (SelectedApp != null)
+        {
+            switch (SelectedAppFeature)
+            {
+                case AppFeatures.Changelogs:
+                    <Changelogs TargetApp="SelectedApp"/>
+                    break;
+            }
+        }
+    </div>
 </MudContainer>
