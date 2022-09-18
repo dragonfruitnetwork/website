@@ -18,11 +18,16 @@ namespace DragonFruit.Sakura.Administration
         private ApiClient Client { get; set; }
 
         private bool IsTargetNew { get; set; }
-        private bool VersionConflictError { get; set; }
         private ApiChangelogRelease Target { get; set; }
 
         private string RequestVersion { get; set; } = DateTime.UtcNow.ToString("yyyy.Mdd");
-        private IReadOnlyCollection<string> VersionHints { get; set; }
+        private IList<string> VersionHints { get; set; }
+
+        private static ApiChangelogModification DefaultModification => new()
+        {
+            Title = "Untitled Modification",
+            Type = ChangelogModificationType.Fix
+        };
 
         protected override async Task OnParametersSetAsync()
         {
@@ -43,29 +48,39 @@ namespace DragonFruit.Sakura.Administration
             return Task.FromResult(VersionHints.Where(x => x.Contains(searchText)));
         }
 
-        private async Task LoadTarget()
+        private async Task LoadRelease()
         {
-            throw new NotImplementedException();
-        }
-
-        private async Task SaveChanges()
-        {
-            if (!IsTargetNew)
-            {
-                throw new InvalidOperationException($"{nameof(SaveChanges)} can only be called on a new changelog release");
-            }
-
             try
             {
-                var request = new AdminApiChangelogsCreationRequest(TargetApp.Id, Target);
-                Target = await Client.PerformAsync<ApiChangelogRelease>(request).ConfigureAwait(false);
+                var changelogs = new ApiChangelogsRequest(TargetApp.Id, RequestVersion);
 
+                Target = await Client.PerformAsync<ApiChangelogRelease>(changelogs).ConfigureAwait(false);
                 IsTargetNew = false;
             }
-            catch (HttpRequestException httpEx) when (httpEx.StatusCode == HttpStatusCode.Conflict)
+            catch (HttpRequestException e) when (e.StatusCode is HttpStatusCode.NotFound)
             {
-                VersionConflictError = true;
+                IsTargetNew = true;
+                Target = new ApiChangelogRelease
+                {
+                    AppId = TargetApp.Id,
+                    VersionName = RequestVersion,
+                    Modifications = new List<ApiChangelogModification>()
+                };
             }
+        }
+
+        private async Task SaveNewRelease()
+        {
+            if (!IsTargetNew)
+                throw new InvalidOperationException($"{nameof(SaveNewRelease)} can only be called on a new changelog release");
+
+            Target.Release = DateTime.UtcNow;
+
+            var request = new AdminApiChangelogsCreationRequest(TargetApp.Id, Target);
+            Target = await Client.PerformAsync<ApiChangelogRelease>(request).ConfigureAwait(false);
+
+            IsTargetNew = false;
+            VersionHints.Add(Target.VersionName);
         }
 
         private async Task DeleteRelease()
@@ -79,6 +94,37 @@ namespace DragonFruit.Sakura.Administration
             }
 
             Target = null;
+        }
+
+        private async Task SaveModification(ApiChangelogModification modification)
+        {
+            if (IsTargetNew)
+                throw new InvalidCastException($"{nameof(SaveModification)} can only be called on live changelog releases");
+
+            var request = modification.Id > 0
+                ? new AdminApiChangelogModificationEditRequest(Target.AppId, Target.VersionName, modification)
+                : new AdminApiChangelogModificationCreationRequest(Target.AppId, Target.VersionName, modification) as YunaApiRequest;
+
+            var newModification = await Client.PerformAsync<ApiChangelogModification>(request).ConfigureAwait(false);
+            var index = Target.Modifications.IndexOf(modification);
+
+            // replace the modification with the populated id copy
+            Target.Modifications.RemoveAt(index);
+            Target.Modifications.Insert(index, newModification);
+        }
+
+        private async ValueTask DeleteModification(ApiChangelogModification modification)
+        {
+            if (modification.Id > 1)
+            {
+                // if the id is non-zero, it is on the server and needs to be deleted there first
+                var request = new AdminApiChangelogModificationDeletionRequest(Target.AppId, Target.VersionName, modification.Id);
+                using var response = await Client.PerformAsync(request).ConfigureAwait(false);
+
+                response.EnsureSuccessStatusCode();
+            }
+
+            Target.Modifications.Remove(modification);
         }
     }
 }
