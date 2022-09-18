@@ -1,0 +1,13 @@
+﻿<div class="d-flex flex-column" style="min-height: 100vh">
+    <GlobalNavigation/>
+    @ChildContent
+    <MudSpacer/>
+    <SakuraFooter/>
+</div>
+
+@code {
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+}

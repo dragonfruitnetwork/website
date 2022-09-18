@@ -1,0 +1,25 @@
+﻿@page "/admin"
+@using DragonFruit.Sakura.Network
+@layout AdminLayout
+
+<MudContainer MaxWidth="MaxWidth.Large">
+    <MudGrid>
+        <MudItem xs="4">
+            <MudSelect T="AppFeatures" @bind-Value="SelectedAppFeature">
+                @foreach (var feature in Enum.GetValues<AppFeatures>())
+                {
+                    <MudSelectItem Value="feature">@feature.ToString()</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+
+        <MudItem xs="8">
+            <MudSelect T="ApiAppInfo" @bind-Value="SelectedApp" Placeholder="Target App">
+                @foreach (var app in Apps?.Where(x => x.Features.HasFlag(SelectedAppFeature)) ?? Enumerable.Empty<ApiAppInfo>())
+                {
+                    <MudSelectItem Value="app">@app.Name</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+    </MudGrid>
+</MudContainer>

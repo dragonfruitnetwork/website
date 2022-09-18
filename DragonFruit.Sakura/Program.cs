@@ -3,7 +3,7 @@
 
 using System.Reflection;
 using DragonFruit.Data;
-using DragonFruit.Data.Serializers.SystemJson;
+using DragonFruit.Sakura.Network;
 using DragonFruit.Sakura.Wiki;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -35,9 +35,28 @@ namespace DragonFruit.Sakura
             builder.RootComponents.Add<App>("#app");
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
+            builder.Services.AddOidcAuthentication(o =>
+            {
+                o.ProviderOptions.Authority = "https://id.dragonfruit.network/connect/authorize";
+                o.ProviderOptions.MetadataUrl = "https://id.dragonfruit.network/.well-known/openid-configuration";
+
+                o.ProviderOptions.ClientId = "00000000-0000-0000-0000-000000000001.dragonfruit.sakura.admin";
+                o.ProviderOptions.ResponseType = "id_token token";
+
+#if DEBUG
+                o.ProviderOptions.RedirectUri = "https://localhost:5001/auth/login-callback";
+#else
+                o.ProviderOptions.RedirectUri = "https://preview.dragonfruit.network/auth/login-callback";
+#endif
+
+                o.AuthenticationPaths.LogInPath = "/auth/login";
+                o.AuthenticationPaths.LogOutPath = "/auth/logout";
+                o.AuthenticationPaths.LogInCallbackPath = "/auth/login-callback";
+            });
+
             builder.Services.AddMudServices();
-            builder.Services.AddSingleton<WikiRenderer>();
-            builder.Services.AddSingleton<ApiClient, ApiClient<ApiSystemTextJsonSerializer>>();
+            builder.Services.AddScoped<WikiRenderer>();
+            builder.Services.AddScoped<ApiClient, SakuraClient>();
 
             var loggingConfig = new LoggerConfiguration()
                                 .MinimumLevel.Debug()

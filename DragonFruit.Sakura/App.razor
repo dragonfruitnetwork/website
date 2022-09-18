@@ -1,24 +1,20 @@
 ﻿<Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(DefaultLayout)"/>
-        <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
+        <CascadingAuthenticationState>
+            <RouteView RouteData="@routeData" DefaultLayout="@typeof(DefaultLayout)"/>
+            <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
+        </CascadingAuthenticationState>
     </Found>
     <NotFound>
         <PageTitle>Page Not Found &middot; DragonFruit Network</PageTitle>
         <LayoutView Layout="@typeof(DefaultLayout)">
-            <div class="d-flex flex-column" style="min-height: 100vh">
-                <GlobalNavigation/>
-
+            <SakuraJumbotron>
                 <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center" Spacing="2">
                     <MudText Typo="Typo.h5">Page not found</MudText>
                     <MudText>We couldn't find the requested page...</MudText>
                     <MudButton Class="mt-3" Href="/" StartIcon="@Icons.Rounded.Home">Go to homepage</MudButton>
                 </MudStack>
-    
-                <MudSpacer/>
-    
-                <SakuraFooter/>
-            </div>
+            </SakuraJumbotron>
         </LayoutView>
     </NotFound>
 </Router>
