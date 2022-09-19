@@ -30,6 +30,6 @@ namespace DragonFruit.Sakura.Network
         public string PreviousRelease { get; set; }
 
         [JsonPropertyName("modifications")]
-        public IReadOnlyCollection<ApiChangelogModification> Modifications { get; set; }
+        public IList<ApiChangelogModification> Modifications { get; set; }
     }
 }
