@@ -3,37 +3,47 @@
 @layout AdminLayout
 
 <MudContainer MaxWidth="MaxWidth.Large">
-    <MudPaper Elevation="0" Class="p-4">
-        <MudGrid>
-            <MudItem xs="4">
-                <MudSelect T="AppFeatures" @bind-Value="SelectedAppFeature" Label="Feature" Variant="Variant.Outlined">
-                    @foreach (var feature in Enum.GetValues<AppFeatures>())
-                    {
-                        <MudSelectItem Value="feature">@feature.ToString()</MudSelectItem>
-                    }
-                </MudSelect>
-            </MudItem>
+    <MudStack>
+        <MudPaper Elevation="0" Class="p-4">
+            <MudStack Row="true" AlignItems="AlignItems.Center">
+                <MudText>Welcome Back</MudText>
+                <MudSpacer/>
+                <MudButton EndIcon="@Icons.Rounded.KeyboardArrowRight" Color="Color.Primary" Href="/admin/keychain">Manage Keychain</MudButton>
+            </MudStack>
+        </MudPaper>
 
-            <MudItem xs="8">
-                <MudSelect T="ApiAppInfo" @bind-Value="SelectedApp" Label="App" Variant="Variant.Outlined">
-                    @foreach (var app in Apps?.Where(x => x.Features.HasFlag(SelectedAppFeature)) ?? Enumerable.Empty<ApiAppInfo>())
-                    {
-                        <MudSelectItem Value="app">@app.Name</MudSelectItem>
-                    }
-                </MudSelect>
-            </MudItem>
-        </MudGrid>
-    </MudPaper>
-    
-    <MudPaper Elevation="0" Class="p-4 mt-4">
-        @if (SelectedApp != null)
-        {
-            switch (SelectedAppFeature)
+        <MudPaper Elevation="0" Class="p-4">
+            <MudGrid>
+                <MudItem xs="4">
+                    <MudSelect T="AppFeatures" @bind-Value="SelectedAppFeature" Label="Feature" Variant="Variant.Outlined">
+                        @foreach (var feature in Enum.GetValues<AppFeatures>())
+                        {
+                            <MudSelectItem Value="feature">@feature.ToString()</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+
+                <MudItem xs="8">
+                    <MudSelect T="ApiAppInfo" @bind-Value="SelectedApp" Label="App" Variant="Variant.Outlined">
+                        @foreach (var app in Apps?.Where(x => x.Features.HasFlag(SelectedAppFeature)) ?? Enumerable.Empty<ApiAppInfo>())
+                        {
+                            <MudSelectItem Value="app">@app.Name</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+
+        <MudPaper Elevation="0" Class="p-4 mt-4">
+            @if (SelectedApp != null)
             {
-                case AppFeatures.Changelogs:
-                    <Changelogs TargetApp="SelectedApp"/>
-                    break;
+                switch (SelectedAppFeature)
+                {
+                    case AppFeatures.Changelogs:
+                        <Changelogs TargetApp="SelectedApp"/>
+                        break;
+                }
             }
-        }
-    </MudPaper>
+        </MudPaper>
+    </MudStack>
 </MudContainer>
