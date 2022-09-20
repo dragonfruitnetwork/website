@@ -27,7 +27,7 @@ namespace DragonFruit.Sakura.Network.Requests
             get
             {
                 var multipartBody = new MultipartFormDataContent();
-                multipartBody.Add(new StreamContent(PublicKey), "pem");
+                multipartBody.Add(new StreamContent(PublicKey), "pem", "file.pem");
 
                 if (Expiry.HasValue)
                 {
