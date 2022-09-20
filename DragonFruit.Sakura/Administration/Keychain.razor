@@ -1,0 +1,52 @@
+﻿@page "/admin/keychain"
+@layout AdminLayout
+
+<MudContainer MaxWidth="MaxWidth.Large">
+    <MudPaper Elevation="0" Class="p-4">
+        <InputFile hidden id="fileInput" OnChange="AddKey" accept=".pem"/>
+
+        <MudStack Row="true" AlignItems="AlignItems.Center">
+            <MudText>Upload Public Key</MudText>
+            <MudSpacer/>
+            <MudDatePicker @bind-Date="NewKeyExpiry" Label="Expiry Date"/>
+            <MudButton HtmlTag="label" for="fileInput" Color="Color.Tertiary" StartIcon="@Icons.Filled.CloudUpload">
+                Submit .pem file
+            </MudButton>
+        </MudStack>
+    </MudPaper>
+
+    <MudPaper Elevation="0" Class="p-4 mt-4">
+        <MudStack>
+            @foreach (var key in Keys.OrderByDescending(x => x.CreatedUtc))
+            {
+                <MudStack Row="true" AlignItems="AlignItems.Center">
+                    <MudIcon Icon="@Icons.Rounded.Key"/>
+                    <MudText>@key.KeyId[..12]</MudText>
+
+                    <MudSpacer/>
+
+                    @if (key.ExpiresUtc.HasValue)
+                    {
+                        <MudStack Row="true" Spacing="2">
+                            <MudIcon Color="Color.Warning" Size="Size.Small" Icon="@Icons.Rounded.Timer"/>
+                            <MudText Color="Color.Warning" Typo="Typo.body2">
+                                Expires @key.ExpiresUtc.Value.ToLongDateString()
+                            </MudText>
+                        </MudStack>
+                    }
+
+                    <MudButton Color="Color.Error"
+                               OnClick="() => DeleteKey(key)"
+                               StartIcon="@Icons.Rounded.Delete">
+                        Delete Key
+                    </MudButton>
+                </MudStack>
+            }
+
+            @if (AllowLoadingMoreKeys)
+            {
+                <MudButton StartIcon="@Icons.Rounded.KeyboardArrowRight" OnClick="LoadNextPage">Load More Keys</MudButton>
+            }
+        </MudStack>
+    </MudPaper>
+</MudContainer>

@@ -5,6 +5,7 @@ using DragonFruit.Data;
 using DragonFruit.Sakura.Network;
 using DragonFruit.Sakura.Network.Requests;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace DragonFruit.Sakura.Administration
 {
@@ -14,6 +15,12 @@ namespace DragonFruit.Sakura.Administration
 
         [Inject]
         private ApiClient Client { get; set; }
+
+        [Inject]
+        private NavigationManager Navigation { get; set; }
+
+        [Inject]
+        private SignOutSessionStateManager SignOutManager { get; set; }
 
         private IReadOnlyList<ApiAppInfo> Apps { get; set; }
 
