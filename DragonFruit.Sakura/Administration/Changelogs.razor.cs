@@ -125,6 +125,7 @@ namespace DragonFruit.Sakura.Administration
             }
 
             Target.Modifications.Remove(modification);
+            await InvokeAsync(StateHasChanged).ConfigureAwait(false);
         }
     }
 }
