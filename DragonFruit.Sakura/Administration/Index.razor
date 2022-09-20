@@ -32,11 +32,11 @@
                     </MudSelect>
                 </MudItem>
             </MudGrid>
-        </MudPaper>
 
-        <MudPaper Elevation="0" Class="p-4 mt-4">
             @if (SelectedApp != null)
             {
+                <MudDivider Class="my-4" Light="true" FlexItem="true" Style="height: 1px"/>
+
                 switch (SelectedAppFeature)
                 {
                     case AppFeatures.Changelogs:
