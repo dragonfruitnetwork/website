@@ -49,6 +49,8 @@ namespace DragonFruit.Sakura
                 o.ProviderOptions.RedirectUri = "https://preview.dragonfruit.network/auth/login-callback";
 #endif
 
+                o.ProviderOptions.DefaultScopes.Add("delegate");
+
                 o.AuthenticationPaths.LogInPath = "/auth/login";
                 o.AuthenticationPaths.LogOutPath = "/auth/logout";
                 o.AuthenticationPaths.LogInCallbackPath = "/auth/login-callback";
