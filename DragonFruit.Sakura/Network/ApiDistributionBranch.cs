@@ -18,5 +18,8 @@ namespace DragonFruit.Sakura.Network
 
         [JsonPropertyName("active_release_id")]
         public int ActiveReleaseId { get; set; }
+
+        [JsonPropertyName("releases")]
+        public IList<ApiDistributionRelease> Releases { get; set; }
     }
 }
