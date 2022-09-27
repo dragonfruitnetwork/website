@@ -1,0 +1,32 @@
+@using DragonFruit.Sakura.Network
+
+<MudSelect T="ApiDistributionBranch" Label="Branch" Variant="Variant.Outlined" Value="SelectedBranch" ValueChanged="SwitchToBranch">
+    @foreach (var branch in Branches ?? Enumerable.Empty<ApiDistributionBranch>())
+    {
+        <MudSelectItem Value="branch">@branch.Name</MudSelectItem>
+    }
+</MudSelect>
+
+@if (SelectedBranch != null)
+{
+    <MudPaper Elevation="0" Class="mt-4">
+        <MudStack>
+            @foreach (var release in SelectedBranch.Releases)
+            {
+                <MudStack Row="true" AlignItems="AlignItems.Center">
+                    <MudText>@release.Version</MudText>
+                    <MudSpacer/>
+                    @if (release.Id == SelectedBranch.ActiveReleaseId)
+                    {
+                        <MudButton Color="Color.Success" StartIcon="@Icons.Rounded.CheckCircle">Active Release</MudButton>
+                    }
+                    else
+                    {
+                        <MudButton Color="Color.Info" StartIcon="@Icons.Rounded.NoiseAware" OnClick="() => PromoteRelease(release)">Promote</MudButton>
+                        <MudButton Color="Color.Error" StartIcon="@Icons.Rounded.DeleteForever" OnClick="() => DeleteRelease(release)">Delete</MudButton>
+                    }
+                </MudStack>
+            }
+        </MudStack>
+    </MudPaper>
+}
