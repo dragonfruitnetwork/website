@@ -21,5 +21,7 @@ namespace DragonFruit.Sakura.Network
 
         [JsonPropertyName("releases")]
         public IList<ApiDistributionRelease> Releases { get; set; }
+
+        public override string ToString() => Name;
     }
 }
