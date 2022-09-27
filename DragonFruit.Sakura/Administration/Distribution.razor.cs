@@ -7,6 +7,7 @@ using DragonFruit.Sakura.Network;
 using DragonFruit.Sakura.Network.Requests;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using MudBlazor;
 
 namespace DragonFruit.Sakura.Administration
 {
@@ -17,6 +18,9 @@ namespace DragonFruit.Sakura.Administration
 
         [Inject]
         private ApiClient Client { get; set; }
+
+        [Inject]
+        public ISnackbar Snackbar { get; set; }
 
         [Inject]
         private IJSRuntime JavaRuntime { get; set; }
@@ -74,7 +78,7 @@ namespace DragonFruit.Sakura.Administration
             }
             else
             {
-                // todo display error message
+                Snackbar.Add($"Release promotion failed ({response.StatusCode})", Severity.Error);
             }
         }
 
@@ -94,7 +98,7 @@ namespace DragonFruit.Sakura.Administration
             }
             else
             {
-                // todo display error message
+                Snackbar.Add($"Release deletion failed ({response.StatusCode})", Severity.Error);
             }
         }
     }
