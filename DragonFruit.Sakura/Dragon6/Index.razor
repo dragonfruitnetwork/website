@@ -1,4 +1,5 @@
 ﻿@page "/dragon6"
+@using DragonFruit.Sakura.Dragon6.Components
 
 <PageTitle>Dragon6 &middot; DragonFruit Network</PageTitle>
 <HeadContent>
@@ -19,6 +20,8 @@
             height: max(250px, 35vh);
         }
     </style>
+    
+    <link rel="stylesheet" href="/styles/discord-css.css"/>
 </HeadContent>
 
 <SakuraHero>
@@ -31,3 +34,91 @@
         <MudButton Variant="Variant.Text" Href="https://github.com/dragonfruitnetwork/dragon6-api" Target="_blank">Developers</MudButton>
     </PageHeader>
 </SakuraHero>
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="pt-5">
+    <MudStack Spacing="1" AlignItems="AlignItems.Center" Justify="Justify.Center">
+        <MudText Align="Align.Center" Typo="Typo.h4">Rainbow Six Stats. Redefined.</MudText>
+        <MudText Align="Align.Center">A thoughtful, clean experience for viewing Rainbow Six | Siege stats</MudText>
+    </MudStack>
+
+    <MudGrid Justify="Justify.FlexStart" Class="my-4">
+        @* dragon6 web *@
+        <Dragon6GridProduct>
+            <MudStack Spacing="1" AlignItems="AlignItems.Center" Justify="Justify.Center">
+                <SakuraSubheading Colour="#bd1818" Text="Dragon6 Web" Icon="fa-brands fa-chrome"/>
+                <MudText Align="Align.Center" Typo="Typo.h5">Stats on any device</MudText>
+                <MudText Align="Align.Center">Look up an account or customise your own using the website on any device, complete with recent and all-time stats, previous ranks and newly added Deatchmatch stats</MudText>
+            </MudStack>
+            <MudButton Target="_blank"
+                       Color="Color.Info"
+                       Href="https://dragon6.dragonfruit.network/"
+                       EndIcon="@Icons.Rounded.KeyboardArrowRight">
+                Visit Website
+            </MudButton>
+            <MudImage Fluid="true" Src="/assets/dragon6-web.png" Alt="Dragon6 website homepage"/>
+        </Dragon6GridProduct>
+
+        @* dragon6 desktop *@
+        <Dragon6GridProduct>
+            <MudStack Spacing="1" AlignItems="AlignItems.Center" Justify="Justify.Center">
+                <SakuraSubheading Colour="#fff" Text="Dragon6 Desktop" Icon="fa-brands fa-windows"/>
+                <MudText Align="Align.Center" Typo="Typo.h5">More stats, less time</MudText>
+                <MudText Align="Align.Center">The desktop app takes the power of the site one step further by bringing in faster load times, more stats, news and saved/recent account lists</MudText>
+            </MudStack>
+            <MudButton Target="_blank"
+                       Color="Color.Success"
+                       EndIcon="@Icons.Rounded.KeyboardArrowRight"
+                       Href="https://www.microsoft.com/en-us/p/dragon6/9n88cqpkgs15">
+                View on Microsoft Store
+            </MudButton>
+            <MudImage Fluid="true" Src="/assets/dragon6-desktop.png" Alt="Dragon6 desktop stats page"/>
+        </Dragon6GridProduct>
+        
+        @* dragon6 android *@
+        <Dragon6GridProduct>
+            <MudStack Spacing="1" AlignItems="AlignItems.Center" Justify="Justify.Center">
+                <SakuraSubheading Colour="#28a745" Text="Dragon6 Mobile" Icon="fa-brands fa-android"/>
+                <MudText Align="Align.Center" Typo="Typo.h5">Access stats on the move</MudText>
+                <MudText Align="Align.Center">Find users while on the move with minimal effort. Stay up-to-date with the latest news a single swipe away and save your most viewed profiles to the home screen.</MudText>
+            </MudStack>
+            <MudButton Target="_blank"
+                       Color="Color.Success"
+                       EndIcon="@Icons.Rounded.KeyboardArrowRight"
+                       Href="https://www.microsoft.com/en-us/p/dragon6/9n88cqpkgs15">
+                View on Google Play
+            </MudButton>
+            <MudImage Style="max-height: max(50vh, 350px); width: auto" Fluid="true" Src="/assets/dragon6-android.png" Alt="Dragon6 android homepage"/>
+        </Dragon6GridProduct>
+        
+        @* dragon6 discord *@
+        <Dragon6GridProduct>
+            <MudStack Spacing="1" AlignItems="AlignItems.Center" Justify="Justify.Center">
+                <SakuraSubheading Colour="#5865f2" Text="Dragon6 Discord" Icon="fa-brands fa-discord"/>
+                <MudText Align="Align.Center" Typo="Typo.h5">Discord integration is here</MudText>
+                <MudText Align="Align.Center">Get stats displayed in your Discord server for any user. Now with slash commands, a choice of seasonal stats and last activity dates for any user.</MudText>
+            </MudStack>
+            <MudButton Target="_blank"
+                       Color="Color.Success"
+                       EndIcon="@Icons.Rounded.KeyboardArrowRight"
+                       Href="https://dragon6.dragonfruit.network/discord">
+                Learn More
+            </MudButton>
+            
+            @* todo add live data *@
+            <div class="discord-embed">
+                <div class="discord-embed-side" style="background: #1374a7"></div>
+                <div class="discord-embed-card">
+                    <div class="discord-embed-card-author">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg" alt="steam logo"/>
+                        <div>Steam</div>
+                    </div>
+                    <span class="discord-embed-card-title">Player Count</span>
+                    <span>There are <strong>50,000</strong> people currently in-game!</span>
+                    <span class="discord-embed-card-footer">Data represents players currently playing Rainbow Six | Siege on Steam.</span>
+                </div>
+            </div>
+        </Dragon6GridProduct>
+    </MudGrid>
+</MudContainer>
+
+<SakuraFooter/>
