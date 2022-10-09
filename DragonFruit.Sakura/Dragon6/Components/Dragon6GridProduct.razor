@@ -1,0 +1,14 @@
+﻿<MudItem xs="12" md="6">
+    <MudPaper Elevation="0" Class="p-4 h-100">
+        <MudStack Spacing="3" AlignItems="AlignItems.Center" Justify="Justify.Center">
+            @ChildContent
+        </MudStack>
+    </MudPaper>
+</MudItem>
+
+@code {
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+}
