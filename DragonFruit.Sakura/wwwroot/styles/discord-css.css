@@ -1,0 +1,95 @@
+﻿/* discord css based on styles from https://cog-creators.github.io/discord-embed-sandbox/ */
+
+.discord-embed {
+    display: flex;
+    max-width: 520px;
+}
+
+.discord-embed-side {
+    width: 4px;
+    border-radius: 3px 0 0 3px;
+    background: #4f545c;
+}
+
+.discord-embed-card {
+    border-radius: 0 3px 3px 0;
+    background: rgba(46, 48, 54, 0.3);
+    border-color: rgba(46, 48, 54, 0.6);
+    padding: 8px 10px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+
+.discord-embed-card-body {
+    padding: 0;
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.discord-embed-card-author {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.discord-embed-card-author img {
+    margin-right: 9px;
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    border-radius: 50%;
+}
+
+.discord-embed-card-author *:not(img) {
+    display: inline-block;
+    font-weight: 500;
+    font-size: 14px;
+    color: #fff !important;
+}
+
+.discord-embed-card-title {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    
+    margin-bottom: 4px;
+}
+
+.discord-embed-card-fields {
+    gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    margin-top: -10px;
+}
+
+.discord-embed-card-field {
+    /*flex: 0;*/
+    padding-top: 10px;
+    max-width: 506px;
+}
+
+.discord-embed-card-field > *:first-child {
+    color: #fff;
+    font-size: 14px;
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+
+.discord-embed-card-field > *:not(:first-child) {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.1em;
+    white-space: pre-wrap;
+    margin-top: 6px;
+    word-wrap: break-word;
+}
+
+.discord-embed-card-footer {
+    margin-top: 8px;
+    font-size: 12px;
+}
