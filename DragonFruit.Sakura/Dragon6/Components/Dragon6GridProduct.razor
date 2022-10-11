@@ -1,12 +1,20 @@
-﻿<MudItem xs="12" md="6">
+﻿<MudItem xs="12" md="@(FullWidth ? 12 : 6)">
     <MudPaper Elevation="0" Class="p-4 h-100">
-        <MudStack Spacing="3" AlignItems="AlignItems.Center" Justify="Justify.Center">
+        <MudStack Spacing="3"
+                  Justify="@(Centered ? Justify.Center : Justify.FlexStart)"
+                  AlignItems="@(Centered ? AlignItems.Center : AlignItems.Start)">
             @ChildContent
         </MudStack>
     </MudPaper>
 </MudItem>
 
 @code {
+
+    [Parameter]
+    public bool FullWidth { get; set; }
+
+    [Parameter]
+    public bool Centered { get; set; } = true;
 
     [Parameter]
     public RenderFragment ChildContent { get; set; }
