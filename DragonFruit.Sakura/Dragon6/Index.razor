@@ -20,7 +20,7 @@
             height: max(250px, 35vh);
         }
     </style>
-    
+
     <link rel="stylesheet" href="/styles/discord-css.css"/>
 </HeadContent>
 
@@ -73,7 +73,7 @@
             </MudButton>
             <MudImage Fluid="true" Src="/assets/dragon6-desktop.png" Alt="Dragon6 desktop stats page"/>
         </Dragon6GridProduct>
-        
+
         @* dragon6 android *@
         <Dragon6GridProduct>
             <MudStack Spacing="1" AlignItems="AlignItems.Center" Justify="Justify.Center">
@@ -89,7 +89,7 @@
             </MudButton>
             <MudImage Style="max-height: max(50vh, 350px); width: auto" Fluid="true" Src="/assets/dragon6-android.png" Alt="Dragon6 android homepage"/>
         </Dragon6GridProduct>
-        
+
         @* dragon6 discord *@
         <Dragon6GridProduct>
             <MudStack Spacing="1" AlignItems="AlignItems.Center" Justify="Justify.Center">
@@ -98,25 +98,30 @@
                 <MudText Align="Align.Center">Get stats displayed in your Discord server for any user. Now with slash commands, a choice of seasonal stats and last activity dates for any user.</MudText>
             </MudStack>
             <MudButton Target="_blank"
-                       Color="Color.Success"
+                       Color="Color.Tertiary"
                        EndIcon="@Icons.Rounded.KeyboardArrowRight"
                        Href="https://dragon6.dragonfruit.network/discord">
                 Learn More
             </MudButton>
-            
-            @* todo add live data *@
-            <div class="discord-embed">
-                <div class="discord-embed-side" style="background: #1374a7"></div>
-                <div class="discord-embed-card">
-                    <div class="discord-embed-card-author">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg" alt="steam logo"/>
-                        <div>Steam</div>
-                    </div>
-                    <span class="discord-embed-card-title">Player Count</span>
-                    <span>There are <strong>50,000</strong> people currently in-game!</span>
-                    <span class="discord-embed-card-footer">Data represents players currently playing Rainbow Six | Siege on Steam.</span>
-                </div>
-            </div>
+
+            <MudStack AlignItems="AlignItems.Stretch" Spacing="2">
+                <DiscordEmbedSteamPlayers/>
+                <DiscordEmbedPlayerStats/>
+            </MudStack>
+        </Dragon6GridProduct>
+
+        <Dragon6GridProduct FullWidth="true" Centered="false">
+            <MudStack Spacing="1">
+                <SakuraSubheading Colour="#f44336" Text="Dragon6 Developers" Icon="fa-brands fa-github"/>
+                <MudText Typo="Typo.h5">Add stats to your own program</MudText>
+                <MudText>The Dragon6 API is publicly available, under an OSI-approved license complete with documentation and actively maintained.</MudText>
+            </MudStack>
+            <MudButton Target="_blank"
+                       Color="Color.Secondary"
+                       EndIcon="@Icons.Rounded.KeyboardArrowRight"
+                       Href="https://github.com/dragonfruitnetwork/dragon6-api">
+                View on GitHub
+            </MudButton>
         </Dragon6GridProduct>
     </MudGrid>
 </MudContainer>
