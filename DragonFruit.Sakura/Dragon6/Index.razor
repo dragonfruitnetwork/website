@@ -98,7 +98,7 @@
                 <MudText Align="Align.Center">Get stats displayed in your Discord server for any user. Now with slash commands, a choice of seasonal stats and last activity dates for any user.</MudText>
             </MudStack>
             <MudButton Target="_blank"
-                       Color="Color.Tertiary"
+                       Color="Color.Primary"
                        EndIcon="@Icons.Rounded.KeyboardArrowRight"
                        Href="https://dragon6.dragonfruit.network/discord">
                 Learn More
@@ -116,12 +116,19 @@
                 <MudText Typo="Typo.h5">Add stats to your own program</MudText>
                 <MudText>The Dragon6 API is publicly available, under an OSI-approved license complete with documentation and actively maintained.</MudText>
             </MudStack>
-            <MudButton Target="_blank"
-                       Color="Color.Secondary"
-                       EndIcon="@Icons.Rounded.KeyboardArrowRight"
-                       Href="https://github.com/dragonfruitnetwork/dragon6-api">
-                View on GitHub
-            </MudButton>
+            <MudStack Row="true">
+                <MudButton Color="Color.Info"
+                           EndIcon="@Icons.Rounded.KeyboardArrowRight"
+                           Href="/wiki/dragon6/developers">
+                    View Wiki
+                </MudButton>
+                <MudButton Target="_blank"
+                           Color="Color.Error"
+                           EndIcon="@Icons.Rounded.KeyboardArrowRight"
+                           Href="https://github.com/dragonfruitnetwork/dragon6-api">
+                    View on GitHub
+                </MudButton>
+            </MudStack>
         </Dragon6GridProduct>
     </MudGrid>
 </MudContainer>
