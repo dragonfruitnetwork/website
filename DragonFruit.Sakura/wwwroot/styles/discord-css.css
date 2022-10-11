@@ -19,6 +19,7 @@
     color: rgba(255, 255, 255, 0.6);
     font-size: 14px;
     display: flex;
+    width: 100%;
     flex-direction: column;
 }
 
@@ -31,7 +32,7 @@
 .discord-embed-card-author {
     display: flex;
     align-items: center;
-    margin-bottom: 5px;
+    margin: 5px 0;
 }
 
 .discord-embed-card-author img {
@@ -58,6 +59,7 @@
 }
 
 .discord-embed-card-fields {
+    gap: 20px;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
@@ -65,20 +67,19 @@
 }
 
 .discord-embed-card-field {
-    flex: 0;
+    /*flex: 0;*/
     padding-top: 10px;
     max-width: 506px;
-    min-width: 100%;
 }
 
-.discord-embed-card-field:first-child {
+.discord-embed-card-field > *:first-child {
     color: #fff;
     font-size: 14px;
     margin-bottom: 4px;
     font-weight: 600;
 }
 
-.discord-embed-card-field:not(:first-child) {
+.discord-embed-card-field > *:not(:first-child) {
     color: rgba(255, 255, 255, 0.7);
     font-size: 14px;
     font-weight: 500;
