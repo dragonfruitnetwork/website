@@ -3,7 +3,12 @@
 @using DragonFruit.Sakura.Changelogs.Components
 
 <PageTitle>Changelogs &middot; DragonFruit Network</PageTitle>
-<HeadContent></HeadContent>
+<HeadContent>
+    @if (Release != null)
+    {
+        <link rel="canonical" href="https://dragonfruit.network/changelogs/@(Release.AppId)/@(Release.VersionName)"/>
+    }
+</HeadContent>
 
 <GlobalNavigation/>
 
