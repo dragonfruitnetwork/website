@@ -8,6 +8,8 @@
     <meta property="og:description" content="Check whether you're connected to the Tor network"/>
     <meta name="keywords" content="Tor, Onion, Onionfruit, onion fruit, onionfruit connect, onion buddy, dragonfruit onionfruit"/>
 
+    <link rel="canonical" href="https://dragonfruit.network/onionfruit/status"/>
+
     @switch (ConnectionInfo?.IsConnectedToTor)
     {
         case false:
@@ -38,7 +40,7 @@
                 true => Color.Success,
                 false => Color.Primary,
                 null => Color.Surface
-                };
+            };
         }
         <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.Center" Spacing="5" Class="flex-wrap">
             <MudIcon Icon="@icon" Color="@iconColour" Style="font-size: 20vh"/>
