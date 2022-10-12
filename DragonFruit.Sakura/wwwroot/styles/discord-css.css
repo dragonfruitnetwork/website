@@ -32,7 +32,7 @@
 .discord-embed-card-author {
     display: flex;
     align-items: center;
-    margin: 5px 0;
+    margin: 6px 0;
 }
 
 .discord-embed-card-author img {
@@ -55,11 +55,12 @@
     font-size: 1rem;
     font-weight: 600;
     
-    margin-bottom: 4px;
+    margin-bottom: 6px;
 }
 
 .discord-embed-card-fields {
-    gap: 20px;
+    row-gap: 5px;
+    column-gap: 20px;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
