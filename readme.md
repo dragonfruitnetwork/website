@@ -2,14 +2,14 @@
 # DragonFruit Sakura
 [![DragonFruit Discord](https://img.shields.io/discord/482528405292843018?label=Discord&style=popout)](https://discord.gg/VA26u5Z)
 
-The future face of the DragonFruit website.
+The new DragonFruit website.
 
 ## Status
-While this is still being built, development is occuring at a steady pace and already has a number of completed features including Changelogs, Wiki, OnionFruit™ connection status and country list. Mobile usability is significantly better, but is not fully complete.
+While this is currently online it is still being built. Most important differences compared to the old site are better layouts and mobile usability is significantly better.
 
 Bug reports are being accepted (provided they provide enough detail to diagnose the issue), and can be opened using GitHub issues. Feature requests are welcome, but will be low priority until the main site has been built to match the legacy site (codenamed Yuna).
 
-The latest build of the master site can be found at https://preview.dragonfruit.network
+The latest release of the site can be found at https://dragonfruit.network
 
 ## Development
 Sakura is built using ASP.NET Blazor WebAssembly using [MudBlazor](https://mudblazor.com/) as the component design provider. It runs almost entirely client-side with Yuna providing an API to provide data as needed.
@@ -20,7 +20,7 @@ To build/test/develop a copy of Sakura make sure you have the following prerequi
   - If you're using Visual Studio 2022, ensure the **ASP.NET and web development** workload is installed
   - Otherwise, ensure the `wasm-tools` workload is installed (`dotnet workload install wasm-tools`)
 - An IDE you're comfortable with. We recommend using [JetBrains Rider](https://www.jetbrains.com/rider/) or [ReSharper](https://www.jetbrains.com/resharper/) and Visual Studio to access improved code formatting and styling suggestions.  
-- A modern browser. [CanIUse](https://caniuse.com/wasm) says 93% of browsers support WebAssembly, so this shouldn't be an issue
+- A modern browser. [CanIUse](https://caniuse.com/wasm) says 95+% of browsers support WebAssembly, so this shouldn't be an issue
 - You can access `localhost` on your computer. If you can't some pages won't work due to the warning below
 
 **Warning:** CORS is enabled on our API to only allow requests from `localhost` (debugging) and `*.dragonfruit.network` (production).
