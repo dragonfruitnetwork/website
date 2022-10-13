@@ -46,7 +46,7 @@ namespace DragonFruit.Sakura
 #if DEBUG
                 o.ProviderOptions.RedirectUri = "https://localhost:5001/auth/login-callback";
 #else
-                o.ProviderOptions.RedirectUri = "https://preview.dragonfruit.network/auth/login-callback";
+                o.ProviderOptions.RedirectUri = "https://dragonfruit.network/auth/login-callback";
 #endif
 
                 o.ProviderOptions.DefaultScopes.Add("delegate");
