@@ -56,7 +56,7 @@
                                 }
                                 <MudButton Color="Color.Error"
                                            StartIcon="@Icons.Rounded.Delete"
-                                           OnClick="() => DeleteModification(modification)">
+                                           OnClick="async () => await DeleteModification(modification)">
                                     Delete
                                 </MudButton>
                             </MudStack>
