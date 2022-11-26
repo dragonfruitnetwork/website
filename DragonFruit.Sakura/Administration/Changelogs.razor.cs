@@ -48,6 +48,19 @@ namespace DragonFruit.Sakura.Administration
             return Task.FromResult(VersionHints.Where(x => x.Contains(searchText)));
         }
 
+        private Task<IEnumerable<string>> SearchCategories(ApiChangelogModification current, string arg)
+        {
+            var categoryIterator = Target.Modifications.Except(new[] { current })
+                                         .Select(x => x.Category)
+                                         .Where(x => !string.IsNullOrWhiteSpace(x))
+                                         .Distinct();
+
+            if (string.IsNullOrWhiteSpace(arg))
+                return Task.FromResult(categoryIterator);
+
+            return Task.FromResult(categoryIterator.Where(x => x.Contains(arg, StringComparison.OrdinalIgnoreCase)));
+        }
+
         private async Task LoadRelease()
         {
             try

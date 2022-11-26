@@ -38,7 +38,7 @@
                             </MudSelect>
 
                             <MudTextField Label="Title" Variant="Variant.Outlined" @bind-Value="modification.Title"/>
-                            <MudTextField Label="Category" Variant="Variant.Outlined" @bind-Value="modification.Category"/>
+                            <MudAutocomplete Label="Category" Variant="Variant.Outlined" @bind-Value="modification.Category" CoerceText="true" CoerceValue="true" SearchFunc="s => SearchCategories(modification, s)"/>
                             <MudTextField Label="Description" Variant="Variant.Outlined" Lines="6" @bind-Value="modification.Description"/>
 
                             <MudStack Row="true">
