@@ -5,10 +5,17 @@
 <MudContainer MaxWidth="MaxWidth.Large">
     <MudStack>
         <MudPaper Elevation="0" Class="p-4">
-            <MudStack Row="true" AlignItems="AlignItems.Center">
-                <MudText>Welcome Back</MudText>
+            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                @if (string.IsNullOrEmpty(Name))
+                {
+                    <MudText>Welcome Back</MudText>
+                }
+                else
+                {
+                    <MudText>Welcome Back, @Name</MudText>
+                }
                 <MudSpacer/>
-                <MudButton EndIcon="@Icons.Rounded.KeyboardArrowRight" Color="Color.Primary" Href="/admin/keychain">Manage Keychain</MudButton>
+                <MudButton EndIcon="@Icons.Rounded.VpnKey" Color="Color.Primary" Href="/admin/keychain">Manage Keychain</MudButton>
             </MudStack>
         </MudPaper>
 
