@@ -37,7 +37,7 @@ namespace DragonFruit.Sakura
             var loggingConfig = new LoggerConfiguration()
                                 .MinimumLevel.Debug()
                                 .Enrich.WithProperty("InstanceId", Guid.NewGuid().ToString("D"))
-                                .WriteTo.BrowserConsole()
+                                .WriteTo.BrowserConsole(restrictedToMinimumLevel: LogEventLevel.Information)
                                 .WriteTo.Sentry(o =>
                                 {
                                     var version = Assembly.GetExecutingAssembly().GetName().Version;
