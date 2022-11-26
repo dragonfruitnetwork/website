@@ -1,4 +1,6 @@
-﻿@inherits LayoutComponentBase
+﻿@using Microsoft.Extensions.Options
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inherits LayoutComponentBase
 @layout DefaultLayout
 
 <SakuraJumbotron>
@@ -34,9 +36,13 @@
     [Inject]
     private NavigationManager Navigation { get; set; }
 
+    [Inject]
+    private IOptionsSnapshot<RemoteAuthenticationOptions<OidcProviderOptions>> OptionsContainer { get; set; }
+
     private void RedirectToLoginPage()
     {
-        Navigation.NavigateTo($"/auth/login?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");
+        var path = OptionsContainer.Get(Options.DefaultName).AuthenticationPaths.LogInPath;
+        Navigation.NavigateToLogin(path);
     }
 
 }

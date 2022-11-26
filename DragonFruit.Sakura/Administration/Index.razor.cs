@@ -5,6 +5,7 @@ using DragonFruit.Data;
 using DragonFruit.Sakura.Network;
 using DragonFruit.Sakura.Network.Requests;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace DragonFruit.Sakura.Administration
 {
@@ -15,6 +16,10 @@ namespace DragonFruit.Sakura.Administration
         [Inject]
         private ApiClient Client { get; set; }
 
+        [Inject]
+        private AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+
+        private string Name { get; set; }
         private IReadOnlyList<ApiAppInfo> Apps { get; set; }
 
         private AppFeatures SelectedAppFeature
@@ -37,6 +42,7 @@ namespace DragonFruit.Sakura.Administration
         protected override async Task OnInitializedAsync()
         {
             Apps = await Client.PerformAsync<IReadOnlyList<ApiAppInfo>>(new AdminApiAppsListingRequest()).ConfigureAwait(false);
+            Name = await AuthenticationStateProvider.GetAuthenticationStateAsync().ContinueWith(t => t.Result.User.Identity?.Name).ConfigureAwait(false);
         }
     }
 }
