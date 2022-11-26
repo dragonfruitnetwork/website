@@ -1,5 +1,6 @@
 ﻿User-Agent: *
 Allow: /
 Disallow: /admin
+Disallow: /cdn-cgi/
 
 Sitemap: https://dragonfruit.network/sitemap.xml
