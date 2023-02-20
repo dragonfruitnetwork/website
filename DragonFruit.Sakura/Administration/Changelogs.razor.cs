@@ -119,11 +119,9 @@ namespace DragonFruit.Sakura.Administration
                 : new AdminApiChangelogModificationCreationRequest(Target.AppId, Target.VersionName, modification) as YunaApiRequest;
 
             var newModification = await Client.PerformAsync<ApiChangelogModification>(request).ConfigureAwait(false);
-            var index = Target.Modifications.IndexOf(modification);
 
-            // replace the modification with the populated id copy
-            Target.Modifications.RemoveAt(index);
-            Target.Modifications.Insert(index, newModification);
+            // replace the modification with the new one
+            Target.Modifications[Target.Modifications.IndexOf(modification)] = newModification;
         }
 
         private async ValueTask DeleteModification(ApiChangelogModification modification)
