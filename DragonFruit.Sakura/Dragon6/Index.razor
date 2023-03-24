@@ -14,20 +14,25 @@
 
     <style>
         .sakura-hero {
+            justify-content: space-between;
             background: url(https://d6static.dragonfruit.network/backgrounds/0.jpg);
         }
         
         .dragon6-icon {
             margin: auto 0;
-            filter: invert(1);
+            filter: invert(75%);
             height: max(250px, 35vh);
         }
     </style>
 </HeadContent>
 
 <SakuraHero>
-    <img src="/assets/appicons/dragon6.svg" alt="Dragon6 logo" class="dragon6-icon user-select-none"/>
-
+    
+    <MudStack Row="false" Justify="Justify.Center" Spacing="5">
+        <img src="/assets/appicons/dragon6.svg" alt="Dragon6 logo" class="dragon6-icon user-select-none"/>
+        <MudAlert Class="w-100" Icon="@Icons.Material.Outlined.Info" Severity="Severity.Warning">Dragon6 will shut down on the 3rd April 2023. Check the <a href="/wiki/dragon6/legal/service-termination">wiki</a> for more details.</MudAlert>
+    </MudStack>
+    
     <PageHeader Title="Dragon6" Fixed="false">
         <MudButton Variant="Variant.Text" Href="https://dragon6.dragonfruit.network" Target="_blank">Web</MudButton>
         <MudButton Variant="Variant.Text" Href="https://play.google.com/store/apps/details?id=com.dragon.six" Target="_blank">Mobile</MudButton>
