@@ -1,9 +1,17 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
+﻿@using DragonFruit.Sakura.Network
+<Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
-        <CascadingAuthenticationState>
+        @if (Client.IsServerSide)
+        {
             <RouteView RouteData="@routeData" DefaultLayout="@typeof(DefaultLayout)"/>
-            <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
-        </CascadingAuthenticationState>
+        }
+        else
+        {
+            <CascadingAuthenticationState>
+                <RouteView RouteData="@routeData" DefaultLayout="@typeof(DefaultLayout)"/>
+                <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
+            </CascadingAuthenticationState>
+        }
     </Found>
     <NotFound>
         <PageTitle>Page Not Found &middot; DragonFruit Network</PageTitle>
@@ -18,3 +26,10 @@
         </LayoutView>
     </NotFound>
 </Router>
+
+@code {
+
+    [Inject]
+    private SakuraClient Client { get; set; }
+
+}

@@ -1,18 +1,25 @@
 ﻿@page "/auth/{action}"
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using DragonFruit.Sakura.Network
 @inject NavigationManager Navigation
 
-<RemoteAuthenticatorView Action="@Action">
-    <LogOutSucceeded>
-        @{
-            Navigation.NavigateTo("/");
-        }
-    </LogOutSucceeded>
-</RemoteAuthenticatorView>
+@if (!Client.IsServerSide)
+{
+    <RemoteAuthenticatorView Action="@Action">
+        <LogOutSucceeded>
+            @{
+                Navigation.NavigateTo("/");
+            }
+        </LogOutSucceeded>
+    </RemoteAuthenticatorView>
+}
 
 @code {
 
     [Parameter]
     public string Action { get; set; }
+
+    [Inject]
+    private SakuraClient Client { get; set; }
 
 }

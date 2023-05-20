@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using MudBlazor.Services;
 using Serilog;
 using Serilog.Events;
@@ -26,6 +27,7 @@ namespace DragonFruit.Sakura.Host
             // enable _content files
             builder.WebHost.UseStaticWebAssets();
 
+            builder.Logging.ClearProviders();
             builder.Logging.AddSerilog(new LoggerConfiguration()
                                        .MinimumLevel.Debug()
                                        .WriteTo.Console(theme: AnsiConsoleTheme.Literate)
