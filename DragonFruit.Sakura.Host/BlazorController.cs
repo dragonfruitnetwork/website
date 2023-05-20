@@ -3,12 +3,12 @@
 
 using Microsoft.AspNetCore.Mvc;
 
-namespace DragonFruit.Sakura.Host.BlazorHost
+namespace DragonFruit.Sakura.Host
 {
     [Route("/")]
     public class BlazorController : Controller
     {
         [HttpGet]
-        public IActionResult Host() => View("~/BlazorHost/Host.cshtml");
+        public IActionResult Host() => View("~/Host.cshtml");
     }
 }
