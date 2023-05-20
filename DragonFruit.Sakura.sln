@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonFruit.Sakura", "DragonFruit.Sakura\DragonFruit.Sakura.csproj", "{8C3460DE-30CD-4843-9766-1A6F75E926E4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonFruit.Sakura.Host", "DragonFruit.Sakura.Host\DragonFruit.Sakura.Host.csproj", "{3A428807-D930-417D-9018-D83BCB04824F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{8C3460DE-30CD-4843-9766-1A6F75E926E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C3460DE-30CD-4843-9766-1A6F75E926E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C3460DE-30CD-4843-9766-1A6F75E926E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A428807-D930-417D-9018-D83BCB04824F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A428807-D930-417D-9018-D83BCB04824F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A428807-D930-417D-9018-D83BCB04824F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A428807-D930-417D-9018-D83BCB04824F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

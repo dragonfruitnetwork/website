@@ -5,7 +5,6 @@ using System.Reflection;
 using DragonFruit.Data;
 using DragonFruit.Sakura.Network;
 using DragonFruit.Sakura.Wiki;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor;
 using MudBlazor.Services;
@@ -30,10 +29,6 @@ namespace DragonFruit.Sakura
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
-
-            builder.RootComponents.Add<App>("#app");
-            builder.RootComponents.Add<HeadOutlet>("head::after");
-
             var loggingConfig = new LoggerConfiguration()
                                 .MinimumLevel.Debug()
                                 .Enrich.WithProperty("InstanceId", Guid.NewGuid().ToString("D"))
