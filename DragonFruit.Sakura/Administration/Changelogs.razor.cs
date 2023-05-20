@@ -15,7 +15,7 @@ namespace DragonFruit.Sakura.Administration
         public ApiAppInfo TargetApp { get; set; }
 
         [Inject]
-        private ApiClient Client { get; set; }
+        private SakuraClient Client { get; set; }
 
         private bool IsTargetNew { get; set; }
         private ApiChangelogRelease Target { get; set; }

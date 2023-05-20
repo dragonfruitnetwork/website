@@ -1,7 +1,6 @@
 ﻿// DragonFruit Sakura Copyright (c) DragonFruit Network <inbox@dragonfruit.network>
 // Licensed under GNU AGPLv3. Refer to the LICENSE file for more info
 
-using DragonFruit.Data;
 using DragonFruit.Sakura.Network;
 using DragonFruit.Sakura.Network.Requests;
 using Microsoft.AspNetCore.Components;
@@ -17,7 +16,7 @@ namespace DragonFruit.Sakura.Administration
         private int _currentPage = 1;
 
         [Inject]
-        private ApiClient Client { get; set; }
+        private SakuraClient Client { get; set; }
 
         [Inject]
         private IJSRuntime JavaRuntime { get; set; }

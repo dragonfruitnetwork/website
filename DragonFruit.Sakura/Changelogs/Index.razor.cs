@@ -14,7 +14,7 @@ namespace DragonFruit.Sakura.Changelogs
         private ApiChangelogRelease Release { get; set; }
 
         [Inject]
-        private ApiClient Client { get; set; }
+        private SakuraClient Client { get; set; }
 
         [Inject]
         private NavigationManager Navigation { get; set; }
@@ -29,6 +29,11 @@ namespace DragonFruit.Sakura.Changelogs
         {
             // set to null to get the skeleton effect
             Release = null;
+
+            if (Client.IsServerSide)
+            {
+                return;
+            }
 
             var releaseRequest = string.IsNullOrEmpty(AppName)
                 ? new ApiDefaultChangelogsRequest()

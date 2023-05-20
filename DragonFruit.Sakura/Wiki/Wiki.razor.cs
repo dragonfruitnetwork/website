@@ -3,7 +3,6 @@
 
 using System.Net;
 using System.Text;
-using DragonFruit.Data;
 using DragonFruit.Sakura.Network;
 using DragonFruit.Sakura.Network.Requests;
 using Microsoft.AspNetCore.Components;
@@ -18,7 +17,7 @@ namespace DragonFruit.Sakura.Wiki
         public string Path { get; set; }
 
         [Inject]
-        private ApiClient Client { get; set; }
+        private SakuraClient Client { get; set; }
 
         [Inject]
         private WikiRenderer Renderer { get; set; }
@@ -36,6 +35,11 @@ namespace DragonFruit.Sakura.Wiki
         {
             PageMetadata = null;
             PageContent = null;
+
+            if (Client.IsServerSide)
+            {
+                return;
+            }
 
             try
             {
@@ -74,6 +78,11 @@ namespace DragonFruit.Sakura.Wiki
 
         protected override void OnAfterRender(bool firstRender)
         {
+            if (Client.IsServerSide)
+            {
+                return;
+            }
+
             // enable syntax highlighting
             JavaRuntime.InvokeVoidAsync("Prism.highlightAll");
         }

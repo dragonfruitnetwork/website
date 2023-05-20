@@ -7,9 +7,12 @@ namespace DragonFruit.Sakura.Network.Requests
 {
     public abstract class YunaApiRequest : ApiRequest
     {
-        private const string ApiEndpoint = "https://api.dragonfruit.network";
+        public override string Path => $"{BaseUrlOverride.TrimEnd('/')}/{Stub.TrimStart('/')}";
 
-        public override string Path => $"{ApiEndpoint}/{Stub.TrimStart('/')}";
+        /// <summary>
+        /// The base url to override. This will be set by the requesting client if not set.
+        /// </summary>
+        internal string BaseUrlOverride { get; set; }
 
         /// <summary>
         /// The request path.

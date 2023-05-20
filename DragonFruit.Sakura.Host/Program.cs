@@ -1,6 +1,6 @@
 using System.Reflection;
 using System.Threading.Tasks;
-using DragonFruit.Data;
+using DragonFruit.Sakura.Network;
 using DragonFruit.Sakura.Wiki;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -47,7 +47,7 @@ namespace DragonFruit.Sakura.Host
 
             builder.Services.AddMudServices();
             builder.Services.AddScoped<WikiRenderer>();
-            builder.Services.AddScoped<ApiClient, SakuraServerClient>();
+            builder.Services.AddScoped<SakuraClient, SakuraServerClient>();
 
             var app = builder.Build();
 
@@ -56,7 +56,9 @@ namespace DragonFruit.Sakura.Host
 
             app.UseRouting();
             app.MapControllers();
+
             app.MapFallbackToController("Host", "Blazor");
+            app.MapFallbackToController("/changelogs/{app}/{version}", "Host", "Blazor");
 
             await app.RunAsync().ConfigureAwait(false);
         }

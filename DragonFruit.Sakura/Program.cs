@@ -2,7 +2,6 @@
 // Licensed under GNU AGPLv3. Refer to the LICENSE file for more info
 
 using System.Reflection;
-using DragonFruit.Data;
 using DragonFruit.Sakura.Network;
 using DragonFruit.Sakura.Wiki;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -69,7 +68,7 @@ namespace DragonFruit.Sakura
 
             builder.Services.AddMudServices();
             builder.Services.AddScoped<WikiRenderer>();
-            builder.Services.AddScoped<ApiClient, SakuraClient>();
+            builder.Services.AddScoped<SakuraClient, SakuraWasmClient>();
 
             await builder.Build().RunAsync();
         }
