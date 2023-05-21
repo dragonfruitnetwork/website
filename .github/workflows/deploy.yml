@@ -4,6 +4,9 @@ on:
   release:
     types: [ published ]
 
+env:
+  build-output: sakura-publish
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -20,14 +23,40 @@ jobs:
         with:
           dotnet-version: '7.0.x'
 
+      - uses: docker/setup-qemu-action@v2
+      - uses: docker/setup-buildx-action@v2
+      - uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          
+      - name: Create build output folder
+        run: mkdir ${{ env.build-output }}
+
       - name: Restore NuGet Packages
         run: dotnet restore
 
       - name: Build Project
-        run: dotnet pack -c Release -o ${{ github.workspace }} -p:Version=${{ github.ref_name }} DragonFruit.Sakura/DragonFruit.Sakura.csproj
+        run: dotnet publish --self-contained -c Release -o ${{ env.build-output }} -p:Version=${{ github.ref_name }} DragonFruit.Sakura/DragonFruit.Sakura.csproj
 
-      - name: Publish .nupkg
-        run: dotnet nuget push "*.nupkg" -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json
+      - id: meta
+        name: Create metadata
+        uses: docker/metadata-action@v4
+        with:
+          images: dragonfruitdotnet/website
+          tags: |
+            type=raw,value=latest
+            type=ref,event=tag
+            type=sha
+
+      - name: Dockerise
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          context: ${{ env.build-output }}
+          platforms: linux/arm64,linux/amd64
+          tags: ${{ steps.meta.outputs.tags }}
+          file: DragonFruit.Sakura.Host/Dockerfile
 
       - name: Create Sentry release
         uses: getsentry/action-release@v1
