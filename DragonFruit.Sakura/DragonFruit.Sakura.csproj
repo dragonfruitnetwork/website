@@ -3,13 +3,14 @@
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
-        <LangVersion>10</LangVersion>
         <IsPackable>true</IsPackable>
     </PropertyGroup>
     
     <PropertyGroup>
+        <PackageIcon>icon.png</PackageIcon>
         <PackageId>DragonFruit.Sakura</PackageId>
         <PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/dragonfruitnetwork/website</RepositoryUrl>
         <PackageProjectUrl>https://github.com/dragonfruitnetwork/website</PackageProjectUrl>
     </PropertyGroup>
 
@@ -25,6 +26,10 @@
         <PackageReference Include="Serilog.Extensions.Logging" Version="7.0.0" />
         <PackageReference Include="Serilog.Sinks.BrowserConsole" Version="1.0.0" />
         <PackageReference Include="SharpYaml" Version="2.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="..\icon.png" Pack="true" PackagePath="."/>
     </ItemGroup>
 
 </Project>
