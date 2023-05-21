@@ -37,7 +37,7 @@ jobs:
         run: dotnet restore
 
       - name: Build Project
-        run: dotnet publish -c Release -o ${{ env.build-output }} -p:Version=${{ github.ref_name }} DragonFruit.Sakura/DragonFruit.Sakura.csproj
+        run: dotnet publish -c Release -o ${{ env.build-output }} -p:Version=${{ github.ref_name }} DragonFruit.Sakura.Host/DragonFruit.Sakura.Host.csproj
 
       - id: meta
         name: Create metadata
