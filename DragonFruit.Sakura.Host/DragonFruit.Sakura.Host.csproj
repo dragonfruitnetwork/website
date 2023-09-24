@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     </PropertyGroup>
 
     <ItemGroup>
@@ -10,13 +11,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.5" />
-      <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="7.0.5" />
+      <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.11" />
+      <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="7.0.11" />
       <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Remove="Properties\launchSettings.json" />
     </ItemGroup>
 
 </Project>

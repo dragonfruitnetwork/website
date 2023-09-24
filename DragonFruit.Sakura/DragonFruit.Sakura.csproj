@@ -15,14 +15,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="DragonFruit.Data" Version="2023.210.0" />
-        <PackageReference Include="DragonFruit.Data.Serializers.SystemJson" Version="2023.210.0" />
-        <PackageReference Include="Markdig" Version="0.31.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.5" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="7.0.5" />
+        <PackageReference Include="DragonFruit.Data" Version="2023.727.0" />
+        <PackageReference Include="DragonFruit.Data.Serializers.SystemJson" Version="2023.727.0" />
+        <PackageReference Include="Markdig" Version="0.33.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.11" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="7.0.11" />
         <PackageReference Include="MudBlazor" Version="6.1.9" />
-        <PackageReference Include="Sentry.Serilog" Version="3.31.0" />
-        <PackageReference Include="Serilog" Version="2.12.0" />
+        <PackageReference Include="Sentry.Serilog" Version="3.39.1" />
+        <PackageReference Include="Serilog" Version="3.0.1" />
         <PackageReference Include="Serilog.Extensions.Logging" Version="7.0.0" />
         <PackageReference Include="Serilog.Sinks.BrowserConsole" Version="1.0.0" />
         <PackageReference Include="SharpYaml" Version="2.1.0" />
