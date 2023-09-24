@@ -96,7 +96,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build Program
-        run: dotnet publish -c Release -r win-x64 -p:Version=${{ github.ref_name }} -p:PublishProfile=Web.pubxml DragonFruit.Sakura.Host
+        run: dotnet publish -c Release -p:Version=${{ github.ref_name }} -p:PublishProfile=Web.pubxml DragonFruit.Sakura.Host
 
       - name: Archive Output
         run: Compress-Archive -Path .\DragonFruit.Sakura.Host\bin\publish\* -DestinationPath Sakura-${{ github.ref_name }}.zip
