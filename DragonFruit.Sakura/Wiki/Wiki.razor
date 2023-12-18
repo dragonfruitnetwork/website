@@ -88,7 +88,7 @@ else
                                     <MudAvatarGroup Max="5" Spacing="2">
                                         @foreach (var author in PageMetadata.Authors)
                                         {
-                                            <MudAvatar Image="@author.AvatarUrl" Size="Size.Small" Style="align-items: unset">
+                                            <MudAvatar Image="@author.AvatarUrl" Size="Size.Small">
                                                 @(string.IsNullOrEmpty(author.AvatarUrl) ? char.ToUpperInvariant(author.Username[0]) : null)
                                             </MudAvatar>
                                         }
