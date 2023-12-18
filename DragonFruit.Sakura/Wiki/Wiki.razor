@@ -70,13 +70,13 @@ else
                     }
 
                     <div id="wiki-content">
-                        @PageContent.Content
+                        @PageContent?.Content
                     </div>
 
                     @if (PageMetadata != null)
                     {
                         <MudSpacer/>
-                        <MudDivider/>
+                        <MudDivider DividerType="DividerType.FullWidth" FlexItem="true" Style="flex-grow: 0"/>
 
                         <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Spacing="3" Class="flex-wrap-reverse">
                             <MudTooltip Text="@PageMetadata.LastCommitMessage" Placement="Placement.End">
@@ -88,7 +88,9 @@ else
                                     <MudAvatarGroup Max="5" Spacing="2">
                                         @foreach (var author in PageMetadata.Authors)
                                         {
-                                            <MudAvatar Image="@author.AvatarUrl" Size="Size.Small">@author.Username[0]</MudAvatar>
+                                            <MudAvatar Image="@author.AvatarUrl" Size="Size.Small" Style="align-items: unset">
+                                                @(string.IsNullOrEmpty(author.AvatarUrl) ? char.ToUpperInvariant(author.Username[0]) : null)
+                                            </MudAvatar>
                                         }
                                     </MudAvatarGroup>
                                 </MudTooltip>
