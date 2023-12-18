@@ -2,25 +2,14 @@
 // Licensed under GNU AGPLv3. Refer to the LICENSE file for more info
 
 using DragonFruit.Data;
-using DragonFruit.Data.Serializers.SystemJson;
-using DragonFruit.Sakura.Network.Requests;
+using DragonFruit.Data.Serializers;
 
 namespace DragonFruit.Sakura.Network
 {
-    public abstract class SakuraClient : ApiClient<ApiSystemTextJsonSerializer>
+    public abstract class SakuraClient : ApiClient<ApiJsonSerializer>
     {
         public abstract bool IsServerSide { get; }
 
-        protected virtual string ApiBaseUrl => "https://api.dragonfruit.network";
-
-        protected override Task ValidateRequest(ApiRequest request)
-        {
-            if (request is YunaApiRequest yunaApiRequest && yunaApiRequest.BaseUrlOverride == null)
-            {
-                yunaApiRequest.BaseUrlOverride = ApiBaseUrl;
-            }
-
-            return base.ValidateRequest(request);
-        }
+        protected internal virtual string ApiBaseUrl => "https://api.dragonfruit.network";
     }
 }
