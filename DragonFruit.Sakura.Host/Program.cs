@@ -30,7 +30,7 @@ namespace DragonFruit.Sakura.Host
                    {
                        o.SingleLine = true;
                        o.IncludeScopes = false;
-                       o.TimestampFormat = $"[dd/MM/yyyy hh:mm:ss] ";
+                       o.TimestampFormat = "[dd/MM/yyyy hh:mm:ss] ";
                    })
                    .AddSentry(o =>
                    {
