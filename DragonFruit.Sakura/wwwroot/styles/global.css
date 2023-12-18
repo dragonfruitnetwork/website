@@ -11,6 +11,8 @@ iframe {
 
 .sakura-hero, .sakura-full-height-section {
     min-height: 100vh;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .sakura-full-height-section {

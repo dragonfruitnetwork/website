@@ -3,10 +3,11 @@
 
 namespace DragonFruit.Sakura.Network.Requests
 {
-    public class AdminApiDistributionBranchRequest : YunaApiRequest
+    public partial class AdminApiDistributionBranchRequest : YunaApiRequest
     {
         protected override string Stub => $"/{AppId}/dist/{BranchName}";
-        protected override bool RequireAuth => true;
+
+        protected internal override bool RequiresAuthentication => true;
 
         public AdminApiDistributionBranchRequest(string appId, string branchName)
         {

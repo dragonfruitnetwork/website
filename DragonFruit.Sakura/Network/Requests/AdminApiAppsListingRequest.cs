@@ -3,9 +3,10 @@
 
 namespace DragonFruit.Sakura.Network.Requests
 {
-    public class AdminApiAppsListingRequest : YunaApiRequest
+    public partial class AdminApiAppsListingRequest : YunaApiRequest
     {
         protected override string Stub => "/apps";
-        protected override bool RequireAuth => true;
+
+        protected internal override bool RequiresAuthentication => true;
     }
 }

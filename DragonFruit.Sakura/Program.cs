@@ -7,8 +7,6 @@ using DragonFruit.Sakura.Wiki;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor;
 using MudBlazor.Services;
-using Serilog;
-using Serilog.Events;
 
 namespace DragonFruit.Sakura
 {
@@ -25,25 +23,20 @@ namespace DragonFruit.Sakura
             }
         };
 
-        public static async Task Main(string[] args)
+        public static Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
-            var loggingConfig = new LoggerConfiguration()
-                                .MinimumLevel.Debug()
-                                .Enrich.WithProperty("InstanceId", Guid.NewGuid().ToString("D"))
-                                .WriteTo.BrowserConsole(restrictedToMinimumLevel: LogEventLevel.Information)
-                                .WriteTo.Sentry(o =>
-                                {
-                                    var version = Assembly.GetExecutingAssembly().GetName().Version;
 
-                                    o.MaxBreadcrumbs = 50;
-                                    o.MinimumEventLevel = LogEventLevel.Error;
-                                    o.MinimumBreadcrumbLevel = LogEventLevel.Debug;
-                                    o.Release = version?.ToString(version.Build > 0 ? 3 : 2);
-                                    o.Dsn = "https://d42ddda84a6f4ffb8d9d66cb7d1a6d9b@o97031.ingest.sentry.io/6542291";
-                                });
+            builder.Logging.AddSentry(o =>
+            {
+                o.MaxBreadcrumbs = 50;
+                o.MinimumEventLevel = LogLevel.Error;
+                o.MinimumBreadcrumbLevel = LogLevel.Debug;
 
-            builder.Logging.AddSerilog(loggingConfig.CreateLogger(), true);
+                o.Dsn = "https://d42ddda84a6f4ffb8d9d66cb7d1a6d9b@o97031.ingest.sentry.io/6542291";
+                o.Release = Assembly.GetExecutingAssembly().GetName().Version!.ToString(3);
+            });
+
             builder.Services.AddOidcAuthentication(o =>
             {
                 o.ProviderOptions.Authority = "https://id.dragonfruit.network/connect/authorize";
@@ -70,7 +63,7 @@ namespace DragonFruit.Sakura
             builder.Services.AddScoped<WikiRenderer>();
             builder.Services.AddScoped<SakuraClient, SakuraWasmClient>();
 
-            await builder.Build().RunAsync();
+            return builder.Build().RunAsync();
         }
     }
 }

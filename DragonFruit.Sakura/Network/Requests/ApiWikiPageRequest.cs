@@ -3,15 +3,10 @@
 
 namespace DragonFruit.Sakura.Network.Requests
 {
-    public class ApiWikiPageRequest : YunaApiRequest
+    public partial class ApiWikiPageRequest(string pagePath) : YunaApiRequest
     {
         protected override string Stub => $"/wiki/en/{PagePath?.TrimStart('/')}";
 
-        public ApiWikiPageRequest(string pagePath)
-        {
-            PagePath = pagePath;
-        }
-
-        public string PagePath { get; }
+        public string PagePath { get; } = pagePath;
     }
 }

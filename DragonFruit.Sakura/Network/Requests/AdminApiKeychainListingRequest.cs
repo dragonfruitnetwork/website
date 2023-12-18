@@ -1,19 +1,19 @@
 ﻿// DragonFruit Sakura Copyright (c) DragonFruit Network <inbox@dragonfruit.network>
 // Licensed under GNU AGPLv3. Refer to the LICENSE file for more info
 
-using DragonFruit.Data.Parameters;
+using DragonFruit.Data.Requests;
 
 namespace DragonFruit.Sakura.Network.Requests
 {
-    public class AdminApiKeychainListingRequest : YunaApiRequest
+    public partial class AdminApiKeychainListingRequest : YunaApiRequest
     {
         protected override string Stub => "/users/me/keychain";
-        protected override bool RequireAuth => true;
+        protected internal override bool RequiresAuthentication => true;
 
-        [QueryParameter("offset")]
+        [RequestParameter(ParameterType.Query, "offset")]
         public int? Offset { get; set; }
 
-        [QueryParameter("limit")]
+        [RequestParameter(ParameterType.Query, "limit")]
         public int? Limit { get; set; }
     }
 }

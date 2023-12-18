@@ -8,15 +8,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MudBlazor.Services;
-using Serilog;
-using Serilog.Events;
-using Serilog.Sinks.SystemConsole.Themes;
+using Sentry;
 
 namespace DragonFruit.Sakura.Host
 {
     public static class Program
     {
-        public static async Task Main(string[] args)
+        public static Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -27,21 +25,24 @@ namespace DragonFruit.Sakura.Host
             // enable _content files
             builder.WebHost.UseStaticWebAssets();
 
-            builder.Logging.ClearProviders();
-            builder.Logging.AddSerilog(new LoggerConfiguration()
-                                       .MinimumLevel.Debug()
-                                       .WriteTo.Console(theme: AnsiConsoleTheme.Literate)
-                                       .WriteTo.Sentry(o =>
-                                       {
-                                           o.Dsn = builder.Configuration["Sentry:Dsn"];
+            builder.Logging.ClearProviders()
+                   .AddSimpleConsole(o =>
+                   {
+                       o.SingleLine = true;
+                       o.IncludeScopes = false;
+                       o.TimestampFormat = "[dd/MM/yyyy hh:mm:ss] ";
+                   })
+                   .AddSentry(o =>
+                   {
+                       o.Dsn = builder.Configuration["Sentry:Dsn"];
+                       o.Release = Assembly.GetExecutingAssembly().GetName().Version!.ToString(3);
 
-                                           o.MaxBreadcrumbs = 50;
-                                           o.MinimumEventLevel = LogEventLevel.Error;
-                                           o.MinimumBreadcrumbLevel = LogEventLevel.Debug;
+                       o.MaxBreadcrumbs = 50;
+                       o.MinimumEventLevel = LogLevel.Error;
+                       o.MinimumBreadcrumbLevel = LogLevel.Debug;
 
-                                           var version = Assembly.GetExecutingAssembly().GetName().Version;
-                                           o.Release = version?.ToString(version.Build > 0 ? 3 : 2);
-                                       }).CreateLogger(), true);
+                       o.DisableUnobservedTaskExceptionCapture();
+                   });
 
             builder.Services.AddApiAuthorization();
             builder.Services.AddHttpContextAccessor();
@@ -62,7 +63,7 @@ namespace DragonFruit.Sakura.Host
             app.MapFallbackToController("Host", "Blazor");
             app.MapFallbackToController("/changelogs/{app}/{version}", "Host", "Blazor");
 
-            await app.RunAsync().ConfigureAwait(false);
+            return app.RunAsync();
         }
     }
 }

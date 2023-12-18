@@ -1,32 +1,26 @@
 ﻿// DragonFruit Sakura Copyright (c) DragonFruit Network <inbox@dragonfruit.network>
 // Licensed under GNU AGPLv3. Refer to the LICENSE file for more info
 
-using DragonFruit.Data;
-using DragonFruit.Data.Extensions;
 using DragonFruit.Sakura.Network.Requests;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace DragonFruit.Sakura.Network
 {
-    public class SakuraWasmClient : SakuraClient
+    public class SakuraWasmClient(IAccessTokenProvider token) : SakuraClient
     {
-        private readonly IAccessTokenProvider _token;
         private AccessToken _lastToken;
-
-        public SakuraWasmClient(IAccessTokenProvider token)
-        {
-            _token = token;
-        }
 
         public override bool IsServerSide => false;
 
-        protected override async Task ValidateRequest(ApiRequest request)
+        protected override HttpClient CreateClient() => new();
+
+        internal async ValueTask EnsureAuthenticatedAsync(YunaApiRequest request)
         {
-            if (request is YunaApiRequest { RequiresInteractiveToken: true })
+            if (request.RequiresAuthentication)
             {
                 if (_lastToken == null || _lastToken.Expires.Subtract(DateTimeOffset.Now) < TimeSpan.FromMinutes(5))
                 {
-                    var newToken = await _token.RequestAccessToken().ConfigureAwait(false);
+                    var newToken = await token.RequestAccessToken().ConfigureAwait(false);
 
                     if (!newToken.TryGetToken(out _lastToken))
                     {
@@ -34,10 +28,8 @@ namespace DragonFruit.Sakura.Network
                     }
                 }
 
-                request.WithAuthHeader($"Bearer {_lastToken.Value}");
+                request.AuthenticationToken = $"Bearer {_lastToken.Value}";
             }
-
-            await base.ValidateRequest(request).ConfigureAwait(false);
         }
     }
 }

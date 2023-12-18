@@ -1,18 +1,16 @@
 ﻿// DragonFruit Sakura Copyright (c) DragonFruit Network <inbox@dragonfruit.network>
 // Licensed under GNU AGPLv3. Refer to the LICENSE file for more info
 
-using DragonFruit.Data;
-using DragonFruit.Data.Parameters;
+using DragonFruit.Data.Requests;
 
 namespace DragonFruit.Sakura.Network.Requests
 {
-    public class AdminApiChangelogModificationEditRequest : YunaApiRequest
+    public partial class AdminApiChangelogModificationEditRequest : YunaApiRequest
     {
+        public override HttpMethod RequestMethod => HttpMethod.Patch;
         protected override string Stub => $"/{AppId}/changelogs/{Version}/modifications/{Modification.Id}";
-        protected override bool RequireAuth => true;
 
-        protected override Methods Method => Methods.Patch;
-        protected override BodyType BodyType => BodyType.SerializedProperty;
+        protected internal override bool RequiresAuthentication => true;
 
         public AdminApiChangelogModificationEditRequest(string appId, string version, ApiChangelogModification modification)
         {
