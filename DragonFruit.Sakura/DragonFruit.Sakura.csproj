@@ -7,6 +7,13 @@
     </PropertyGroup>
     
     <PropertyGroup>
+        <Title>DragonFruit Sakura</Title>
+        <Authors>DragonFruit Network</Authors>
+        <Copyright>Copyright (c) DragonFruit Network</Copyright>
+        <Description>The face of DragonFruit Network</Description>
+    </PropertyGroup>
+    
+    <PropertyGroup>
         <PackageIcon>icon.png</PackageIcon>
         <PackageId>DragonFruit.Sakura</PackageId>
         <PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
