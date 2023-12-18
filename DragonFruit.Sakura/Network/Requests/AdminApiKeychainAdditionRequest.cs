@@ -1,17 +1,17 @@
 ﻿// DragonFruit Sakura Copyright (c) DragonFruit Network <inbox@dragonfruit.network>
 // Licensed under GNU AGPLv3. Refer to the LICENSE file for more info
 
-using DragonFruit.Data;
+using DragonFruit.Data.Requests;
 
 namespace DragonFruit.Sakura.Network.Requests
 {
-    public class AdminApiKeychainAdditionRequest : YunaApiRequest
+    [FormBodyType(FormBodyType.Multipart)]
+    public partial class AdminApiKeychainAdditionRequest : YunaApiRequest
     {
+        public override HttpMethod RequestMethod => HttpMethod.Post;
         protected override string Stub => "/users/me/keychain";
-        protected override bool RequireAuth => true;
 
-        protected override Methods Method => Methods.Post;
-        protected override BodyType BodyType => BodyType.Custom;
+        protected internal override bool RequiresAuthentication => true;
 
         public AdminApiKeychainAdditionRequest(Stream pemFile, DateTime? expiry)
         {
@@ -19,23 +19,10 @@ namespace DragonFruit.Sakura.Network.Requests
             Expiry = expiry;
         }
 
+        [RequestParameter(ParameterType.Form, "pem")]
         public Stream PublicKey { get; }
+
+        [RequestParameter(ParameterType.Form, "expiry")]
         public DateTime? Expiry { get; }
-
-        protected override HttpContent BodyContent
-        {
-            get
-            {
-                var multipartBody = new MultipartFormDataContent();
-                multipartBody.Add(new StreamContent(PublicKey), "pem", "file.pem");
-
-                if (Expiry.HasValue)
-                {
-                    multipartBody.Add(new StringContent(Expiry.Value.ToString("O")), "expiry");
-                }
-
-                return multipartBody;
-            }
-        }
     }
 }

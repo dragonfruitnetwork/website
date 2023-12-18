@@ -1,17 +1,16 @@
 ﻿// DragonFruit Sakura Copyright (c) DragonFruit Network <inbox@dragonfruit.network>
 // Licensed under GNU AGPLv3. Refer to the LICENSE file for more info
 
-using DragonFruit.Data;
-using DragonFruit.Data.Parameters;
+using DragonFruit.Data.Requests;
 
 namespace DragonFruit.Sakura.Network.Requests
 {
-    public class AdminApiDistributionActiveReleaseRequest : YunaApiRequest
+    public partial class AdminApiDistributionActiveReleaseRequest : YunaApiRequest
     {
+        public override HttpMethod RequestMethod => HttpMethod.Put;
         protected override string Stub => $"/{AppId}/dist/{BranchName}/releases/active";
-        protected override bool RequireAuth => true;
 
-        protected override Methods Method => Methods.Put;
+        protected internal override bool RequiresAuthentication => true;
 
         public AdminApiDistributionActiveReleaseRequest(string appId, string branchName, int activeReleaseId)
         {
@@ -23,10 +22,10 @@ namespace DragonFruit.Sakura.Network.Requests
         public string AppId { get; }
         public string BranchName { get; }
 
-        [FormParameter("release_id")]
+        [RequestParameter(ParameterType.Form, "release_id")]
         public int ActiveReleaseId { get; }
 
-        [FormParameter("force")]
+        [RequestParameter(ParameterType.Form, "force")]
         protected bool Force => true;
     }
 }

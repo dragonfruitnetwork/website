@@ -1,16 +1,14 @@
 ﻿// DragonFruit Sakura Copyright (c) DragonFruit Network <inbox@dragonfruit.network>
 // Licensed under GNU AGPLv3. Refer to the LICENSE file for more info
 
-using DragonFruit.Data;
-
 namespace DragonFruit.Sakura.Network.Requests
 {
-    public class AdminApiKeychainDeletionRequest : YunaApiRequest
+    public partial class AdminApiKeychainDeletionRequest : YunaApiRequest
     {
+        public override HttpMethod RequestMethod => HttpMethod.Delete;
         protected override string Stub => $"/users/me/keychain/{KeyId}";
-        protected override bool RequireAuth => true;
 
-        protected override Methods Method => Methods.Delete;
+        protected internal override bool RequiresAuthentication => true;
 
         public AdminApiKeychainDeletionRequest(string keyId)
         {

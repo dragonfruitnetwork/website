@@ -3,10 +3,9 @@
 
 namespace DragonFruit.Sakura.Network.Requests
 {
-    public class AdminApiChangelogVersionListingRequest : YunaApiRequest
+    public partial class AdminApiChangelogVersionListingRequest : YunaApiRequest
     {
         protected override string Stub => $"/{AppId}/changelogs/list";
-        protected override bool RequireAuth => true;
 
         public AdminApiChangelogVersionListingRequest(string appId)
         {

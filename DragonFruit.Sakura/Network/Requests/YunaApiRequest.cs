@@ -2,23 +2,35 @@
 // Licensed under GNU AGPLv3. Refer to the LICENSE file for more info
 
 using DragonFruit.Data;
+using DragonFruit.Data.Requests;
 
 namespace DragonFruit.Sakura.Network.Requests
 {
-    public abstract class YunaApiRequest : ApiRequest
+    public abstract class YunaApiRequest : ApiRequest, IAsyncRequestExecutingCallback
     {
-        public override string Path => $"{BaseUrlOverride.TrimEnd('/')}/{Stub.TrimStart('/')}";
-
-        /// <summary>
-        /// The base url to override. This will be set by the requesting client if not set.
-        /// </summary>
-        internal string BaseUrlOverride { get; set; }
+        public override string RequestPath => $"https://api.dragonfruit.network/{Stub.TrimStart('/')}";
 
         /// <summary>
         /// The request path.
         /// </summary>
         protected abstract string Stub { get; }
 
-        internal bool RequiresInteractiveToken => RequireAuth;
+        /// <summary>
+        /// Whether the request requires authentication.
+        /// </summary>
+        protected internal virtual bool RequiresAuthentication => false;
+
+        [RequestParameter(ParameterType.Header, "Authorization")]
+        protected internal string AuthenticationToken { get; set; }
+
+        public ValueTask OnRequestExecuting(ApiClient client)
+        {
+            if (client is SakuraWasmClient wasmClient)
+            {
+                return wasmClient.EnsureAuthenticatedAsync(this);
+            }
+
+            return ValueTask.CompletedTask;
+        }
     }
 }
