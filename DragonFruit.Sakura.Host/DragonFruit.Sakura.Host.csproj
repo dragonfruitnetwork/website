@@ -14,7 +14,6 @@
       <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0" />
       <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.0" />
       <PackageReference Include="Sentry.Extensions.Logging" Version="3.41.3" />
-      <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
     </ItemGroup>
 
 </Project>
