@@ -49,6 +49,11 @@
                 <MudStack Row="true" AlignItems="AlignItems.Start">
                     <OnionFruitStatusCard Title="Tor Network" Value="@title" Colour="@colour"/>
                     <OnionFruitStatusCard Title="Country" Value="@ConnectionInfo?.CountryName"/>
+
+                    @if (!string.IsNullOrEmpty(ConnectionInfo?.ASName))
+                    {
+                        <OnionFruitStatusCard Title="Service Provider" Value="@ConnectionInfo.ASName"/>
+                    }
                 </MudStack>
             </MudStack>
         </MudStack>
