@@ -51,13 +51,6 @@
             </RowTemplate>
         </MudTable>
     </MudPaper>
-
-    @if (Database != null)
-    {
-        <MudText Typo="Typo.caption" Class="my-3">
-            Database Built @(DateTimeOffset.FromUnixTimeSeconds(Database.DbVersion).ToLocalTime().ToString("f")) @(Database.DbVersion)
-        </MudText>
-    }
 </MudContainer>
 
 <SakuraFooter/>
