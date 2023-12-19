@@ -3,9 +3,9 @@
 
 namespace DragonFruit.Sakura.Network.Requests
 {
-    public partial class ApiChangelogsRequest(string appId, string versionName) : YunaApiRequest
+    public partial class ChangelogsRequest(string appId, string versionName) : YunaApiRequest
     {
-        protected override string Stub => $"/{AppId}/changelogs/{VersionName}";
+        protected override string Stub => AppId == null ? "/changelogs/latest" : $"/{AppId}/changelogs/{VersionName}";
 
         public string AppId { get; } = appId;
         public string VersionName { get; } = versionName ?? "latest";

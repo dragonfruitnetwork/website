@@ -5,7 +5,7 @@ using DragonFruit.Data.Requests;
 
 namespace DragonFruit.Sakura.Network.Requests
 {
-    public partial class AdminApiChangelogsCreationRequest(string appId, ApiChangelogRelease release) : YunaApiRequest
+    public partial class ChangelogsCreationRequest(string appId, ApiChangelogRelease release) : YunaApiRequest
     {
         public override HttpMethod RequestMethod => HttpMethod.Post;
         protected override string Stub => $"/{AppId}/changelogs";

@@ -21,7 +21,7 @@ namespace DragonFruit.Sakura.OnionFruit
                 return;
             }
 
-            NodeCountries = await Client.PerformAsync<IReadOnlyCollection<OnionCountryInfo>>(new OnionCountryInfoRequest()).ConfigureAwait(false);
+            NodeCountries = await Client.PerformAsync<IReadOnlyCollection<OnionCountryInfo>>(new OnionFruitDatabaseRequest()).ConfigureAwait(false);
         }
     }
 }

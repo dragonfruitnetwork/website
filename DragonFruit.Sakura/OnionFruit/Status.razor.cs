@@ -23,7 +23,7 @@ namespace DragonFruit.Sakura.OnionFruit
                 return;
             }
 
-            ConnectionInfo = await Client.PerformAsync<ApiGeolocationInfo>(new ApiGeolocationInfoRequest()).ConfigureAwait(false);
+            ConnectionInfo = await Client.PerformAsync<ApiGeolocationInfo>(new OnionFruitStatusRequest()).ConfigureAwait(false);
         }
 
         private (string icon, string title, string colour) GetConnectionDisplay() => ConnectionInfo?.IsConnectedToTor switch

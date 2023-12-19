@@ -5,8 +5,8 @@ using DragonFruit.Data;
 
 namespace DragonFruit.Sakura.Network.Requests
 {
-    public partial class OnionCountryInfoRequest : ApiRequest
+    public partial class OnionFruitStatusRequest : ApiRequest
     {
-        public override string RequestPath => "https://onioncdn.dragonfruit.network/country-details.json";
+        public override string RequestPath => "https://onionfruit-api.dragonfruit.network/connectionstatus";
     }
 }

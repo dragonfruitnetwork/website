@@ -3,14 +3,14 @@
 
 namespace DragonFruit.Sakura.Network.Requests
 {
-    public partial class AdminApiKeychainDeletionRequest : YunaApiRequest
+    public partial class KeychainItemDeletionRequest : YunaApiRequest
     {
         public override HttpMethod RequestMethod => HttpMethod.Delete;
         protected override string Stub => $"/users/me/keychain/{KeyId}";
 
         protected internal override bool RequiresAuthentication => true;
 
-        public AdminApiKeychainDeletionRequest(string keyId)
+        public KeychainItemDeletionRequest(string keyId)
         {
             KeyId = keyId;
         }

@@ -5,24 +5,17 @@ using DragonFruit.Data.Requests;
 
 namespace DragonFruit.Sakura.Network.Requests
 {
-    public partial class AdminApiChangelogModificationEditRequest : YunaApiRequest
+    public partial class ChangelogModificationEditRequest(string appId, string version, ApiChangelogModification modification) : YunaApiRequest
     {
         public override HttpMethod RequestMethod => HttpMethod.Patch;
         protected override string Stub => $"/{AppId}/changelogs/{Version}/modifications/{Modification.Id}";
 
         protected internal override bool RequiresAuthentication => true;
 
-        public AdminApiChangelogModificationEditRequest(string appId, string version, ApiChangelogModification modification)
-        {
-            AppId = appId;
-            Version = version;
-            Modification = modification;
-        }
-
-        public string AppId { get; }
-        public string Version { get; }
+        public string AppId { get; } = appId;
+        public string Version { get; } = version;
 
         [RequestBody]
-        public ApiChangelogModification Modification { get; }
+        public ApiChangelogModification Modification { get; } = modification;
     }
 }

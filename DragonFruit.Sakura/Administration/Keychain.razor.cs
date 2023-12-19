@@ -33,7 +33,7 @@ namespace DragonFruit.Sakura.Administration
             if (!AllowLoadingMoreKeys)
                 return;
 
-            var request = new AdminApiKeychainListingRequest { Limit = PageSize, Offset = (_currentPage++ - 1) * PageSize };
+            var request = new KeychainListingRequest { Limit = PageSize, Offset = (_currentPage++ - 1) * PageSize };
             var nextPageContents = await Client.PerformAsync<IReadOnlyCollection<ApiUserKeychainEntry>>(request).ConfigureAwait(false);
 
             Keys.AddRange(nextPageContents);
@@ -42,7 +42,7 @@ namespace DragonFruit.Sakura.Administration
 
         private async Task AddKey(InputFileChangeEventArgs args)
         {
-            var request = new AdminApiKeychainAdditionRequest(args.File.OpenReadStream(80000), NewKeyExpiry);
+            var request = new KeychainItemAdditionRequest(args.File.OpenReadStream(80000), NewKeyExpiry);
             var newKey = await Client.PerformAsync<ApiUserKeychainEntry>(request).ConfigureAwait(false);
 
             Keys.Add(newKey);
@@ -55,7 +55,7 @@ namespace DragonFruit.Sakura.Administration
                 return;
             }
 
-            using var response = await Client.PerformAsync(new AdminApiKeychainDeletionRequest(key.KeyId)).ConfigureAwait(false);
+            using var response = await Client.PerformAsync(new KeychainItemDeletionRequest(key.KeyId)).ConfigureAwait(false);
 
             if (response.IsSuccessStatusCode)
             {

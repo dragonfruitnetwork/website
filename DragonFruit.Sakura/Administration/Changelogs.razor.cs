@@ -31,7 +31,7 @@ namespace DragonFruit.Sakura.Administration
 
         protected override async Task OnParametersSetAsync()
         {
-            var versionsRequest = new AdminApiChangelogVersionListingRequest(TargetApp.Id);
+            var versionsRequest = new ChangelogVersionListingRequest(TargetApp.Id);
             var releases = await Client.PerformAsync<IReadOnlyCollection<ApiChangelogRelease>>(versionsRequest).ConfigureAwait(false);
 
             VersionHints = releases.Select(x => x.VersionName).ToList();
@@ -65,7 +65,7 @@ namespace DragonFruit.Sakura.Administration
         {
             try
             {
-                var changelogs = new ApiChangelogsRequest(TargetApp.Id, RequestVersion);
+                var changelogs = new ChangelogsRequest(TargetApp.Id, RequestVersion);
 
                 Target = await Client.PerformAsync<ApiChangelogRelease>(changelogs).ConfigureAwait(false);
                 IsTargetNew = false;
@@ -89,7 +89,7 @@ namespace DragonFruit.Sakura.Administration
 
             Target.Release = DateTime.UtcNow;
 
-            var request = new AdminApiChangelogsCreationRequest(TargetApp.Id, Target);
+            var request = new ChangelogsCreationRequest(TargetApp.Id, Target);
             Target = await Client.PerformAsync<ApiChangelogRelease>(request).ConfigureAwait(false);
 
             IsTargetNew = false;
@@ -101,7 +101,7 @@ namespace DragonFruit.Sakura.Administration
             // todo add confirmation
             if (!IsTargetNew)
             {
-                var deletionRequest = new AdminApiChangelogsDeletionRequest(TargetApp.Id, Target.VersionName);
+                var deletionRequest = new ChangelogsDeletionRequest(TargetApp.Id, Target.VersionName);
                 using var deletionResponse = await Client.PerformAsync(deletionRequest);
                 deletionResponse.EnsureSuccessStatusCode();
             }
@@ -115,8 +115,8 @@ namespace DragonFruit.Sakura.Administration
                 throw new InvalidCastException($"{nameof(SaveModification)} can only be called on live changelog releases");
 
             var request = modification.Id > 0
-                ? new AdminApiChangelogModificationEditRequest(Target.AppId, Target.VersionName, modification)
-                : new AdminApiChangelogModificationCreationRequest(Target.AppId, Target.VersionName, modification) as YunaApiRequest;
+                ? new ChangelogModificationEditRequest(Target.AppId, Target.VersionName, modification)
+                : new ChangelogModificationCreationRequest(Target.AppId, Target.VersionName, modification) as YunaApiRequest;
 
             var newModification = await Client.PerformAsync<ApiChangelogModification>(request).ConfigureAwait(false);
 
@@ -129,7 +129,7 @@ namespace DragonFruit.Sakura.Administration
             if (modification.Id > 1)
             {
                 // if the id is non-zero, it is on the server and needs to be deleted there first
-                var request = new AdminApiChangelogModificationDeletionRequest(Target.AppId, Target.VersionName, modification.Id);
+                var request = new ChangelogModificationDeletionRequest(Target.AppId, Target.VersionName, modification.Id);
                 using var response = await Client.PerformAsync(request).ConfigureAwait(false);
 
                 response.EnsureSuccessStatusCode();

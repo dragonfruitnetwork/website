@@ -3,15 +3,10 @@
 
 namespace DragonFruit.Sakura.Network.Requests
 {
-    public partial class AdminApiChangelogVersionListingRequest : YunaApiRequest
+    public partial class ChangelogVersionListingRequest(string appId) : YunaApiRequest
     {
         protected override string Stub => $"/{AppId}/changelogs/list";
 
-        public AdminApiChangelogVersionListingRequest(string appId)
-        {
-            AppId = appId;
-        }
-
-        public string AppId { get; }
+        public string AppId { get; } = appId;
     }
 }
