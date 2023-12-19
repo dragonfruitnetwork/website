@@ -33,7 +33,7 @@ namespace DragonFruit.Sakura.Administration
             Branches = null;
             SelectedBranch = null;
 
-            var request = new AdminApiDistributionBranchesRequest(TargetApp.Id);
+            var request = new DistributionBranchesRequest(TargetApp.Id);
             Branches = await Client.PerformAsync<IList<ApiDistributionBranch>>(request).ConfigureAwait(false);
 
             // load first branch in to fill page with data
@@ -44,13 +44,13 @@ namespace DragonFruit.Sakura.Administration
         {
             SelectedBranch = null;
 
-            var request = new AdminApiDistributionBranchRequest(TargetApp.Id, branch.Name);
+            var request = new DistributionBranchRequest(TargetApp.Id, branch.Name);
             SelectedBranch = await Client.PerformAsync<ApiDistributionBranch>(request).ConfigureAwait(false);
         }
 
         private async Task CreateBranch(string name)
         {
-            var request = new AdminApiDistributionBranchCreationRequest(TargetApp.Id, name);
+            var request = new DistributionBranchCreationRequest(TargetApp.Id, name);
             var branch = await Client.PerformAsync<ApiDistributionBranch>(request).ConfigureAwait(false);
 
             Branches.Add(branch);
@@ -58,7 +58,7 @@ namespace DragonFruit.Sakura.Administration
 
         private async Task DeleteBranch(ApiDistributionBranch branch)
         {
-            var request = new AdminApiDistributionBranchDeletionRequest(TargetApp.Id, branch.Name);
+            var request = new DistributionBranchDeletionRequest(TargetApp.Id, branch.Name);
             using var response = await Client.PerformAsync(request).ConfigureAwait(false);
 
             if (response.IsSuccessStatusCode)
@@ -69,7 +69,7 @@ namespace DragonFruit.Sakura.Administration
 
         private async Task PromoteRelease(ApiDistributionRelease release)
         {
-            var request = new AdminApiDistributionActiveReleaseRequest(TargetApp.Id, SelectedBranch.Name, release.Id);
+            var request = new DistributionActiveReleaseRequest(TargetApp.Id, SelectedBranch.Name, release.Id);
             using var response = await Client.PerformAsync(request).ConfigureAwait(false);
 
             if (response.StatusCode == HttpStatusCode.OK)
@@ -89,7 +89,7 @@ namespace DragonFruit.Sakura.Administration
                 return;
             }
 
-            var request = new AdminApiDistributionReleaseDeletionRequest(TargetApp.Id, SelectedBranch.Name, release.Id);
+            var request = new DistributionReleaseDeletionRequest(TargetApp.Id, SelectedBranch.Name, release.Id);
             using var response = await Client.PerformAsync(request).ConfigureAwait(false);
 
             if (response.IsSuccessStatusCode)

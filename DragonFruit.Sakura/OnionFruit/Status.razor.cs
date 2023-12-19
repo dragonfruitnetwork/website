@@ -13,7 +13,7 @@ namespace DragonFruit.Sakura.OnionFruit
         [Inject]
         private SakuraClient Client { get; set; }
 
-        public ApiGeolocationInfo ConnectionInfo { get; set; }
+        public OnionFruitGeolocationInfo ConnectionInfo { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -23,7 +23,7 @@ namespace DragonFruit.Sakura.OnionFruit
                 return;
             }
 
-            ConnectionInfo = await Client.PerformAsync<ApiGeolocationInfo>(new ApiGeolocationInfoRequest()).ConfigureAwait(false);
+            ConnectionInfo = await Client.PerformAsync<OnionFruitGeolocationInfo>(new OnionFruitStatusRequest()).ConfigureAwait(false);
         }
 
         private (string icon, string title, string colour) GetConnectionDisplay() => ConnectionInfo?.IsConnectedToTor switch

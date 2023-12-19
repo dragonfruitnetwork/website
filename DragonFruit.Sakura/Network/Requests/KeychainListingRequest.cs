@@ -5,7 +5,7 @@ using DragonFruit.Data.Requests;
 
 namespace DragonFruit.Sakura.Network.Requests
 {
-    public partial class AdminApiKeychainListingRequest : YunaApiRequest
+    public partial class KeychainListingRequest : YunaApiRequest
     {
         protected override string Stub => "/users/me/keychain";
         protected internal override bool RequiresAuthentication => true;

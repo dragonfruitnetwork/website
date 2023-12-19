@@ -3,22 +3,15 @@
 
 namespace DragonFruit.Sakura.Network.Requests
 {
-    public partial class AdminApiDistributionReleaseDeletionRequest : YunaApiRequest
+    public partial class DistributionReleaseDeletionRequest(string appId, string branchName, int releaseId) : YunaApiRequest
     {
         public override HttpMethod RequestMethod => HttpMethod.Delete;
         protected override string Stub => $"/{AppId}/dist/{BranchName}/releases/{ReleaseId}";
 
         protected internal override bool RequiresAuthentication => true;
 
-        public AdminApiDistributionReleaseDeletionRequest(string appId, string branchName, int releaseId)
-        {
-            AppId = appId;
-            BranchName = branchName;
-            ReleaseId = releaseId;
-        }
-
-        public string AppId { get; }
-        public string BranchName { get; }
-        public int ReleaseId { get; }
+        public string AppId { get; } = appId;
+        public string BranchName { get; } = branchName;
+        public int ReleaseId { get; } = releaseId;
     }
 }

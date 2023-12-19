@@ -6,23 +6,17 @@ using DragonFruit.Data.Requests;
 namespace DragonFruit.Sakura.Network.Requests
 {
     [FormBodyType(FormBodyType.Multipart)]
-    public partial class AdminApiKeychainAdditionRequest : YunaApiRequest
+    public partial class KeychainItemAdditionRequest(Stream pemFile, DateTime? expiry) : YunaApiRequest
     {
         public override HttpMethod RequestMethod => HttpMethod.Post;
         protected override string Stub => "/users/me/keychain";
 
         protected internal override bool RequiresAuthentication => true;
 
-        public AdminApiKeychainAdditionRequest(Stream pemFile, DateTime? expiry)
-        {
-            PublicKey = pemFile;
-            Expiry = expiry;
-        }
-
         [RequestParameter(ParameterType.Form, "pem")]
-        public Stream PublicKey { get; }
+        public Stream PublicKey { get; } = pemFile;
 
         [RequestParameter(ParameterType.Form, "expiry")]
-        public DateTime? Expiry { get; }
+        public DateTime? Expiry { get; } = expiry;
     }
 }

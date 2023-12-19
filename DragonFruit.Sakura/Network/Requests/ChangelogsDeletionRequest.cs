@@ -3,7 +3,7 @@
 
 namespace DragonFruit.Sakura.Network.Requests
 {
-    public partial class AdminApiChangelogsDeletionRequest(string appId, string versionName) : YunaApiRequest
+    public partial class ChangelogsDeletionRequest(string appId, string versionName) : YunaApiRequest
     {
         public override HttpMethod RequestMethod => HttpMethod.Delete;
         protected override string Stub => $"/{AppId}/changelogs/{VersionName}";

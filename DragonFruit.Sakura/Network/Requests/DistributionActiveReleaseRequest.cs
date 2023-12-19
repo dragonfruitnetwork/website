@@ -5,25 +5,18 @@ using DragonFruit.Data.Requests;
 
 namespace DragonFruit.Sakura.Network.Requests
 {
-    public partial class AdminApiDistributionActiveReleaseRequest : YunaApiRequest
+    public partial class DistributionActiveReleaseRequest(string appId, string branchName, int activeReleaseId) : YunaApiRequest
     {
         public override HttpMethod RequestMethod => HttpMethod.Put;
         protected override string Stub => $"/{AppId}/dist/{BranchName}/releases/active";
 
         protected internal override bool RequiresAuthentication => true;
 
-        public AdminApiDistributionActiveReleaseRequest(string appId, string branchName, int activeReleaseId)
-        {
-            AppId = appId;
-            BranchName = branchName;
-            ActiveReleaseId = activeReleaseId;
-        }
-
-        public string AppId { get; }
-        public string BranchName { get; }
+        public string AppId { get; } = appId;
+        public string BranchName { get; } = branchName;
 
         [RequestParameter(ParameterType.Form, "release_id")]
-        public int ActiveReleaseId { get; }
+        public int ActiveReleaseId { get; } = activeReleaseId;
 
         [RequestParameter(ParameterType.Form, "force")]
         protected bool Force => true;

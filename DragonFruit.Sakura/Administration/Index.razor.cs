@@ -40,7 +40,7 @@ namespace DragonFruit.Sakura.Administration
 
         protected override async Task OnInitializedAsync()
         {
-            Apps = await Client.PerformAsync<IReadOnlyList<ApiAppInfo>>(new AdminApiAppsListingRequest()).ConfigureAwait(false);
+            Apps = await Client.PerformAsync<IReadOnlyList<ApiAppInfo>>(new AppsListingRequest()).ConfigureAwait(false);
             Name = await AuthenticationStateProvider.GetAuthenticationStateAsync().ContinueWith(t => t.Result.User.Identity?.Name).ConfigureAwait(false);
         }
     }

@@ -43,7 +43,7 @@ namespace DragonFruit.Sakura.Wiki
 
             try
             {
-                var request = new ApiWikiPageRequest(Path);
+                var request = new WikiPageRequest(Path);
 
                 PageMetadata = await Client.PerformAsync<ApiWikiPage>(request).ConfigureAwait(false);
                 PageContent = Renderer.ProcessPage(PageMetadata);

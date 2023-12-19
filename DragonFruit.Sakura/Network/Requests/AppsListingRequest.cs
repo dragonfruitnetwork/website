@@ -3,8 +3,10 @@
 
 namespace DragonFruit.Sakura.Network.Requests
 {
-    public partial class ApiGeolocationInfoRequest : YunaApiRequest
+    public partial class AppsListingRequest : YunaApiRequest
     {
-        protected override string Stub => "/onionfruit/status";
+        protected override string Stub => "/apps";
+
+        protected internal override bool RequiresAuthentication => true;
     }
 }

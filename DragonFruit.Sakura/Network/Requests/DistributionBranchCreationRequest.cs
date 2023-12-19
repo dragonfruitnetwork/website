@@ -5,17 +5,16 @@ using DragonFruit.Data.Requests;
 
 namespace DragonFruit.Sakura.Network.Requests
 {
-    public partial class AdminApiChangelogModificationCreationRequest(string appId, string version, ApiChangelogModification modification) : YunaApiRequest
+    public partial class DistributionBranchCreationRequest(string appId, string branchName) : YunaApiRequest
     {
         public override HttpMethod RequestMethod => HttpMethod.Post;
-        protected override string Stub => $"/{AppId}/changelogs/{Version}/modifications";
+        protected override string Stub => $"/{AppId}/dist/branches";
 
         protected internal override bool RequiresAuthentication => true;
 
         public string AppId { get; } = appId;
-        public string Version { get; } = version;
 
-        [RequestBody]
-        public ApiChangelogModification Modification { get; } = modification;
+        [RequestParameter(ParameterType.Form, "name")]
+        public string BranchName { get; } = branchName;
     }
 }

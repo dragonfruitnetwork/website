@@ -1,5 +1,4 @@
 ﻿@page "/onionfruit/countries"
-@using DragonFruit.Sakura.Network
 @using DragonFruit.Sakura.Utils
 
 <PageTitle>OnionFruit&trade; Countries List &middot; DragonFruit Network</PageTitle>
@@ -17,16 +16,16 @@
 <MudStack Spacing="1" Class="my-4" Justify="Justify.Center" AlignItems="AlignItems.Center">
     <SakuraSubheading Text="Countries" Colour="#28a745" Icon="fa-solid fa-globe-americas"/>
     <MudText Align="Align.Center" Typo="Typo.h4">Choose where you would like to go next with OnionFruit&trade; Connect</MudText>
-    <MudText Align="Align.Center">Powered by the <strong>OnionFruit&trade; API</strong> - an open-source Tor® network status library</MudText>
-    <MudButton StartIcon="@Icons.Custom.Brands.GitHub" Color="Color.Success" Href="https://github.com/dragonfruitnetwork/onionfruit-api" Target="_blank" Class="mt-3">
+    <MudText Align="Align.Center">Powered by <strong>onionfruit-web</strong>, providing up-to-date Tor&reg; and geolocation databases for OnionFruit&trade; clients</MudText>
+    <MudButton StartIcon="@Icons.Custom.Brands.GitHub" Color="Color.Success" Href="https://github.com/dragonfruitnetwork/onionfruit-web" Target="_blank" Class="mt-3">
         View on GitHub
     </MudButton>
 </MudStack>
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-4 mb-3">
     <MudPaper Elevation="0" Class="p-4">
-        <MudTable Items="NodeCountries?.Where(x => x.TotalNodeCount >= 5).OrderByDescending(x => x.TotalNodeCount) ?? Enumerable.Empty<OnionCountryInfo>()"
-                  Loading="@(NodeCountries?.Any() != true)"
+        <MudTable Items="Database?.Countries.Where(x => x.TotalNodeCount >= 5).OrderByDescending(x => x.TotalNodeCount) ?? Enumerable.Empty<OnionDbCountry>()"
+                  Loading="@(Database?.Countries.Any() != true)"
                   LoadingProgressColor="Color.Info"
                   Breakpoint="Breakpoint.Sm"
                   ReadOnly="true"
@@ -48,7 +47,7 @@
                 <MudTd DataLabel="Total Servers">@context.TotalNodeCount.ToString("N0")</MudTd>
                 <MudTd DataLabel="Entry Servers">@(context.EntryNodeCount == 0 ? "❌" : context.EntryNodeCount.ToString("N0"))</MudTd>
                 <MudTd DataLabel="Exit Servers">@(context.ExitNodeCount == 0 ? "❌" : context.ExitNodeCount.ToString("N0"))</MudTd>
-                <MudTd DataLabel="Global Share">@((context.GlobalShare * 100).ToString("F2"))%</MudTd>
+                <MudTd DataLabel="Global Share">@(((context.TotalNodeCount / GlobalNodeCount) * 100).ToString("F2"))%</MudTd>
             </RowTemplate>
         </MudTable>
     </MudPaper>

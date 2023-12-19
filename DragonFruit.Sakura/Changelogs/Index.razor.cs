@@ -2,7 +2,6 @@
 // Licensed under GNU AGPLv3. Refer to the LICENSE file for more info
 
 using System.Net;
-using DragonFruit.Data;
 using DragonFruit.Sakura.Network;
 using DragonFruit.Sakura.Network.Requests;
 using Microsoft.AspNetCore.Components;
@@ -35,13 +34,9 @@ namespace DragonFruit.Sakura.Changelogs
                 return;
             }
 
-            var releaseRequest = string.IsNullOrEmpty(AppName)
-                ? new ApiDefaultChangelogsRequest()
-                : new ApiChangelogsRequest(AppName, VersionName) as ApiRequest;
-
             try
             {
-                Release = await Client.PerformAsync<ApiChangelogRelease>(releaseRequest).ConfigureAwait(false);
+                Release = await Client.PerformAsync<ApiChangelogRelease>(new ChangelogsRequest(AppName, VersionName)).ConfigureAwait(false);
             }
             catch (HttpRequestException e) when (e.StatusCode == HttpStatusCode.NotFound)
             {
