@@ -46,7 +46,7 @@ jobs:
         run: dotnet publish -c Release -p:Version=${{ github.event.release.tag_name }} DragonFruit.Sakura
         
       - name: Package Output
-        run: dotnet pack -c Release -p:PackageVersion=${{ github.event.inputs.version }} -o ./packages --no-build DragonFruit.Sakura
+        run: dotnet pack -c Release -p:Version=${{ github.event.release.tag_name }} -o ./packages --no-build DragonFruit.Sakura
         
       - name: Upload Package
         run: dotnet nuget push -s https://nuget.pkg.github.com/dragonfruitnetwork/index.json -k ${{ github.token }} ./packages/*.nupkg
