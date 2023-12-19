@@ -5,14 +5,14 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <IsPackable>true</IsPackable>
     </PropertyGroup>
-    
+
     <PropertyGroup>
         <Title>DragonFruit Sakura</Title>
         <Authors>DragonFruit Network</Authors>
         <Copyright>Copyright (c) DragonFruit Network</Copyright>
         <Description>The face of DragonFruit Network</Description>
     </PropertyGroup>
-    
+
     <PropertyGroup>
         <PackageIcon>icon.png</PackageIcon>
         <PackageId>DragonFruit.Sakura</PackageId>
@@ -22,18 +22,26 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="DragonFruit.Data" Version="0.9.3-beta" />
-        <PackageReference Include="DragonFruit.Data.Roslyn" Version="0.9.3-beta" PrivateAssets="all" />
-        <PackageReference Include="Markdig" Version="0.34.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="8.0.0" />
-        <PackageReference Include="MudBlazor" Version="6.11.1" />
-        <PackageReference Include="Sentry.Extensions.Logging" Version="3.41.3" />
-        <PackageReference Include="SharpYaml" Version="2.1.0" />
+        <PackageReference Include="DragonFruit.Data" Version="0.9.3-beta"/>
+        <PackageReference Include="DragonFruit.Data.Roslyn" Version="0.9.3-beta" PrivateAssets="all"/>
+        <PackageReference Include="Google.Protobuf" Version="3.18.0"/>
+        <PackageReference Include="Grpc.Tools" Version="2.40.0" PrivateAssets="all">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Markdig" Version="0.34.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="8.0.0"/>
+        <PackageReference Include="MudBlazor" Version="6.11.1"/>
+        <PackageReference Include="Sentry.Extensions.Logging" Version="3.41.3"/>
+        <PackageReference Include="SharpYaml" Version="2.1.0"/>
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="..\icon.png" Pack="true" PackagePath="."/>
+        <Protobuf Include="OnionFruit\onionlite.proto" GrpcServices="Client" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="..\icon.png" Pack="true" PackagePath="." Visible="false"/>
     </ItemGroup>
 
 </Project>
