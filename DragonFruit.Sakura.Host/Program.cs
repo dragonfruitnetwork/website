@@ -8,7 +8,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MudBlazor.Services;
-using Sentry;
 
 namespace DragonFruit.Sakura.Host
 {
@@ -34,7 +33,7 @@ namespace DragonFruit.Sakura.Host
                    })
                    .AddSentry(o =>
                    {
-                       o.Dsn = builder.Configuration["Sentry:Dsn"];
+                       o.Dsn = builder.Configuration["Sentry:Dsn"] ?? string.Empty;
                        o.Release = Assembly.GetExecutingAssembly().GetName().Version!.ToString(3);
 
                        o.MaxBreadcrumbs = 50;

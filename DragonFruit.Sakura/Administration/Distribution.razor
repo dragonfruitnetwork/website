@@ -18,12 +18,12 @@
                     <MudSpacer/>
                     @if (release.Id == SelectedBranch.ActiveReleaseId)
                     {
-                        <MudButton Color="Color.Success" StartIcon="@Icons.Rounded.CheckCircle">Active Release</MudButton>
+                        <MudButton Color="Color.Success" StartIcon="@Icons.Material.Rounded.CheckCircle">Active Release</MudButton>
                     }
                     else
                     {
-                        <MudButton Color="Color.Info" StartIcon="@Icons.Rounded.NoiseAware" OnClick="() => PromoteRelease(release)">Promote</MudButton>
-                        <MudButton Color="Color.Error" StartIcon="@Icons.Rounded.DeleteForever" OnClick="() => DeleteRelease(release)">Delete</MudButton>
+                        <MudButton Color="Color.Info" StartIcon="@Icons.Material.Rounded.NoiseAware" OnClick="() => PromoteRelease(release)">Promote</MudButton>
+                        <MudButton Color="Color.Error" StartIcon="@Icons.Material.Rounded.DeleteForever" OnClick="() => DeleteRelease(release)">Delete</MudButton>
                     }
                 </MudStack>
             }

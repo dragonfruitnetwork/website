@@ -58,13 +58,13 @@ else
                 <MudStack Style="min-height: inherit">
                     @if (PageContent?.Stub == true)
                     {
-                        <MudAlert Severity="Severity.Warning" Icon="@Icons.Rounded.PieChart">
+                        <MudAlert Severity="Severity.Warning" Icon="@Icons.Material.Rounded.PieChart">
                             This article is a stub and is waiting for expansion.
                         </MudAlert>
                     }
                     else if (PageContent?.Outdated == true)
                     {
-                        <MudAlert Severity="Severity.Info" Icon="@Icons.Rounded.History">
+                        <MudAlert Severity="Severity.Info" Icon="@Icons.Material.Rounded.History">
                             This article is outdated and needs reviewing to ensure the content is up-to-date.
                         </MudAlert>
                     }
@@ -88,8 +88,8 @@ else
                                     <MudAvatarGroup Max="5" Spacing="2">
                                         @foreach (var author in PageMetadata.Authors)
                                         {
-                                            <MudAvatar Image="@author.AvatarUrl" Size="Size.Small">
-                                                @(string.IsNullOrEmpty(author.AvatarUrl) ? char.ToUpperInvariant(author.Username[0]) : null)
+                                            <MudAvatar Size="Size.Small">
+                                                <MudImage Src="@author.AvatarUrl"/>
                                             </MudAvatar>
                                         }
                                     </MudAvatarGroup>

@@ -17,6 +17,6 @@ namespace DragonFruit.Sakura.Network.Requests
         public Stream PublicKey { get; } = pemFile;
 
         [RequestParameter(ParameterType.Form, "expiry")]
-        public DateTime? Expiry { get; } = expiry;
+        protected string Expiry => expiry?.ToString("u");
     }
 }

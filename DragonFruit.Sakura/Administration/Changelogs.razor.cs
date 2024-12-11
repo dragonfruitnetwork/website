@@ -2,7 +2,6 @@
 // Licensed under GNU AGPLv3. Refer to the LICENSE file for more info
 
 using System.Net;
-using DragonFruit.Data;
 using DragonFruit.Sakura.Network;
 using DragonFruit.Sakura.Network.Requests;
 using Microsoft.AspNetCore.Components;
@@ -37,7 +36,7 @@ namespace DragonFruit.Sakura.Administration
             VersionHints = releases.Select(x => x.VersionName).ToList();
         }
 
-        private Task<IEnumerable<string>> SearchReleases(string searchText)
+        private Task<IEnumerable<string>> SearchReleases(string searchText, CancellationToken cancellationToken)
         {
             if (VersionHints?.Any() != true)
                 return Task.FromResult(Enumerable.Empty<string>());

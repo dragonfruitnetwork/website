@@ -36,12 +36,12 @@ namespace DragonFruit.Sakura.Network
         [JsonIgnore]
         public string Icon => Type switch
         {
-            ChangelogModificationType.Addition => Icons.Rounded.Add,
-            ChangelogModificationType.Fix => Icons.Rounded.Check,
-            ChangelogModificationType.Removal => Icons.Rounded.Remove,
-            ChangelogModificationType.Delayed => Icons.Rounded.AccessTime,
-            ChangelogModificationType.Info => Icons.Rounded.Info,
-            ChangelogModificationType.KnownBug => Icons.Rounded.BugReport,
+            ChangelogModificationType.Addition => Icons.Material.Rounded.Add,
+            ChangelogModificationType.Fix => Icons.Material.Rounded.Check,
+            ChangelogModificationType.Removal => Icons.Material.Rounded.Remove,
+            ChangelogModificationType.Delayed => Icons.Material.Rounded.AccessTime,
+            ChangelogModificationType.Info => Icons.Material.Rounded.Info,
+            ChangelogModificationType.KnownBug => Icons.Material.Rounded.BugReport,
 
             _ => null
         };

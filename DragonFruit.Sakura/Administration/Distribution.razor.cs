@@ -2,7 +2,6 @@
 // Licensed under GNU AGPLv3. Refer to the LICENSE file for more info
 
 using System.Net;
-using DragonFruit.Data;
 using DragonFruit.Sakura.Network;
 using DragonFruit.Sakura.Network.Requests;
 using Microsoft.AspNetCore.Components;

@@ -1,4 +1,5 @@
 ﻿@using DragonFruit.Sakura.Network
+
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
         @if (Client.IsServerSide)
@@ -20,7 +21,7 @@
                 <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center" Spacing="2">
                     <MudText Typo="Typo.h5">Page not found</MudText>
                     <MudText>We couldn't find the requested page...</MudText>
-                    <MudButton Class="mt-3" Href="/" StartIcon="@Icons.Rounded.Home">Go to homepage</MudButton>
+                    <MudButton Class="mt-3" Href="/" StartIcon="@Icons.Material.Rounded.Home">Go to homepage</MudButton>
                 </MudStack>
             </SakuraJumbotron>
         </LayoutView>

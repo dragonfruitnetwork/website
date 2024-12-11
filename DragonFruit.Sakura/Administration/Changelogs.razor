@@ -13,7 +13,7 @@
 
     <MudButton Color="Color.Info"
                OnClick="LoadRelease"
-               StartIcon="@Icons.Rounded.CloudSync">
+               StartIcon="@Icons.Material.Rounded.CloudSync">
         @(VersionHints?.Contains(RequestVersion, StringComparer.OrdinalIgnoreCase) == true ? "Load" : "Validate")
     </MudButton>
 </MudStack>
@@ -38,24 +38,24 @@
                             </MudSelect>
 
                             <MudTextField Label="Title" Variant="Variant.Outlined" @bind-Value="modification.Title"/>
-                            <MudAutocomplete Label="Category" Variant="Variant.Outlined" @bind-Value="modification.Category" CoerceText="true" CoerceValue="true" SearchFunc="s => SearchCategories(modification, s)"/>
+                            <MudAutocomplete Label="Category" Variant="Variant.Outlined" @bind-Value="modification.Category" CoerceText="true" CoerceValue="true" SearchFunc="(s, _) => SearchCategories(modification, s)"/>
                             <MudTextField Label="Description" Variant="Variant.Outlined" Lines="6" @bind-Value="modification.Description"/>
 
                             <MudStack Row="true">
-                                <MudSwitch Color="Color.Primary" Label="Major Change" @bind-Checked="modification.Major"/>
+                                <MudSwitch T="bool" Color="Color.Primary" Label="Major Change" @bind-Value="modification.Major"/>
 
                                 <MudSpacer/>
 
                                 @if (!IsTargetNew)
                                 {
                                     <MudButton Color="Color.Info"
-                                               StartIcon="@Icons.Rounded.Save"
+                                               StartIcon="@Icons.Material.Rounded.Save"
                                                OnClick="() => SaveModification(modification)">
                                         Save
                                     </MudButton>
                                 }
                                 <MudButton Color="Color.Error"
-                                           StartIcon="@Icons.Rounded.Delete"
+                                           StartIcon="@Icons.Material.Rounded.Delete"
                                            OnClick="async () => await DeleteModification(modification)">
                                     Delete
                                 </MudButton>
@@ -68,7 +68,7 @@
 
         <MudStack Row="true" Justify="Justify.FlexEnd">
             <MudButton Color="Color.Success"
-                       StartIcon="@Icons.Rounded.Add"
+                       StartIcon="@Icons.Material.Rounded.Add"
                        OnClick="() => Target.Modifications.Add(DefaultModification)">
                 Add Modification
             </MudButton>
@@ -77,14 +77,14 @@
             {
                 <MudButton Color="Color.Info"
                            OnClick="SaveNewRelease"
-                           StartIcon="@Icons.Rounded.Save">
+                           StartIcon="@Icons.Material.Rounded.Save">
                     Save Release
                 </MudButton>
             }
 
             <MudButton Color="Color.Error"
                        OnClick="DeleteRelease"
-                       StartIcon="@Icons.Rounded.DeleteForever">
+                       StartIcon="@Icons.Material.Rounded.DeleteForever">
                 Delete Release
             </MudButton>
         </MudStack>

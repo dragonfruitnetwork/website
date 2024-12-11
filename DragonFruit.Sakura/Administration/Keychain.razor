@@ -9,7 +9,7 @@
             <MudText>Upload Public Key</MudText>
             <MudSpacer/>
             <MudDatePicker @bind-Date="NewKeyExpiry" Label="Expiry Date"/>
-            <MudButton HtmlTag="label" for="fileInput" Color="Color.Tertiary" StartIcon="@Icons.Filled.CloudUpload">
+            <MudButton HtmlTag="label" for="fileInput" Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.CloudUpload">
                 Submit .pem file
             </MudButton>
         </MudStack>
@@ -20,7 +20,7 @@
             @foreach (var key in Keys.OrderByDescending(x => x.CreatedUtc))
             {
                 <MudStack Row="true" AlignItems="AlignItems.Center">
-                    <MudIcon Icon="@Icons.Rounded.Key"/>
+                    <MudIcon Icon="@Icons.Material.Rounded.Key"/>
                     <MudText>@key.KeyId[..12]</MudText>
 
                     <MudSpacer/>
@@ -28,7 +28,7 @@
                     @if (key.ExpiresUtc.HasValue)
                     {
                         <MudStack Row="true" Spacing="2">
-                            <MudIcon Color="Color.Warning" Size="Size.Small" Icon="@Icons.Rounded.Timer"/>
+                            <MudIcon Color="Color.Warning" Size="Size.Small" Icon="@Icons.Material.Rounded.Timer"/>
                             <MudText Color="Color.Warning" Typo="Typo.body2">
                                 Expires @key.ExpiresUtc.Value.ToLongDateString()
                             </MudText>
@@ -37,7 +37,7 @@
 
                     <MudButton Color="Color.Error"
                                OnClick="() => DeleteKey(key)"
-                               StartIcon="@Icons.Rounded.Delete">
+                               StartIcon="@Icons.Material.Rounded.Delete">
                         Delete Key
                     </MudButton>
                 </MudStack>
@@ -45,7 +45,7 @@
 
             @if (AllowLoadingMoreKeys)
             {
-                <MudButton StartIcon="@Icons.Rounded.KeyboardArrowRight" OnClick="LoadNextPage">Load More Keys</MudButton>
+                <MudButton StartIcon="@Icons.Material.Rounded.KeyboardArrowRight" OnClick="LoadNextPage">Load More Keys</MudButton>
             }
         </MudStack>
     </MudPaper>

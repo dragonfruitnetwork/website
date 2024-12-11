@@ -26,7 +26,7 @@
     <MudStack Spacing="1" Class="pt-5" Justify="Justify.Center" AlignItems="AlignItems.Center">
         <SakuraSubheading Text="OnionFruit&trade; Connect" Colour="#9940ec">
             <IconHtml>
-                <MudIcon Icon="@Icons.Rounded.WifiLock"/>
+                <MudIcon Icon="@Icons.Material.Rounded.WifiLock"/>
             </IconHtml>
         </SakuraSubheading>
         <MudText Align="Align.Center" Typo="Typo.h4">Connect to Tor in seconds</MudText>
@@ -64,16 +64,18 @@
                 <OnionFruitFeature MaxColumnWidth="6" Title="Countries" Content="Choose from a large range of countries to pass data in or out of, or let the app pick the best ones for you">
                     <Visuals>
                         <MudAvatarGroup Spacing="4" Max="int.MaxValue">
-                            <MudAvatar Image="@FlagUtils.GetFlagUrl("DE")"/>
-                            <MudAvatar Image="@FlagUtils.GetFlagUrl("GB")"/>
-                            <MudAvatar Image="@FlagUtils.GetFlagUrl("US")"/>
-                            <MudAvatar Image="@FlagUtils.GetFlagUrl("NL")"/>
+                            @foreach (var country in new[] {"DE", "GB", "US", "NL"})
+                            {
+                                <MudAvatar>
+                                    <MudImage Src="@FlagUtils.GetFlagUrl(country)"/>
+                                </MudAvatar>
+                            }
                         </MudAvatarGroup>
                     </Visuals>
                     <Actions>
                         <MudButton Color="Color.Primary"
                                    Href="/onionfruit/countries"
-                                   EndIcon="@Icons.Rounded.KeyboardArrowRight">
+                                   EndIcon="@Icons.Material.Rounded.KeyboardArrowRight">
                             View Countries
                         </MudButton>
                     </Actions>
@@ -87,7 +89,7 @@
                     <Actions>
                         <MudButton Color="Color.Secondary"
                                    Href="/wiki/onionfruit/bridges"
-                                   EndIcon="@Icons.Rounded.KeyboardArrowRight">
+                                   EndIcon="@Icons.Material.Rounded.KeyboardArrowRight">
                             Learn More
                         </MudButton>
                     </Actions>
