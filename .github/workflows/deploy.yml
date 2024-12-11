@@ -8,27 +8,26 @@ env:
   build-output: sakura-publish
 
 jobs:
-  sentry-release:
+  create-release:
+    name: Create Release
     runs-on: ubuntu-latest
-
-    environment:
-      name: production
-      url: https://dragonfruit.network/
 
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Create Sentry release
+      - name: Create Sentry Release
         uses: getsentry/action-release@v1
         env:
-          SENTRY_ORG: dragonfruit
+          SENTRY_ORG: ${{ vars.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         with:
-          projects: sakura
+          environment: production
           ignore_missing: true
-          version: ${{ github.ref_name }}
+          ignore_empty: true
+          version: ${{ github.event.release.tag_name }}
   
   docker-linux:
     runs-on: ubuntu-latest
