@@ -37,7 +37,7 @@ jobs:
       url: https://dragonfruit.network/
     
     needs:
-      - sentry-release
+      - create-release
     
     steps:
       - uses: actions/checkout@v4
@@ -84,7 +84,7 @@ jobs:
       contents: write
     
     needs:
-      - sentry-release
+      - create-release
 
     environment:
       name: production
