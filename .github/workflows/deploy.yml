@@ -29,28 +29,55 @@ jobs:
           projects: sakura
           ignore_missing: true
           version: ${{ github.ref_name }}
-
-  website-package:
+  
+  docker-linux:
     runs-on: ubuntu-latest
     
-    permissions: 
-      packages: write
-
+    environment:
+      name: production
+      url: https://dragonfruit.network/
+    
+    needs:
+      - sentry-release
+    
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-          
-      - name: Build Program
-        run: dotnet publish -c Release -p:Version=${{ github.event.release.tag_name }} DragonFruit.Sakura
-        
-      - name: Package Output
-        run: dotnet pack -c Release -p:Version=${{ github.event.release.tag_name }} -o ./packages --no-build DragonFruit.Sakura
-        
-      - name: Upload Package
-        run: dotnet nuget push -s https://nuget.pkg.github.com/dragonfruitnetwork/index.json -k ${{ github.token }} ./packages/*.nupkg
-  
+
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ vars.DOCKER_REGISTRY }}
+          username: ${{ secrets.OCI_USERNAME }}
+          password: ${{ secrets.OCI_PASSWORD }}
+
+      - name: Install wasm-tools
+        run: sudo dotnet workload install wasm-tools
+
+      - name: Build
+        run: dotnet publish -c Release -p:UseAppHost=false -p:Version=${{ github.event.release.tag_name }} -o ${{ env.build-output }} DragonFruit.Sakura.Host/DragonFruit.Sakura.Host.csproj
+
+      - id: meta
+        name: Create metadata
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ vars.DOCKER_IMAGE }}
+          tags: |
+            type=raw,value=latest
+            type=ref,event=tag
+
+      - name: Image Build and Push
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ env.build-output }}
+          tags: ${{ vars.DOCKER_IMAGE }}
+          platforms: linux/arm64,linux/amd64
+          file: DragonFruit.Sakura.Host/Dockerfile
+          push: true
+
   windows-iis:
     runs-on: windows-latest
     
