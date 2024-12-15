@@ -84,8 +84,6 @@ export default function NavBar() {
             </div>
 
             <div className="flex items-center justify-end gap-2">
-                <ModeToggle/>
-
                 <Button variant="ghost" size="icon" asChild>
                     <Link href="mailto:inbox@dragonfruit.network">
                         <LuMail/>

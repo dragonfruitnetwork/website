@@ -14,7 +14,7 @@ export default function RootLayout({children}: Readonly<{ children: React.ReactN
     return (
         <html lang="en" suppressHydrationWarning>
         <body>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
             <header className="py-3 px-[10vw]">
                 <NavBar/>
             </header>
