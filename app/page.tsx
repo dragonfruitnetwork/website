@@ -47,7 +47,7 @@ export default function Home() {
                         </Link>
                     </HomePageCard>
 
-                    <div className="grid grid-rows-2 gap-4">
+                    <div className="grid grid-rows-2 gap-5">
                         <HomePageCard color="#2194f3" title="Account" icon={<LuUserCircle/>} small>
                             <p className="pt-2 text-muted-foreground">
                                 Manage accounts used to sign into DragonFruit Services.
