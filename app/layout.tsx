@@ -1,9 +1,10 @@
 import "./globals.css";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 
 import type {Metadata} from "next";
 
-import NavBar from "@/components/navbar";
-import {Separator} from "@/components/ui/separator";
+import {TooltipProvider} from "@/components/ui/tooltip";
 import {ThemeProvider} from "@/components/theme-provider";
 
 export const metadata: Metadata = {
@@ -14,14 +15,17 @@ export default function RootLayout({children}: Readonly<{ children: React.ReactN
     return (
         <html lang="en" suppressHydrationWarning>
         <body>
-        <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
-            <header className="py-3 px-[10vw]">
-                <NavBar/>
-            </header>
-            <Separator className="mb-8"/>
-
-            {children}
-        </ThemeProvider>
+        <div className="flex flex-col min-h-screen justify-between">
+            <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
+                <TooltipProvider>
+                    <Header/>
+                    <main>
+                        {children}
+                    </main>
+                    <Footer/>
+                </TooltipProvider>
+            </ThemeProvider>
+        </div>
         </body>
         </html>
     );

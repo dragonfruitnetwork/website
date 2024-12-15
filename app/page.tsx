@@ -4,15 +4,15 @@ import {darken} from "polished";
 import {TbWiper} from "react-icons/tb";
 import {FaGithub} from "react-icons/fa6";
 import {MdSignalWifi4BarLock} from "react-icons/md";
-import {LuChevronRight, LuUserCircle} from "react-icons/lu";
+import {LuChevronRight, LuCircleUser} from "react-icons/lu";
 
 import {cn} from "@/lib/utils";
 import {IconBox} from "@/components/icon-box";
 
 interface HomePageIconProps {
-    title: string;
     icon: React.ReactElement;
     children: React.ReactNode;
+    title: string;
     color: string;
     spacerClass?: string;
     className?: string;
@@ -22,7 +22,7 @@ interface HomePageIconProps {
 export default function Home() {
     return (
         <div className="container mx-auto mb-10">
-            <main className="flex flex-col gap-5">
+            <div className="flex flex-col gap-5">
                 <HomePageCard color="#c71585" icon={<MdSignalWifi4BarLock/>} title="OnionFruit&trade;" spacerClass="lg:h-[35vh] h-[15vh]">
                     <p className="pt-2 text-muted-foreground">
                         The new, open-source Tor access client is now available.
@@ -48,7 +48,7 @@ export default function Home() {
                     </HomePageCard>
 
                     <div className="grid grid-rows-2 gap-5">
-                        <HomePageCard color="#2194f3" title="Account" icon={<LuUserCircle/>} small>
+                        <HomePageCard color="#2194f3" title="Account" icon={<LuCircleUser/>} small>
                             <p className="pt-2 text-muted-foreground">
                                 Manage accounts used to sign into DragonFruit Services.
                             </p>
@@ -69,7 +69,7 @@ export default function Home() {
                         </HomePageCard>
                     </div>
                 </div>
-            </main>
+            </div>
         </div>
     );
 }

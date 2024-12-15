@@ -3,11 +3,10 @@ import Link from "next/link";
 import Image from "next/image";
 import {FaDiscord, FaGithub} from "react-icons/fa6";
 import {MdOutlineSignalWifi4BarLock} from "react-icons/md";
-import {LuBookOpenCheck, LuUserCircle, LuGitPullRequest, LuMail} from "react-icons/lu";
+import {LuBookOpenCheck, LuCircleUser, LuGitPullRequest, LuMail} from "react-icons/lu";
 
 import {cn} from "@/lib/utils";
 import {Button} from "@/components/ui/button";
-import {ModeToggle} from "@/components/theme-toggle";
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -64,8 +63,7 @@ export default function NavBar() {
                             <NavigationMenuTrigger>Services</NavigationMenuTrigger>
                             <NavigationMenuContent>
                                 <div className="grid grid-cols-1 gap-3 p-4 w-[350px]">
-                                    <MenuItem href="https://id.dragonfruit.network" title="Account"
-                                              icon={<LuUserCircle/>}>
+                                    <MenuItem href="https://id.dragonfruit.network" title="Account" icon={<LuCircleUser/>}>
                                         <span>Manage your account</span>
                                     </MenuItem>
 
