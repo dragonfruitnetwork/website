@@ -2,13 +2,26 @@ import "./globals.css";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 
-import type {Metadata} from "next";
+import type {Metadata, Viewport} from "next";
 
 import {TooltipProvider} from "@/components/ui/tooltip";
 import {ThemeProvider} from "@/components/theme-provider";
 
 export const metadata: Metadata = {
-    title: "DragonFruit Network"
+    openGraph: {
+        title: "DragonFruit Network",
+
+        type: "website",
+        url: "https://dragonfruit.network",
+        locale: "en_GB",
+    }
+};
+
+export const viewport: Viewport = {
+    width: "device-width",
+    initialScale: 1,
+    themeColor: "#663bb9",
+
 };
 
 export default function RootLayout({children}: Readonly<{ children: React.ReactNode }>) {
