@@ -28,17 +28,13 @@ export default function RootLayout({children}: Readonly<{ children: React.ReactN
     return (
         <html lang="en" suppressHydrationWarning>
         <body>
-        <div className="flex flex-col min-h-screen justify-between">
-            <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
-                <TooltipProvider>
-                    <Header/>
-                    <main>
-                        {children}
-                    </main>
-                    <Footer/>
-                </TooltipProvider>
-            </ThemeProvider>
-        </div>
+        <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
+            <TooltipProvider>
+                <div className="flex flex-col min-h-screen justify-between">
+                    {children}
+                </div>
+            </TooltipProvider>
+        </ThemeProvider>
         </body>
         </html>
     );
