@@ -1,4 +1,9 @@
+import React from "react";
 import {Metadata} from "next";
+
+import Footer from "@/components/footer";
+import Header from "@/components/header";
+
 import {ClientConnectionStatus} from "./client-connection-check";
 
 export const metadata: Metadata = {
@@ -11,5 +16,9 @@ export const metadata: Metadata = {
 }
 
 export default function Page() {
-    return <ClientConnectionStatus/>
+    return (<>
+        <Header/>
+        <ClientConnectionStatus/>
+        <Footer/>
+    </>);
 }
