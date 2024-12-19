@@ -1,0 +1,51 @@
+model User {
+  id       String    @id @default(cuid())
+  name     String
+  email    String    @unique
+  image    String?
+  accounts Account[]
+  sessions Session[]
+
+  emailVerified   DateTime?
+  userPermissions UserPermissions @default(USER)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Account {
+  id                String @id @default(cuid())
+  userId            String @unique
+  type              String
+  provider          String
+  providerAccountId String
+  user              User?  @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+  @@map("user_accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@map("user_sessions")
+}
+
+enum UserPermissions {
+  USER
+  ADMIN
+}

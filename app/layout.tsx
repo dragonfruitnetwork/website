@@ -1,6 +1,4 @@
 import "./globals.css";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
 
 import type {Metadata, Viewport} from "next";
 
@@ -21,7 +19,6 @@ export const viewport: Viewport = {
     width: "device-width",
     initialScale: 1,
     themeColor: "#663bb9",
-
 };
 
 export default function RootLayout({children}: Readonly<{ children: React.ReactNode }>) {
