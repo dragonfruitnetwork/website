@@ -1,6 +1,7 @@
 import "./globals.css";
 
 import type {Metadata, Viewport} from "next";
+import {SessionProvider} from "next-auth/react";
 
 import {TooltipProvider} from "@/components/ui/tooltip";
 import {ThemeProvider} from "@/components/theme-provider";
@@ -25,13 +26,15 @@ export default function RootLayout({children}: Readonly<{ children: React.ReactN
     return (
         <html lang="en" suppressHydrationWarning>
         <body>
-        <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
-            <TooltipProvider>
-                <div className="flex flex-col min-h-screen justify-between">
-                    {children}
-                </div>
-            </TooltipProvider>
-        </ThemeProvider>
+        <SessionProvider>
+            <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
+                <TooltipProvider>
+                    <div className="flex flex-col min-h-screen justify-between">
+                        {children}
+                    </div>
+                </TooltipProvider>
+            </ThemeProvider>
+        </SessionProvider>
         </body>
         </html>
     );

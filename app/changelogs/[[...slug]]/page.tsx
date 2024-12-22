@@ -6,7 +6,7 @@ import {redirect} from "next/navigation";
 import React, {ReactElement} from "react";
 import createDomPurify, {DOMPurify} from "dompurify";
 import {DefaultArgs} from "@prisma/client/runtime/library";
-import {$Enums, ChangelogRelease, ChangelogReleaseEntry, Prisma} from "@prisma/client";
+import {$Enums, ChangelogRelease, ChangelogReleaseEntry, Prisma, UserPermissions} from "@prisma/client";
 import {
     LuBug,
     LuCheck,
@@ -19,7 +19,9 @@ import {
     LuShield
 } from "react-icons/lu";
 
-import AppListing from "./appListing";
+import Listing from "./listing";
+import {ChangelogAdminControls} from "./admin";
+
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import {Separator} from "@/components/ui/separator";
@@ -27,6 +29,8 @@ import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
 
 import ChangelogEntryType = $Enums.ChangelogEntryType;
+
+export const dynamic = 'force-dynamic';
 
 interface ChangelogSelectionCriteria {
     prismaQuery: Partial<Prisma.SelectSubset<Prisma.ChangelogReleaseFindFirstArgs, Prisma.ChangelogReleaseFindFirstArgs<DefaultArgs>>>;
@@ -56,10 +60,9 @@ export default async function Changelogs({params}: { params: Promise<{ slug: str
 
     // handle release not found
     if (!release && redirectOnEmpty) {
-        redirect(`/changelogs/${redirectOnEmpty}`);
+        return redirect(`/changelogs/${redirectOnEmpty}`);
     } else if (!release) {
-        // todo special message
-        return (<></>);
+        return redirect('/');
     }
 
     const DOMPurify = createDomPurify(new JSDOM('').window);
@@ -69,7 +72,7 @@ export default async function Changelogs({params}: { params: Promise<{ slug: str
             <main>
                 <Header/>
                 <div className="md:container md:mx-auto px-8 md:px-[10dvw] space-y-5">
-                    <AppListing/>
+                    <Listing/>
                     <Card>
                         <CardHeader>
                             <CardTitle>
@@ -107,13 +110,17 @@ export default async function Changelogs({params}: { params: Promise<{ slug: str
                                 {_.chain(release.entries)
                                     .groupBy(x => x.category)
                                     .map((entries, category) =>
-                                        <ReleaseCategory key={category} category={category} entries={entries}
+                                        <ReleaseCategory key={category}
+                                                         entries={entries}
+                                                         category={category}
                                                          dompurify={DOMPurify}/>
                                     )
                                     .value()}
                             </div>
                         </CardContent>
                     </Card>
+
+                    <ChangelogAdminControls/>
                 </div>
             </main>
             <Footer/>

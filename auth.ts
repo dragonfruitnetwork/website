@@ -25,7 +25,8 @@ if (process.env.AUTH_HINA_ID?.length) {
             logo: "/dragonfruit.png",
             brandColor: "#880ED4"
         },
-        account() {},
+        account() {
+        },
         async profile(profile) {
             return {
                 id: profile.sub,
@@ -37,7 +38,8 @@ if (process.env.AUTH_HINA_ID?.length) {
     });
 } else if (process.env.AUTH_GOOGLE_ID?.length) {
     providers.push(Google({
-        account() {}
+        account() {
+        }
     }));
 } else {
     console.error("No OAuth providers configured. Any authentication requests will fail.");
@@ -68,6 +70,11 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
         },
         callbackUrl: {
             name: "dragonfruit-cburl"
+        }
+    },
+    callbacks: {
+        async session({session, user}) {
+            return session;
         }
     }
 });

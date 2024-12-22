@@ -15,6 +15,7 @@ import {
     NavigationMenuTrigger,
     navigationMenuTriggerStyle
 } from "@/components/ui/navigation-menu";
+import {UserMenu} from "@/components/user-menu";
 
 export default function NavBar() {
     return (
@@ -99,6 +100,8 @@ export default function NavBar() {
                         <FaGithub/>
                     </Link>
                 </Button>
+
+                <UserMenu/>
             </div>
         </nav>
     )
