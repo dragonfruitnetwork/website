@@ -1,0 +1,60 @@
+model ChangelogApp {
+  id     String  @id @db.VarChar(36)
+  name   String  @unique @db.VarChar(128)
+  color  String? @db.Char(7) // hex color code
+  order  Int     @unique
+  public Boolean @default(true)
+
+  releases ChangelogRelease[] @relation()
+
+  @@index([public, order])
+  @@map("changelog_apps")
+}
+
+model ChangelogRelease {
+  id    Int    @id @default(autoincrement())
+  appId String
+
+  releaseName String
+  releaseNote String?  @db.LongText
+  releaseDate DateTime @default(now())
+
+  previousReleaseId Int? @unique
+
+  nextRelease     ChangelogRelease? @relation("releaseChain")
+  previousRelease ChangelogRelease? @relation("releaseChain", fields: [previousReleaseId], references: [id])
+
+  app     ChangelogApp            @relation(fields: [appId], references: [id], onDelete: Cascade)
+  entries ChangelogReleaseEntry[] @relation()
+
+  @@unique([appId, releaseName])
+  @@index([appId, releaseName])
+  @@index([appId, releaseDate])
+  @@map("changelog_releases")
+}
+
+model ChangelogReleaseEntry {
+  id        Int @id @default(autoincrement())
+  releaseId Int
+
+  title    String
+  category String?
+  content  String? @db.LongText
+  major    Boolean @default(false)
+
+  entryType ChangelogEntryType? @default(FIX)
+  release   ChangelogRelease    @relation(fields: [releaseId], references: [id], onDelete: Cascade)
+
+  @@index([releaseId])
+  @@map("changelog_release_entries")
+}
+
+enum ChangelogEntryType {
+  ADDITION
+  FIX
+  REMOVAL
+  DELAYED
+  INFO
+  BUG
+  SECURITY
+}
