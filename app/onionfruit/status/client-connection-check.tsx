@@ -1,11 +1,12 @@
 "use client";
 
+import {COBEOptions} from "cobe";
 import {useEffect, useMemo, useState} from "react";
+
+import {capitalCityInfo} from "@/lib/capital-city-info";
 
 import Globe from "@/components/ui/globe";
 import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
-
-import {capitalCityInfo} from "@/lib/capital-city-info";
 
 interface OnionFruitConnectionStatusResponse {
     ip_address: string;
@@ -18,7 +19,7 @@ interface OnionFruitConnectionStatusResponse {
 
 export function ClientConnectionStatus() {
     const [connectionStatus, setConnectionStatus] = useState<OnionFruitConnectionStatusResponse | null>(null);
-    const globeOptions = useMemo(() => {
+    const globeOptions: COBEOptions | undefined = useMemo(() => {
         if (!connectionStatus) {
             return undefined;
         }
