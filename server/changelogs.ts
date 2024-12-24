@@ -1,0 +1,285 @@
+"use server";
+
+import {z} from "zod";
+import _ from "lodash";
+import {prisma} from "@/prisma";
+import {ChangelogEntryType, Prisma} from "@prisma/client";
+import {actionClient, adminActionClient} from "@/lib/safe-action";
+import TransactionIsolationLevel = Prisma.TransactionIsolationLevel;
+
+const changelogReleaseSchema = z.object({
+    releaseName: z.string().nonempty('a release name is required'),
+    releaseDate: z.date(),
+    releaseNote: z.string().nullable().optional()
+});
+
+const changelogReleaseEntrySchema = z.object({
+    title: z.string().nonempty('a title is required for a changelog entry'),
+    content: z.string().nullable().optional(),
+    category: z.string().nullable().optional(),
+    major: z.boolean().optional().default(false),
+
+    entryType: z.enum((Object.values(ChangelogEntryType) as [string, ...string[]]))
+});
+
+/**
+ * Returns a list of changelog-enabled apps.
+ */
+export const getChangelogApps = adminActionClient
+    .schema(z.object({
+        includeNonPublic: z.boolean().optional(),
+    }))
+    .action(async ({parsedInput: args}) => {
+        const apps = await prisma.changelogApp.findMany({
+            orderBy: {
+                order: 'asc'
+            },
+            where: args.includeNonPublic ? undefined : {
+                public: true
+            }
+        });
+
+        return apps.map(x => {
+            return {
+                id: x.id,
+                name: x.name,
+                color: x.color,
+                public: x.public
+            }
+        })
+    });
+
+export const getChangelogRelease = actionClient
+    .schema(z.object({
+        appId: z.string().nonempty(),
+        releaseName: z.string().nonempty()
+    }))
+    .action(async ({parsedInput: args}) => {
+        const release = await prisma.changelogRelease.findFirst({
+            where: {
+                appId: args.appId,
+                releaseName: args.releaseName,
+            }
+        });
+
+        return release ?? null;
+    });
+
+export const createChangelogRelease = adminActionClient
+    .schema(z.intersection(changelogReleaseSchema, z.object({
+        appId: z.string().nonempty(),
+        entries: z.array(changelogReleaseEntrySchema).optional()
+    })).refine(v => {
+        if (!v.releaseNote?.length && !v.entries?.length) {
+            return {
+                message: 'Either release notes or entries must be provided'
+            };
+        }
+    }))
+    .action(async ({parsedInput: args}) => prisma.$transaction(async tx => {
+        const previousRelease = await tx.changelogRelease.findFirst({
+            where: {
+                AND: [
+                    {appId: args.appId},
+                    {releaseDate: {lt: args.releaseDate}}
+                ]
+            },
+            orderBy: {
+                releaseDate: 'desc'
+            },
+            include: {
+                nextRelease: true
+            }
+        });
+
+        const newRelease = await tx.changelogRelease.create({
+            data: {
+                appId: args.appId,
+                releaseName: args.releaseName,
+                releaseDate: args.releaseDate,
+                releaseNote: args.releaseNote,
+                entries: {
+                    create: args.entries?.map(x => {
+                        return {
+                            title: x.title,
+                            content: x.content,
+                            category: x.category,
+                            major: x.major,
+                            entryType: x.entryType as ChangelogEntryType
+                        }
+                    }) ?? []
+                }
+            }
+        });
+
+        if (previousRelease?.nextRelease) {
+            await tx.changelogRelease.update({
+                where: {id: previousRelease.nextRelease.id},
+                data: {previousReleaseId: newRelease.id}
+            });
+        }
+
+        // must be done after the previousRelease.nextRelease is updated to ensure unique constraint
+        if (previousRelease) {
+            await tx.changelogRelease.update({
+                where: {id: newRelease.id},
+                data: {previousReleaseId: previousRelease.id}
+            });
+        }
+
+        return newRelease;
+    }, {isolationLevel: TransactionIsolationLevel.Serializable}));
+
+export const removeChangelogRelease = adminActionClient
+    .schema(z.union([
+        z.object({
+            id: z.number().int()
+        }),
+        z.object({
+            appId: z.string().nonempty(),
+            releaseName: z.string().nonempty()
+        })]))
+    .action(async ({parsedInput: args}) => prisma.$transaction(async tx => {
+        const release = await tx.changelogRelease.findFirst({
+            where: 'id' in args ? {id: args.id} : {appId: args.appId, releaseName: args.releaseName},
+            select: {
+                id: true,
+                previousReleaseId: true,
+                nextRelease: {select: {id: true}}
+            }
+        });
+
+        if (!release) {
+            return null;
+        }
+
+        if (release.nextRelease) {
+            await tx.changelogRelease.update({
+                where: {id: release.nextRelease.id},
+                data: {previousReleaseId: release.previousReleaseId}
+            });
+        }
+
+        await tx.changelogRelease.delete({
+            where: {id: release.id}
+        });
+
+        return {removed: true};
+    }));
+
+export const updateChangelogRelease = adminActionClient
+    .schema(z.intersection(changelogReleaseSchema, z.object({
+        id: z.number().int('invalid release identifier'),
+        entries: z.array(z.intersection(z.object({id: z.number().int().optional()}), changelogReleaseEntrySchema)).optional()
+    })))
+    .action(async ({parsedInput: args}) => prisma.$transaction(async tx => {
+        const release = await tx.changelogRelease.findUnique({
+            where: {id: args.id},
+            include: {
+                entries: true,
+                nextRelease: true,
+                previousRelease: true
+            }
+        });
+
+        if (!release) {
+            throw new Error("RELEASE_NOT_FOUND");
+        }
+
+        // perform entry updates
+        for (const entry of args.entries ?? []) {
+            const data = {
+                title: entry.title,
+                content: entry.content,
+                category: entry.category,
+                major: entry.major,
+                entryType: entry.entryType as ChangelogEntryType
+            };
+
+            if (entry.id) {
+                await tx.changelogReleaseEntry.update({
+                    data,
+                    where: {
+                        id: entry.id,
+                        releaseId: release.id // check against release id to prevent updating entries from other releases
+                    }
+                });
+            } else {
+                await tx.changelogReleaseEntry.create({
+                    data: {
+                        ...data,
+                        release: {
+                            connect: {id: release.id}
+                        }
+                    }
+                });
+            }
+        }
+
+        // remove any entries that were not included in the update
+        const removedEntryIds: number[] = _.difference(release.entries.map(x => x.id), args.entries?.map(x => x.id) ?? []).filter((id): id is number => id !== undefined);
+
+        if (removedEntryIds.length) {
+            await tx.changelogReleaseEntry.deleteMany({where: {id: {in: removedEntryIds}}});
+        }
+
+        // check if updating the release will break the chain
+        if (release.nextRelease && release.previousRelease && (args.releaseDate < release.previousRelease.releaseDate || args.releaseDate > release.nextRelease.releaseDate)) {
+            // join next and previous releases together (remove current release from chain)
+            await tx.changelogRelease.update({
+                where: {id: release.nextRelease.id},
+                data: {previousReleaseId: release.previousReleaseId}
+            });
+
+            // insert the release back into the chain (new, corrected location)
+            const newPreviousRelease = await tx.changelogRelease.findFirst({
+                where: {
+                    appId: release.appId,
+                    releaseDate: {lt: args.releaseDate}
+                },
+                select: {
+                    id: true,
+                    previousReleaseId: true,
+                    nextRelease: {select: {id: true}},
+                },
+                orderBy: {
+                    releaseDate: 'desc'
+                }
+            });
+
+            // update new previous release to
+            if (newPreviousRelease) {
+                await tx.changelogRelease.update({
+                    where: {id: release.id},
+                    data: {previousReleaseId: newPreviousRelease.id}
+                });
+            }
+
+            if (newPreviousRelease?.nextRelease) {
+                await tx.changelogRelease.update({
+                    where: {id: newPreviousRelease.nextRelease.id},
+                    data: {previousReleaseId: release.id}
+                });
+            }
+        }
+
+        // actually do the update
+        await tx.changelogRelease.update({
+            where: {id: args.id},
+            data: {
+                releaseName: args.releaseName,
+                releaseDate: args.releaseDate,
+                releaseNote: args.releaseNote
+            }
+        });
+
+        // reload the entire release with corrected entries (new ones now have ids)
+        return tx.changelogRelease.findUnique({
+            where: {id: args.id},
+            include: {
+                entries: true,
+                nextRelease: true,
+                previousRelease: true
+            }
+        });
+    }, {isolationLevel: TransactionIsolationLevel.Serializable}));
