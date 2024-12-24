@@ -49,6 +49,9 @@ export const getChangelogApps = adminActionClient
         })
     });
 
+/**
+ * Get a specific release for a given app.
+ */
 export const getChangelogRelease = actionClient
     .schema(z.object({
         appId: z.string().nonempty(),
@@ -65,6 +68,10 @@ export const getChangelogRelease = actionClient
         return release ?? null;
     });
 
+/**
+ * Create a changelog release for an app.
+ * A release must have either release notes or at least one entry.
+ */
 export const createChangelogRelease = adminActionClient
     .schema(z.intersection(changelogReleaseSchema, z.object({
         appId: z.string().nonempty(),
@@ -130,6 +137,9 @@ export const createChangelogRelease = adminActionClient
         return newRelease;
     }, {isolationLevel: TransactionIsolationLevel.Serializable}));
 
+/**
+ * Remove a changelog release by id or app/release name.
+ */
 export const removeChangelogRelease = adminActionClient
     .schema(z.union([
         z.object({
@@ -138,7 +148,8 @@ export const removeChangelogRelease = adminActionClient
         z.object({
             appId: z.string().nonempty(),
             releaseName: z.string().nonempty()
-        })]))
+        })
+    ]))
     .action(async ({parsedInput: args}) => prisma.$transaction(async tx => {
         const release = await tx.changelogRelease.findFirst({
             where: 'id' in args ? {id: args.id} : {appId: args.appId, releaseName: args.releaseName},
@@ -153,6 +164,7 @@ export const removeChangelogRelease = adminActionClient
             return null;
         }
 
+        // fix the chain if the release is in the middle
         if (release.nextRelease) {
             await tx.changelogRelease.update({
                 where: {id: release.nextRelease.id},
@@ -167,14 +179,33 @@ export const removeChangelogRelease = adminActionClient
         return {removed: true};
     }));
 
+/**
+ * Updates a changelog release (id or app/release name).
+ * Entries can be updated (by id) or created (no id) through this endpoint.
+ *
+ * @remarks
+ * All entries should be provided regardless even if they're not being updated. Any entry not included in the request will be removed.
+ */
 export const updateChangelogRelease = adminActionClient
-    .schema(z.intersection(changelogReleaseSchema, z.object({
-        id: z.number().int('invalid release identifier'),
-        entries: z.array(z.intersection(z.object({id: z.number().int().optional()}), changelogReleaseEntrySchema)).optional()
-    })))
+    .schema(z.intersection(
+        // allow updating by id or by app/release name
+        z.union([
+            z.object({
+                id: z.number().int('invalid release identifier')
+            }),
+            z.object({
+                appId: z.string().nonempty(),
+                releaseName: z.string().nonempty()
+            })
+        ]),
+        z.intersection(changelogReleaseSchema, z.object({
+            // optional id allows for creating new entries or updating existing ones
+            entries: z.array(z.intersection(z.object({id: z.number().int().optional()}), changelogReleaseEntrySchema)).optional()
+        })))
+    )
     .action(async ({parsedInput: args}) => prisma.$transaction(async tx => {
-        const release = await tx.changelogRelease.findUnique({
-            where: {id: args.id},
+        const release = await tx.changelogRelease.findFirst({
+            where: 'id' in args ? {id: args.id} : {appId: args.appId, releaseName: args.releaseName},
             include: {
                 entries: true,
                 nextRelease: true,
@@ -214,6 +245,11 @@ export const updateChangelogRelease = adminActionClient
                     }
                 });
             }
+        }
+
+        // check that the release has either an entry or notes
+        if (!release.entries.length && !args.releaseNote) {
+            throw new Error("RELEASE_MUST_HAVE_ENTRIES_OR_NOTES");
         }
 
         // remove any entries that were not included in the update
@@ -263,19 +299,13 @@ export const updateChangelogRelease = adminActionClient
             }
         }
 
-        // actually do the update
-        await tx.changelogRelease.update({
-            where: {id: args.id},
+        return tx.changelogRelease.update({
+            where: {id: release.id},
             data: {
                 releaseName: args.releaseName,
                 releaseDate: args.releaseDate,
                 releaseNote: args.releaseNote
-            }
-        });
-
-        // reload the entire release with corrected entries (new ones now have ids)
-        return tx.changelogRelease.findUnique({
-            where: {id: args.id},
+            },
             include: {
                 entries: true,
                 nextRelease: true,
