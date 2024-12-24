@@ -46,7 +46,6 @@ export function UserMenu() {
                             <span>{session.user?.name}</span>
                         </DropdownMenuLabel>
 
-                        {/* @ts-ignore */}
                         {session?.user?.userPermissions === UserPermissions.ADMIN && <AdminMenu/>}
 
                         <DropdownMenuSeparator/>

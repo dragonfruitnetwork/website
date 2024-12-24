@@ -1,16 +1,15 @@
 "use client";
 
+import {LuShield} from "react-icons/lu";
 import {useSession} from "next-auth/react";
 import {UserPermissions} from "@prisma/client";
 
-import {Card, CardContent, CardHeader} from "@/components/ui/card";
+import {Card, CardContent} from "@/components/ui/card";
 import {IconBox} from "@/components/icon-box";
-import {LuShield} from "react-icons/lu";
 
 export function ChangelogAdminControls() {
     const {data: session} = useSession();
 
-    // @ts-ignore
     if (session?.user?.userPermissions !== UserPermissions.ADMIN) {
         return null;
     }
