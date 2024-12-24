@@ -1,10 +1,8 @@
-import { DefaultSession } from "next-auth";
-import { UserPermissions } from "@prisma/client";
+import {DefaultSession} from "next-auth";
+import {User} from "@prisma/client";
 
 declare module "next-auth" {
     interface Session {
-        user?: {
-            userPermissions?: UserPermissions;
-        } & DefaultSession["user"];
+        user?: User & DefaultSession["user"];
     }
 }
