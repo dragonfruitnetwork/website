@@ -99,7 +99,7 @@ namespace DragonFruit.Sakura.Wiki
 
             // split the url into a set of segments representing the location of each page (i.e. the topmost page has to include all the parents)
             var segmentArrays = Enumerable.Range(1, pathSegments.Length).Select(i => new ArraySegment<string>(pathSegments, 0, i));
-            return segmentArrays.Select(x => new BreadcrumbItem(x.Last(), $"/{string.Join("/", x)}")).ToList();
+            return segmentArrays.Select(x => new BreadcrumbItem(x.Last(), $"/{string.Join('/', (IEnumerable<string>)x)}")).ToList();
         }
     }
 }

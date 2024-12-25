@@ -54,7 +54,7 @@ namespace DragonFruit.Sakura.Host
             var app = builder.Build();
 
             app.UseBlazorFrameworkFiles();
-            app.UseStaticFiles();
+            app.MapStaticAssets();
 
             app.UseRouting();
             app.MapControllers();
