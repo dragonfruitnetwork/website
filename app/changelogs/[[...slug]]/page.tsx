@@ -6,29 +6,15 @@ import {redirect} from "next/navigation";
 import React, {ReactElement} from "react";
 import createDomPurify, {DOMPurify} from "dompurify";
 import {DefaultArgs} from "@prisma/client/runtime/library";
-import {$Enums, ChangelogRelease, ChangelogReleaseEntry, Prisma, UserPermissions} from "@prisma/client";
-import {
-    LuBug,
-    LuCheck,
-    LuChevronLeft,
-    LuChevronRight,
-    LuClock,
-    LuInfo,
-    LuMinus,
-    LuPlus,
-    LuShield
-} from "react-icons/lu";
+import {LuChevronLeft, LuChevronRight} from "react-icons/lu";
+import {ChangelogRelease, ChangelogReleaseEntry, Prisma} from "@prisma/client";
 
 import Listing from "./listing";
-import {ChangelogAdminControls} from "./admin";
+import {EntryIcon} from "./entryType";
 
-import Header from "@/components/header";
-import Footer from "@/components/footer";
 import {Separator} from "@/components/ui/separator";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
-
-import ChangelogEntryType = $Enums.ChangelogEntryType;
 
 export const dynamic = 'force-dynamic';
 
@@ -69,63 +55,56 @@ export default async function Changelogs({params}: { params: Promise<{ slug: str
 
     return (
         <>
-            <main>
-                <Header/>
-                <div className="md:container md:mx-auto px-8 md:px-[10dvw] space-y-5">
-                    <Listing/>
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>
-                                <div className="flex flex-row items-center justify-center gap-4">
-                                    <ReleaseNavigation icon={<LuChevronLeft/>} release={release.previousRelease} side="left"/>
+            <Listing/>
+            <Card>
+                <CardHeader>
+                    <CardTitle>
+                        <div className="flex flex-row items-center justify-center gap-4">
+                            <ReleaseNavigation icon={<LuChevronLeft/>} release={release.previousRelease}
+                                               side="left"/>
 
-                                    <div className="flex flex-col justify-center gap-2 items-center">
-                                        <div className="text-3xl space-x-3 inline">
+                            <div className="flex flex-col justify-center gap-2 items-center">
+                                <div className="text-3xl space-x-3 inline">
                                         <span className="font-semibold"
                                               style={release.app.color ? {color: release.app.color} : {}}>
                                             {release.app.name}
                                         </span>
-                                            <span>{release.releaseName}</span>
-                                        </div>
-                                        <span className="text-gray-300 text-lg font-medium">
+                                    <span>{release.releaseName}</span>
+                                </div>
+                                <span className="text-gray-300 text-lg font-medium">
                                             {release.releaseDate.toLocaleDateString("en-GB", DATE_FORMATTING_OPTIONS)}
                                         </span>
-                                    </div>
-
-                                    <ReleaseNavigation icon={<LuChevronRight/>} release={release.nextRelease} side="right"/>
-                                </div>
-                                <Separator className="mt-6"/>
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            {release.releaseNote && (
-                                <>
-                                    <div className="text-center"
-                                         dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(marked.parse(release.releaseNote) as string)}}></div>
-                                    <Separator className="my-6"/>
-                                </>
-                            )}
-
-                            <div className="grid grid-cols-1 gap-8">
-                                {_.chain(release.entries)
-                                    .groupBy(x => x.category)
-                                    .map((entries, category) =>
-                                        <ReleaseCategory key={category}
-                                                         entries={entries}
-                                                         category={category}
-                                                         dompurify={DOMPurify}/>
-                                    )
-                                    .value()}
                             </div>
-                        </CardContent>
-                    </Card>
 
-                    <ChangelogAdminControls/>
-                </div>
-            </main>
-            <Footer/>
-        </>
-    )
+                            <ReleaseNavigation icon={<LuChevronRight/>} release={release.nextRelease}
+                                               side="right"/>
+                        </div>
+                        <Separator className="mt-6"/>
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    {release.releaseNote && (
+                        <>
+                            <div className="text-center"
+                                 dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(marked.parse(release.releaseNote) as string)}}></div>
+                            <Separator className="my-6"/>
+                        </>
+                    )}
+
+                    <div className="grid grid-cols-1 gap-8">
+                        {_.chain(release.entries)
+                            .groupBy(x => x.category)
+                            .map((entries, category) =>
+                                <ReleaseCategory key={category}
+                                                 entries={entries}
+                                                 category={category}
+                                                 dompurify={DOMPurify}/>
+                            )
+                            .value()}
+                    </div>
+                </CardContent>
+            </Card>
+        </>)
 }
 
 function ReleaseCategory(props: {
@@ -145,8 +124,7 @@ function ReleaseCategory(props: {
 
 function ReleaseEntry(props: { entry: ChangelogReleaseEntry, dompurify: DOMPurify }) {
     return (
-        <div
-            className={`grid grid-cols-[1rem,1fr] gap-x-3 gap-y-2 items-center ${props.entry.major ? "text-yellow-500" : ''}`}>
+        <div className={`grid grid-cols-[1rem,1fr] gap-x-3 gap-y-2 items-center ${props.entry.major ? "text-yellow-500" : ''}`}>
             <EntryIcon type={props.entry.entryType}/>
             <h5 className="text-lg">{props.entry.title}</h5>
 
@@ -176,34 +154,6 @@ function ReleaseNavigation(props: { icon: ReactElement, side: "left" | "right", 
             </TooltipContent>
         </Tooltip>
     )
-}
-
-function EntryIcon(props: { type: ChangelogEntryType | null }): ReactElement {
-    switch (props.type) {
-        case "ADDITION":
-            return <LuPlus/>;
-
-        case "FIX":
-            return <LuCheck/>;
-
-        case "REMOVAL":
-            return <LuMinus/>;
-
-        case "BUG":
-            return <LuBug/>;
-
-        case "DELAYED":
-            return <LuClock/>;
-
-        case "INFO":
-            return <LuInfo/>;
-
-        case "SECURITY":
-            return <LuShield/>;
-
-        default:
-            return <></>;
-    }
 }
 
 function buildReleaseSelectionCriteria(appId: string | null, releaseName: string | null): ChangelogSelectionCriteria {
