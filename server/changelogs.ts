@@ -5,49 +5,14 @@ import _ from "lodash";
 import {prisma} from "@/prisma";
 import {ChangelogEntryType, Prisma} from "@prisma/client";
 import {actionClient, adminActionClient} from "@/lib/safe-action";
+
+import {
+    changelogReleaseIdentifierSchema,
+    changelogReleaseSchema,
+    persistedChangelogReleaseSchema
+} from "./changelogTypes";
+
 import TransactionIsolationLevel = Prisma.TransactionIsolationLevel;
-
-const changelogReleaseSchema = z.object({
-    releaseName: z.string().nonempty('a release name is required'),
-    releaseDate: z.date(),
-    releaseNote: z.string().nullable().optional()
-});
-
-const changelogReleaseEntrySchema = z.object({
-    title: z.string().nonempty('a title is required for a changelog entry'),
-    content: z.string().nullable().optional(),
-    category: z.string().nullable().optional(),
-    major: z.boolean().optional().default(false),
-
-    entryType: z.enum((Object.values(ChangelogEntryType) as [string, ...string[]]))
-});
-
-/**
- * Returns a list of changelog-enabled apps.
- */
-export const getChangelogApps = adminActionClient
-    .schema(z.object({
-        includeNonPublic: z.boolean().optional(),
-    }))
-    .action(async ({parsedInput: args}) => {
-        const apps = await prisma.changelogApp.findMany({
-            orderBy: {
-                order: 'asc'
-            },
-            where: args.includeNonPublic ? undefined : {
-                public: true
-            }
-        });
-
-        return apps.map(x => {
-            return {
-                id: x.id,
-                name: x.name,
-                color: x.color,
-                public: x.public
-            }
-        })
-    });
 
 /**
  * Get a specific release for a given app.
@@ -62,6 +27,9 @@ export const getChangelogRelease = actionClient
             where: {
                 appId: args.appId,
                 releaseName: args.releaseName,
+            },
+            include: {
+                entries: true
             }
         });
 
@@ -73,10 +41,7 @@ export const getChangelogRelease = actionClient
  * A release must have either release notes or at least one entry.
  */
 export const createChangelogRelease = adminActionClient
-    .schema(z.intersection(changelogReleaseSchema, z.object({
-        appId: z.string().nonempty(),
-        entries: z.array(changelogReleaseEntrySchema).optional()
-    })).refine(v => {
+    .schema(changelogReleaseSchema.refine(v => {
         if (!v.releaseNote?.length && !v.entries?.length) {
             return {
                 message: 'Either release notes or entries must be provided'
@@ -116,6 +81,9 @@ export const createChangelogRelease = adminActionClient
                         }
                     }) ?? []
                 }
+            },
+            include: {
+                entries: true
             }
         });
 
@@ -140,16 +108,8 @@ export const createChangelogRelease = adminActionClient
 /**
  * Remove a changelog release by id or app/release name.
  */
-export const removeChangelogRelease = adminActionClient
-    .schema(z.union([
-        z.object({
-            id: z.number().int()
-        }),
-        z.object({
-            appId: z.string().nonempty(),
-            releaseName: z.string().nonempty()
-        })
-    ]))
+export const deleteChangelogRelease = adminActionClient
+    .schema(changelogReleaseIdentifierSchema)
     .action(async ({parsedInput: args}) => prisma.$transaction(async tx => {
         const release = await tx.changelogRelease.findFirst({
             where: 'id' in args ? {id: args.id} : {appId: args.appId, releaseName: args.releaseName},
@@ -187,22 +147,7 @@ export const removeChangelogRelease = adminActionClient
  * All entries should be provided regardless even if they're not being updated. Any entry not included in the request will be removed.
  */
 export const updateChangelogRelease = adminActionClient
-    .schema(z.intersection(
-        // allow updating by id or by app/release name
-        z.union([
-            z.object({
-                id: z.number().int('invalid release identifier')
-            }),
-            z.object({
-                appId: z.string().nonempty(),
-                releaseName: z.string().nonempty()
-            })
-        ]),
-        z.intersection(changelogReleaseSchema, z.object({
-            // optional id allows for creating new entries or updating existing ones
-            entries: z.array(z.intersection(z.object({id: z.number().int().optional()}), changelogReleaseEntrySchema)).optional()
-        })))
-    )
+    .schema(persistedChangelogReleaseSchema)
     .action(async ({parsedInput: args}) => prisma.$transaction(async tx => {
         const release = await tx.changelogRelease.findFirst({
             where: 'id' in args ? {id: args.id} : {appId: args.appId, releaseName: args.releaseName},
@@ -283,7 +228,6 @@ export const updateChangelogRelease = adminActionClient
                 }
             });
 
-            // update new previous release to
             if (newPreviousRelease) {
                 await tx.changelogRelease.update({
                     where: {id: release.id},

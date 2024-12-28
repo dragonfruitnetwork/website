@@ -1,0 +1,283 @@
+"use client";
+
+import {action} from "mobx";
+import {useRouter} from "next/router";
+import {observer} from "mobx-react-lite";
+import {useCallback, useEffect, useMemo, useState} from "react";
+import {LuPencilRuler, LuPlus, LuSave, LuTrash} from "react-icons/lu";
+
+import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
+import {Switch} from "@/components/ui/switch";
+import {Button} from "@/components/ui/button";
+import {IconBox} from "@/components/icon-box";
+import {Textarea} from "@/components/ui/textarea";
+import {Separator} from "@/components/ui/separator";
+import {Card, CardContent} from "@/components/ui/card";
+import {AutoComplete} from "@/components/ui/autocomplete";
+import {DateTimePicker} from "@/components/ui/datetime-picker";
+import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion";
+
+import {EntryIcon} from "./entryType";
+import {MutableChangelogRelease, MutableChangelogReleaseEntry} from "./mutableChangelogRelease";
+
+import {
+    createChangelogRelease,
+    deleteChangelogRelease,
+    getChangelogRelease,
+    updateChangelogRelease
+} from "@/server/changelogs";
+import {AlertCircle} from "lucide-react";
+
+type ChangelogAppDto = {
+    id: string;
+    name: string;
+    color: string;
+};
+
+interface EditorProps {
+    app: ChangelogAppDto;
+    release: NonNullable<Awaited<ReturnType<typeof getChangelogRelease>>>['data'] | null; // release only provided if in edit mode
+
+    createReleaseAction: typeof createChangelogRelease;
+    updateReleaseAction: typeof updateChangelogRelease;
+    deleteReleaseAction: typeof deleteChangelogRelease;
+}
+
+export const Editor = observer((props: EditorProps) => {
+    const router = useRouter();
+
+    const [release, setRelease] = useState(() => new MutableChangelogRelease(props.app.id));
+    const [errors, setErrors] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (props.release) {
+            release.importExistingRelease(props.release);
+        }
+    }, []);
+
+    const saveCallback = useCallback(async () => {
+        setErrors(null);
+
+        const releaseObject = release.createObject();
+        const serverResult = release.id ? await props.updateReleaseAction(releaseObject) : await props.createReleaseAction(releaseObject);
+
+        if (!serverResult) {
+            setErrors('An error occurred while saving the release.');
+            return;
+        }
+
+        if (serverResult?.validationErrors?._errors?.length) {
+            setErrors(serverResult.validationErrors._errors.join('\n'));
+        }
+
+        if (serverResult?.serverError) {
+            setErrors(serverResult.serverError);
+            return;
+        }
+
+        const newRelease = new MutableChangelogRelease(props.app.id);
+        newRelease.importExistingRelease(serverResult.data);
+
+        setRelease(newRelease);
+    }, [release]);
+
+    const deleteCallback = useCallback(async () => {
+        setErrors(null);
+
+        if (!confirm('Are you sure you want to delete this release?')) {
+            return;
+        }
+
+        if (!release.id) {
+            throw new Error('Cannot delete a release that has not been saved yet.');
+        }
+
+        let result = await props.deleteReleaseAction({id: release.id});
+
+        if (!result) {
+            setErrors('An error occurred while deleting the release.');
+            return;
+        }
+
+        if (result?.serverError) {
+            setErrors(result.serverError);
+            return;
+        }
+
+        await router.push(`/changelogs/${props.app.id}`);
+    }, [release]);
+
+    return (
+        <div className="space-y-5">
+            {errors?.length && (
+                <Alert variant="destructive">
+                    <AlertCircle className="h-4 w-4"/>
+                    <AlertTitle>Update Failed</AlertTitle>
+                    <AlertDescription>{errors}</AlertDescription>
+                </Alert>
+            )}
+
+            <Card>
+                <CardContent className="p-6">
+                    <div className="flex flex-row items-center gap-4">
+                        <IconBox icon={<LuPencilRuler/>} color={props.app.color} size={40}/>
+                        <div className="space-y-4">
+                            <span className="text-lg font-semibold"
+                                  style={{color: props.app.color}}>{props.app.name}</span>
+                            {props.release ? <span>Version {props.release?.releaseName}</span> :
+                                <span>New Release</span>}
+                        </div>
+
+                        <div className="flex-grow"></div>
+                        <div className="space-y-3">
+                            <Button onClick={saveCallback} variant="ghost">
+                                <LuSave className="mr-2 h-5 w-5"/>
+                                <span>Save</span>
+                            </Button>
+
+                            <Button onClick={deleteCallback} variant="destructive" disabled={!release.id}>
+                                <LuTrash className="mr-2 h-5 w-5"/>
+                                <span>Delete</span>
+                            </Button>
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+
+            <ReleaseEditor release={release} allowNameChanges={props.release != null}/>
+        </div>
+    );
+});
+
+const ReleaseEditor = observer((props: { release: MutableChangelogRelease, allowNameChanges: boolean }) => {
+    return (<div className="space-y-5">
+        <div className="space-y-2">
+            <Label>Release Name</Label>
+            <Input required
+                   type="text"
+                   placeholder="Release Name"
+                   value={props.release.releaseName}
+                   disabled={!props.allowNameChanges}
+                   onChange={action(c => props.release.releaseName = c.target.value)}/>
+        </div>
+
+        <div className="space-y-2">
+            <Label>Release Date</Label>
+            <DateTimePicker value={props.release.releaseDate}
+                            onChange={action(c => props.release.releaseDate = c)}/>
+        </div>
+
+        <div className="space-y-2">
+            <Label>Release Notes</Label>
+            <Textarea content={props.release.releaseNote ?? undefined}
+                      onChange={action(c => props.release.releaseNote = c.target.value)}/>
+        </div>
+
+        <div className="grid grid-cols-1 gap-2 w-full">
+            <Label>Changes</Label>
+            <Accordion type="multiple" className="w-full">
+                {props.release.entries.map(x => (
+                    <ReleaseEntryEditor entry={x}
+                                        key={x.localId}
+                                        loadSimilarCategories={q => props.release.categories.filter(x => x.includes(q))}
+                                        onDeleteRequested={action(() => props.release.entries.splice(props.release.entries.indexOf(x), 1))}/>
+                ))}
+            </Accordion>
+            <Separator/>
+            <Button variant="ghost" className="mx-auto">
+                <LuPlus className="mr-2 h-5 w-5"/>
+                <span>Add Entry</span>
+            </Button>
+        </div>
+    </div>)
+});
+
+const ReleaseEntryEditor = observer((props: {
+    entry: MutableChangelogReleaseEntry,
+    loadSimilarCategories: (q: string) => string[],
+    onDeleteRequested: () => void
+}) => {
+    const [categorySearch, setCategorySearch] = useState('');
+    const autofilledCategories = useMemo(() => {
+        const suggestions = props.loadSimilarCategories(categorySearch);
+
+        if (suggestions.indexOf(categorySearch) !== -1) {
+            suggestions.splice(suggestions.indexOf(categorySearch), 1);
+        }
+
+        suggestions.unshift(categorySearch);
+        return suggestions.map(x => {
+            return {value: x, label: x};
+        });
+    }, [categorySearch, props.loadSimilarCategories]);
+
+    return (
+        <AccordionItem value={props.entry.localId}>
+            <AccordionTrigger>
+                <div className={`flex flex-row items-center gap-3 ${props.entry.major ? "text-yellow-500" : ''}`}>
+                    <EntryIcon type={props.entry.type}/>
+                    <h5 className="text-lg">{props.entry.title}</h5>
+                </div>
+            </AccordionTrigger>
+            <AccordionContent>
+                <div className="grid grid-cols-1 gap-5 py-3">
+                    <div className="gap-y-2">
+                        <Label>Change Type</Label>
+                        <Select>
+                            <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Change Type"/>
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="FIX">Fix</SelectItem>
+                                <SelectItem value="ADDITION">Addition</SelectItem>
+                                <SelectItem value="REMOVAL">Removal</SelectItem>
+                                <SelectItem value="BUG">Bug</SelectItem>
+                                <SelectItem value="DELAYED">Delayed Change</SelectItem>
+                                <SelectItem value="INFO">Information</SelectItem>
+                                <SelectItem value="SECURITY">Security Update</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    <div className="gap-y-2">
+                        <Label>Title</Label>
+                        <Input type="text" placeholder="Title"/>
+                    </div>
+
+                    <div className="gap-y-2">
+                        <Label>Category</Label>
+                        <AutoComplete selectedValue={props.entry.category ?? ''}
+                                      onSelectedValueChange={action((a: string) => props.entry.category = a)}
+                                      items={autofilledCategories}
+                                      searchValue={categorySearch}
+                                      onSearchValueChange={setCategorySearch}/>
+                    </div>
+
+                    <div className="gap-y-2">
+                        <Label>Description</Label>
+                        <Textarea content={props.entry.description ?? undefined}
+                                  onChange={action(c => props.entry.description = c.target.value)}/>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                        <Switch id="major-change"/>
+                        <Label htmlFor="major-change">Major Change</Label>
+                    </div>
+
+                    {props.entry.id && (
+                        <>
+                            <Separator/>
+                            <Button onClick={props.onDeleteRequested} variant="destructive">
+                                <LuTrash className="mr-2 h-5 w-5"/>
+                                <span>Delete Entry</span>
+                            </Button>
+                        </>
+                    )}
+                </div>
+            </AccordionContent>
+        </AccordionItem>
+    );
+});
