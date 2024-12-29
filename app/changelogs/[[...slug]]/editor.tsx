@@ -4,7 +4,7 @@ import {action} from "mobx";
 import {observer} from "mobx-react-lite";
 import {useRouter} from "next/navigation";
 import {useCallback, useEffect, useMemo, useState} from "react";
-import {LuPencilRuler, LuPlus, LuSave, LuTrash} from "react-icons/lu";
+import {LuBadgeAlert, LuPencilRuler, LuPlus, LuSave, LuTrash} from "react-icons/lu";
 
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
@@ -12,7 +12,6 @@ import {Switch} from "@/components/ui/switch";
 import {Button} from "@/components/ui/button";
 import {IconBox} from "@/components/icon-box";
 import {Textarea} from "@/components/ui/textarea";
-import {Separator} from "@/components/ui/separator";
 import {Card, CardContent} from "@/components/ui/card";
 import {AutoComplete} from "@/components/ui/autocomplete";
 import {DateTimePicker} from "@/components/ui/datetime-picker";
@@ -29,7 +28,6 @@ import {
     getChangelogRelease,
     updateChangelogRelease
 } from "@/server/changelogs";
-import {AlertCircle} from "lucide-react";
 
 type ChangelogAppDto = {
     id: string;
@@ -114,7 +112,7 @@ export const Editor = observer((props: EditorProps) => {
         <div className="space-y-5">
             {errors?.length && (
                 <Alert variant="destructive">
-                    <AlertCircle className="h-4 w-4"/>
+                    <LuBadgeAlert className="h-4 w-4"/>
                     <AlertTitle>Update Failed</AlertTitle>
                     <AlertDescription>{errors}</AlertDescription>
                 </Alert>
@@ -172,7 +170,7 @@ const ReleaseEditor = observer((props: { release: MutableChangelogRelease }) => 
 
         <div className="space-y-2">
             <Label>Release Notes</Label>
-            <Textarea content={props.release.releaseNote ?? undefined}
+            <Textarea value={props.release.releaseNote ?? undefined}
                       onChange={action(c => props.release.releaseNote = c.target.value)}/>
         </div>
 
@@ -265,7 +263,7 @@ const ReleaseEntryEditor = observer((props: {
 
                     <div className="space-y-2">
                         <Label>Description</Label>
-                        <Textarea content={props.entry.description ?? undefined}
+                        <Textarea value={props.entry.description ?? undefined}
                                   onChange={action(c => props.entry.description = c.target.value)}/>
                     </div>
 

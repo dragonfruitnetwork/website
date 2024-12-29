@@ -4,11 +4,10 @@ import {JSDOM} from "jsdom";
 import {marked} from "marked";
 import {prisma} from "@/prisma";
 import {redirect} from "next/navigation";
-import {AlertCircle} from "lucide-react";
 import createDomPurify, {DOMPurify} from "dompurify";
 import React, {ReactElement, Suspense, use} from "react";
 import {DefaultArgs} from "@prisma/client/runtime/library";
-import {LuChevronLeft, LuChevronRight} from "react-icons/lu";
+import {LuBadgeAlert, LuChevronLeft, LuChevronRight} from "react-icons/lu";
 import {ChangelogRelease, ChangelogReleaseEntry, Prisma, UserPermissions} from "@prisma/client";
 
 import Listing from "./listing";
@@ -188,7 +187,7 @@ export function EditorHost(props: { appId: string, releaseName: string | undefin
                     {!appInfo
                         ? (
                             <Alert>
-                                <AlertCircle className="h-4 w-4"/>
+                                <LuBadgeAlert className="h-4 w-4"/>
                                 <AlertTitle>App not found</AlertTitle>
                                 <AlertDescription>
                                     The provided app ({props.appId}) was not found.
@@ -213,7 +212,7 @@ export function EditorHost(props: { appId: string, releaseName: string | undefin
                     {!releaseInfo?.data
                         ? (
                             <Alert>
-                                <AlertCircle className="h-4 w-4"/>
+                                <LuBadgeAlert className="h-4 w-4"/>
                                 <AlertTitle>Release not found</AlertTitle>
                                 <AlertDescription>
                                     <strong>{props.releaseName}</strong> was not found. It may have been deleted or
