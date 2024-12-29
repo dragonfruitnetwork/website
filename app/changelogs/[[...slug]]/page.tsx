@@ -44,7 +44,7 @@ const DATE_FORMATTING_OPTIONS: Intl.DateTimeFormatOptions = {
 export default async function Changelogs({params}: { params: Promise<{ slug: string[] | null }> }) {
     const [appId, releaseName, releaseAction] = (await params).slug?.slice(0, 3) ?? [];
 
-    if (appId && (releaseAction === "edit" || releaseAction === "add")) {
+    if (appId && (releaseAction === "edit" || releaseAction === "new")) {
         const session = await auth();
 
         if (session?.user?.userPermissions !== UserPermissions.ADMIN) {
@@ -178,9 +178,9 @@ function ReleaseNavigation(props: { icon: ReactElement, side: "left" | "right", 
     )
 }
 
-export function EditorHost(props: { appId: string, releaseName: string | undefined, action: "add" | "edit" }) {
+export function EditorHost(props: { appId: string, releaseName: string | undefined, action: "new" | "edit" }) {
     switch (props.action) {
-        case "add":
+        case "new":
             const appInfo = use(prisma.changelogApp.findUnique({where: {id: props.appId}}));
 
             return (
