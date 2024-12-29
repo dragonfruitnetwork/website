@@ -1,8 +1,9 @@
 "use client";
 
-import {LuLogOut, LuPencil} from "react-icons/lu";
+import {LuLogOut} from "react-icons/lu";
 import {signOut, useSession} from "next-auth/react";
 
+import {Button} from "@/components/ui/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -12,8 +13,6 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import {Button} from "@/components/ui/button";
-import {UserPermissions} from "@prisma/client";
 
 export function UserMenu() {
     const {data: session} = useSession();
@@ -46,8 +45,6 @@ export function UserMenu() {
                             <span>{session.user?.name}</span>
                         </DropdownMenuLabel>
 
-                        {session?.user?.userPermissions === UserPermissions.ADMIN && <AdminMenu/>}
-
                         <DropdownMenuSeparator/>
                         <DropdownMenuGroup>
                         <DropdownMenuItem className="text-red-700 hover:cursor-pointer" onClick={() => signOut()}>
@@ -57,20 +54,6 @@ export function UserMenu() {
                         </DropdownMenuGroup>
                     </DropdownMenuContent>
                 </DropdownMenu>
-        </>
-    )
-}
-
-function AdminMenu() {
-    return (
-        <>
-            <DropdownMenuGroup>
-                <DropdownMenuSeparator/>
-                <DropdownMenuItem>
-                    <LuPencil/>
-                    <span>Changelog Editor</span>
-                </DropdownMenuItem>
-            </DropdownMenuGroup>
         </>
     )
 }

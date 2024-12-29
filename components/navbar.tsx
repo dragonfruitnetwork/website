@@ -7,6 +7,7 @@ import {LuBookOpenCheck, LuCircleUser, LuGitPullRequest, LuMail} from "react-ico
 
 import {cn} from "@/lib/utils";
 import {Button} from "@/components/ui/button";
+import {UserMenu} from "@/components/user-menu";
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -15,7 +16,6 @@ import {
     NavigationMenuTrigger,
     navigationMenuTriggerStyle
 } from "@/components/ui/navigation-menu";
-import {UserMenu} from "@/components/user-menu";
 
 export default function NavBar() {
     return (
@@ -115,7 +115,8 @@ function MenuItem(props: {
     children?: React.ReactNode
 }) {
     return (
-        <Link href={props.href} passHref
+        <Link passHref
+              href={props.href}
               className={cn("flex flex-row items-center gap-5 select-none space-y-1 rounded-md p-3 hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground", props.className)}>
             {props.icon && (
                 <div className="flex-shrink-0 h-[25px]">
