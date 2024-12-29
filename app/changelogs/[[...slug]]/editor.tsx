@@ -1,8 +1,8 @@
 "use client";
 
 import {action} from "mobx";
-import {useRouter} from "next/router";
 import {observer} from "mobx-react-lite";
+import {useRouter} from "next/navigation";
 import {useCallback, useEffect, useMemo, useState} from "react";
 import {LuPencilRuler, LuPlus, LuSave, LuTrash} from "react-icons/lu";
 
@@ -34,7 +34,7 @@ import {AlertCircle} from "lucide-react";
 type ChangelogAppDto = {
     id: string;
     name: string;
-    color: string;
+    color: string | null;
 };
 
 interface EditorProps {
@@ -107,7 +107,7 @@ export const Editor = observer((props: EditorProps) => {
             return;
         }
 
-        await router.push(`/changelogs/${props.app.id}`);
+        router.push(`/changelogs/${props.app.id}`);
     }, [release]);
 
     return (
@@ -123,16 +123,17 @@ export const Editor = observer((props: EditorProps) => {
             <Card>
                 <CardContent className="p-6">
                     <div className="flex flex-row items-center gap-4">
-                        <IconBox icon={<LuPencilRuler/>} color={props.app.color} size={40}/>
-                        <div className="space-y-4">
-                            <span className="text-lg font-semibold"
-                                  style={{color: props.app.color}}>{props.app.name}</span>
-                            {props.release ? <span>Version {props.release?.releaseName}</span> :
-                                <span>New Release</span>}
+                        <IconBox icon={<LuPencilRuler/>} color={props.app.color ?? "#e3e3e3"} size={40}/>
+                        <div className="grid grid-cols-1">
+                            <span className="text-xl font-semibold" style={{color: props.app.color ?? undefined}}>
+                                {props.app.name}
+                            </span>
+                            {props.release
+                                ? <span>Version {props.release?.releaseName}</span>
+                                : <span>New Release</span>}
                         </div>
 
-                        <div className="flex-grow"></div>
-                        <div className="space-y-3">
+                        <div className="ms-auto flex gap-2">
                             <Button onClick={saveCallback} variant="ghost">
                                 <LuSave className="mr-2 h-5 w-5"/>
                                 <span>Save</span>
@@ -176,7 +177,7 @@ const ReleaseEditor = observer((props: { release: MutableChangelogRelease, allow
                       onChange={action(c => props.release.releaseNote = c.target.value)}/>
         </div>
 
-        <div className="grid grid-cols-1 gap-2 w-full">
+        <div className="grid grid-cols-1 gap-3 w-full pt-5">
             <Label>Changes</Label>
             <Accordion type="multiple" className="w-full">
                 {props.release.entries.map(x => (
@@ -186,8 +187,8 @@ const ReleaseEditor = observer((props: { release: MutableChangelogRelease, allow
                                         onDeleteRequested={action(() => props.release.entries.splice(props.release.entries.indexOf(x), 1))}/>
                 ))}
             </Accordion>
-            <Separator/>
-            <Button variant="ghost" className="mx-auto">
+            <Button variant="ghost" className="mx-auto mt-5"
+                    onClick={action(() => props.release.createNewReleaseEntry())}>
                 <LuPlus className="mr-2 h-5 w-5"/>
                 <span>Add Entry</span>
             </Button>
@@ -204,11 +205,14 @@ const ReleaseEntryEditor = observer((props: {
     const autofilledCategories = useMemo(() => {
         const suggestions = props.loadSimilarCategories(categorySearch);
 
-        if (suggestions.indexOf(categorySearch) !== -1) {
-            suggestions.splice(suggestions.indexOf(categorySearch), 1);
+        if (categorySearch.length > 0) {
+            if (suggestions.indexOf(categorySearch) !== -1) {
+                suggestions.splice(suggestions.indexOf(categorySearch), 1);
+            }
+
+            suggestions.unshift(categorySearch);
         }
 
-        suggestions.unshift(categorySearch);
         return suggestions.map(x => {
             return {value: x, label: x};
         });
@@ -223,10 +227,11 @@ const ReleaseEntryEditor = observer((props: {
                 </div>
             </AccordionTrigger>
             <AccordionContent>
-                <div className="grid grid-cols-1 gap-5 py-3">
-                    <div className="gap-y-2">
+                <div className="grid grid-cols-1 gap-6 py-3">
+                    <div className="space-y-2">
                         <Label>Change Type</Label>
-                        <Select>
+                        <Select value={props.entry.type}
+                                onValueChange={action(a => props.entry.type = a as "ADDITION" | "FIX" | "REMOVAL" | "DELAYED" | "INFO" | "BUG" | "SECURITY")}>
                             <SelectTrigger className="w-full">
                                 <SelectValue placeholder="Change Type"/>
                             </SelectTrigger>
@@ -242,12 +247,15 @@ const ReleaseEntryEditor = observer((props: {
                         </Select>
                     </div>
 
-                    <div className="gap-y-2">
+                    <div className="space-y-2">
                         <Label>Title</Label>
-                        <Input type="text" placeholder="Title"/>
+                        <Input type="text"
+                               placeholder="Title"
+                               value={props.entry.title}
+                               onChange={action(c => props.entry.title = c.target.value)}/>
                     </div>
 
-                    <div className="gap-y-2">
+                    <div className="space-y-2">
                         <Label>Category</Label>
                         <AutoComplete selectedValue={props.entry.category ?? ''}
                                       onSelectedValueChange={action((a: string) => props.entry.category = a)}
@@ -256,26 +264,23 @@ const ReleaseEntryEditor = observer((props: {
                                       onSearchValueChange={setCategorySearch}/>
                     </div>
 
-                    <div className="gap-y-2">
+                    <div className="space-y-2">
                         <Label>Description</Label>
                         <Textarea content={props.entry.description ?? undefined}
                                   onChange={action(c => props.entry.description = c.target.value)}/>
                     </div>
 
                     <div className="flex items-center space-x-2">
-                        <Switch id="major-change"/>
+                        <Switch id="major-change"
+                                checked={props.entry.major}
+                                onCheckedChange={action(c => props.entry.major = c)}/>
                         <Label htmlFor="major-change">Major Change</Label>
                     </div>
 
-                    {props.entry.id && (
-                        <>
-                            <Separator/>
-                            <Button onClick={props.onDeleteRequested} variant="destructive">
-                                <LuTrash className="mr-2 h-5 w-5"/>
-                                <span>Delete Entry</span>
-                            </Button>
-                        </>
-                    )}
+                    <Button onClick={props.onDeleteRequested} variant="destructive">
+                        <LuTrash className="mr-2 h-5 w-5"/>
+                        <span>Delete Entry</span>
+                    </Button>
                 </div>
             </AccordionContent>
         </AccordionItem>

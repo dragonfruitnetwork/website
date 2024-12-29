@@ -10,8 +10,6 @@ type ChangelogReleaseEntryData = NonNullable<ChangelogReleaseData>['entries'][nu
 
 export class MutableChangelogRelease {
 
-    id: number | null = null;
-
     constructor(appId: string) {
         this.appId = appId;
         this.releaseDate = new Date();
@@ -20,6 +18,7 @@ export class MutableChangelogRelease {
         makeObservable(this);
     }
 
+    @observable id: number | null = null;
     @observable appId: string;
     @observable releaseDate: Date;
     @observable releaseName: string;
@@ -57,6 +56,11 @@ export class MutableChangelogRelease {
         if (release.entries.length) {
             this.entries.push(...release.entries.map(x => new MutableChangelogReleaseEntry(x)));
         }
+    }
+
+    @action
+    createNewReleaseEntry() {
+        this._entries.push(new MutableChangelogReleaseEntry(null));
     }
 
     createObject(): z.infer<typeof persistedChangelogReleaseSchema> {

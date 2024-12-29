@@ -1,20 +1,31 @@
 import _ from "lodash";
+import {auth} from "@/auth";
 import {JSDOM} from "jsdom";
 import {marked} from "marked";
 import {prisma} from "@/prisma";
 import {redirect} from "next/navigation";
-import React, {ReactElement} from "react";
+import {AlertCircle} from "lucide-react";
 import createDomPurify, {DOMPurify} from "dompurify";
+import React, {ReactElement, Suspense, use} from "react";
 import {DefaultArgs} from "@prisma/client/runtime/library";
 import {LuChevronLeft, LuChevronRight} from "react-icons/lu";
-import {ChangelogRelease, ChangelogReleaseEntry, Prisma} from "@prisma/client";
+import {ChangelogRelease, ChangelogReleaseEntry, Prisma, UserPermissions} from "@prisma/client";
 
 import Listing from "./listing";
+import {Editor} from "./editor";
 import {EntryIcon} from "./entryType";
 
 import {Separator} from "@/components/ui/separator";
+import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
+
+import {
+    createChangelogRelease,
+    deleteChangelogRelease,
+    getChangelogRelease,
+    updateChangelogRelease
+} from "@/server/changelogs";
 
 export const dynamic = 'force-dynamic';
 
@@ -31,9 +42,19 @@ const DATE_FORMATTING_OPTIONS: Intl.DateTimeFormatOptions = {
 };
 
 export default async function Changelogs({params}: { params: Promise<{ slug: string[] | null }> }) {
-    const [appId, releaseName] = (await params).slug?.slice(0, 2) ?? [];
-    const {prismaQuery, redirectOnEmpty} = buildReleaseSelectionCriteria(appId, releaseName);
+    const [appId, releaseName, releaseAction] = (await params).slug?.slice(0, 3) ?? [];
 
+    if (appId && (releaseAction === "edit" || releaseAction === "add")) {
+        const session = await auth();
+
+        if (session?.user?.userPermissions !== UserPermissions.ADMIN) {
+            return redirect(`/changelogs/${appId}/${releaseName}`);
+        }
+
+        return <EditorHost appId={appId} releaseName={releaseName} action={releaseAction}/>;
+    }
+
+    const {prismaQuery, redirectOnEmpty} = buildReleaseSelectionCriteria(appId, releaseName);
     const release = await prisma.changelogRelease.findFirst({
         ...prismaQuery,
         include: {
@@ -124,7 +145,8 @@ function ReleaseCategory(props: {
 
 function ReleaseEntry(props: { entry: ChangelogReleaseEntry, dompurify: DOMPurify }) {
     return (
-        <div className={`grid grid-cols-[1rem,1fr] gap-x-3 gap-y-2 items-center ${props.entry.major ? "text-yellow-500" : ''}`}>
+        <div
+            className={`grid grid-cols-[1rem,1fr] gap-x-3 gap-y-2 items-center ${props.entry.major ? "text-yellow-500" : ''}`}>
             <EntryIcon type={props.entry.entryType}/>
             <h5 className="text-lg">{props.entry.title}</h5>
 
@@ -154,6 +176,59 @@ function ReleaseNavigation(props: { icon: ReactElement, side: "left" | "right", 
             </TooltipContent>
         </Tooltip>
     )
+}
+
+export function EditorHost(props: { appId: string, releaseName: string | undefined, action: "add" | "edit" }) {
+    switch (props.action) {
+        case "add":
+            const appInfo = use(prisma.changelogApp.findUnique({where: {id: props.appId}}));
+
+            return (
+                <Suspense>
+                    {!appInfo
+                        ? (
+                            <Alert>
+                                <AlertCircle className="h-4 w-4"/>
+                                <AlertTitle>App not found</AlertTitle>
+                                <AlertDescription>
+                                    The provided app ({props.appId}) was not found.
+                                </AlertDescription>
+                            </Alert>
+                        )
+                        : <Editor app={appInfo}
+                                  release={null}
+                                  createReleaseAction={createChangelogRelease}
+                                  updateReleaseAction={updateChangelogRelease}
+                                  deleteReleaseAction={deleteChangelogRelease}/>}
+                </Suspense>
+            );
+
+        case "edit":
+            const releaseInfo = props.releaseName?.length
+                ? use(getChangelogRelease({appId: props.appId, releaseName: props.releaseName}))
+                : use(Promise.resolve(null));
+
+            return (
+                <Suspense>
+                    {!releaseInfo?.data
+                        ? (
+                            <Alert>
+                                <AlertCircle className="h-4 w-4"/>
+                                <AlertTitle>Release not found</AlertTitle>
+                                <AlertDescription>
+                                    <strong>{props.releaseName}</strong> was not found. It may have been deleted or
+                                    renamed.
+                                </AlertDescription>
+                            </Alert>
+                        )
+                        : <Editor app={releaseInfo.data.app}
+                                  release={releaseInfo.data}
+                                  createReleaseAction={createChangelogRelease}
+                                  updateReleaseAction={updateChangelogRelease}
+                                  deleteReleaseAction={deleteChangelogRelease}/>}
+                </Suspense>
+            );
+    }
 }
 
 function buildReleaseSelectionCriteria(appId: string | null, releaseName: string | null): ChangelogSelectionCriteria {

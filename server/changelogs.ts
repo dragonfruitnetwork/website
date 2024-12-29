@@ -29,7 +29,8 @@ export const getChangelogRelease = actionClient
                 releaseName: args.releaseName,
             },
             include: {
-                entries: true
+                entries: true,
+                app: true
             }
         });
 
@@ -41,13 +42,7 @@ export const getChangelogRelease = actionClient
  * A release must have either release notes or at least one entry.
  */
 export const createChangelogRelease = adminActionClient
-    .schema(changelogReleaseSchema.refine(v => {
-        if (!v.releaseNote?.length && !v.entries?.length) {
-            return {
-                message: 'Either release notes or entries must be provided'
-            };
-        }
-    }))
+    .schema(changelogReleaseSchema)
     .action(async ({parsedInput: args}) => prisma.$transaction(async tx => {
         const previousRelease = await tx.changelogRelease.findFirst({
             where: {
@@ -83,6 +78,7 @@ export const createChangelogRelease = adminActionClient
                 }
             },
             include: {
+                app: true,
                 entries: true
             }
         });
@@ -251,9 +247,8 @@ export const updateChangelogRelease = adminActionClient
                 releaseNote: args.releaseNote
             },
             include: {
-                entries: true,
-                nextRelease: true,
-                previousRelease: true
+                app: true,
+                entries: true
             }
         });
     }, {isolationLevel: TransactionIsolationLevel.Serializable}));
