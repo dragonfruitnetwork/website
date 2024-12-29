@@ -1,7 +1,7 @@
 import React, {ReactElement} from "react";
 import {LuBug, LuCheck, LuClock, LuInfo, LuMinus, LuPlus, LuShield} from "react-icons/lu";
 
-export function EntryIcon(props: { type: "ADDITION" | "FIX" | "REMOVAL" | "DELAYED" | "INFO" | "BUG" | "SECURITY" | null }): ReactElement {
+export function EntryTypeIcon(props: { type: "ADDITION" | "FIX" | "REMOVAL" | "DELAYED" | "INFO" | "BUG" | "SECURITY" | null }): ReactElement {
     switch (props.type) {
         case "ADDITION":
             return <LuPlus/>;

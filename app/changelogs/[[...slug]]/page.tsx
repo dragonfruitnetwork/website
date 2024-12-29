@@ -1,19 +1,22 @@
 import _ from "lodash";
 import {auth} from "@/auth";
 import {JSDOM} from "jsdom";
+import Link from "next/link";
 import {marked} from "marked";
 import {prisma} from "@/prisma";
 import {redirect} from "next/navigation";
 import createDomPurify, {DOMPurify} from "dompurify";
 import React, {ReactElement, Suspense, use} from "react";
 import {DefaultArgs} from "@prisma/client/runtime/library";
-import {LuBadgeAlert, LuChevronLeft, LuChevronRight} from "react-icons/lu";
 import {ChangelogRelease, ChangelogReleaseEntry, Prisma, UserPermissions} from "@prisma/client";
+import {LuBadgeAlert, LuChevronLeft, LuChevronRight, LuPencil, LuPlus, LuShield} from "react-icons/lu";
 
 import Listing from "./listing";
 import {Editor} from "./editor";
-import {EntryIcon} from "./entryType";
+import {EntryTypeIcon} from "./entry-type-icon";
 
+import {Button} from "@/components/ui/button";
+import {IconBox} from "@/components/icon-box";
 import {Separator} from "@/components/ui/separator";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
@@ -40,91 +43,20 @@ const DATE_FORMATTING_OPTIONS: Intl.DateTimeFormatOptions = {
     weekday: "long"
 };
 
-export default async function Changelogs({params}: { params: Promise<{ slug: string[] | null }> }) {
-    const [appId, releaseName, releaseAction] = (await params).slug?.slice(0, 3) ?? [];
-
-    if (appId && (releaseAction === "edit" || releaseAction === "new")) {
-        const session = await auth();
-
-        if (session?.user?.userPermissions !== UserPermissions.ADMIN) {
-            return redirect(`/changelogs/${appId}/${releaseName}`);
-        }
-
-        return <EditorHost appId={appId} releaseName={releaseName} action={releaseAction}/>;
-    }
-
-    const {prismaQuery, redirectOnEmpty} = buildReleaseSelectionCriteria(appId, releaseName);
-    const release = await prisma.changelogRelease.findFirst({
-        ...prismaQuery,
-        include: {
-            app: true,
-            entries: true,
-            nextRelease: true,
-            previousRelease: true
-        }
-    });
-
-    // handle release not found
-    if (!release && redirectOnEmpty) {
-        return redirect(`/changelogs/${redirectOnEmpty}`);
-    } else if (!release) {
-        return redirect('/');
-    }
-
-    const DOMPurify = createDomPurify(new JSDOM('').window);
-
+function ReleaseEntry(props: { entry: ChangelogReleaseEntry, dompurify: DOMPurify }) {
     return (
-        <>
-            <Listing/>
-            <Card>
-                <CardHeader>
-                    <CardTitle>
-                        <div className="flex flex-row items-center justify-center gap-4">
-                            <ReleaseNavigation icon={<LuChevronLeft/>} release={release.previousRelease}
-                                               side="left"/>
+        <div
+            className={`grid grid-cols-[1rem,1fr] gap-x-3 gap-y-2 items-center ${props.entry.major ? "text-yellow-500" : ''}`}>
+            <EntryTypeIcon type={props.entry.entryType}/>
+            <h5 className="text-lg">{props.entry.title}</h5>
 
-                            <div className="flex flex-col justify-center gap-2 items-center">
-                                <div className="text-3xl space-x-3 inline">
-                                        <span className="font-semibold"
-                                              style={release.app.color ? {color: release.app.color} : {}}>
-                                            {release.app.name}
-                                        </span>
-                                    <span>{release.releaseName}</span>
-                                </div>
-                                <span className="text-gray-300 text-lg font-medium">
-                                            {release.releaseDate.toLocaleDateString("en-GB", DATE_FORMATTING_OPTIONS)}
-                                        </span>
-                            </div>
-
-                            <ReleaseNavigation icon={<LuChevronRight/>} release={release.nextRelease}
-                                               side="right"/>
-                        </div>
-                        <Separator className="mt-6"/>
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    {release.releaseNote && (
-                        <>
-                            <div className="text-center"
-                                 dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(marked.parse(release.releaseNote) as string)}}></div>
-                            <Separator className="my-6"/>
-                        </>
-                    )}
-
-                    <div className="grid grid-cols-1 gap-8">
-                        {_.chain(release.entries)
-                            .groupBy(x => x.category)
-                            .map((entries, category) =>
-                                <ReleaseCategory key={category}
-                                                 entries={entries}
-                                                 category={category}
-                                                 dompurify={DOMPurify}/>
-                            )
-                            .value()}
-                    </div>
-                </CardContent>
-            </Card>
-        </>)
+            <div className="col-start-2">
+                {props.entry.content && (<div
+                    dangerouslySetInnerHTML={{__html: props.dompurify.sanitize(marked.parse(props.entry.content) as string)}}
+                    className="text-gray-400 text-md"></div>)}
+            </div>
+        </div>
+    )
 }
 
 function ReleaseCategory(props: {
@@ -140,22 +72,6 @@ function ReleaseCategory(props: {
             </div>
         </div>
     );
-}
-
-function ReleaseEntry(props: { entry: ChangelogReleaseEntry, dompurify: DOMPurify }) {
-    return (
-        <div
-            className={`grid grid-cols-[1rem,1fr] gap-x-3 gap-y-2 items-center ${props.entry.major ? "text-yellow-500" : ''}`}>
-            <EntryIcon type={props.entry.entryType}/>
-            <h5 className="text-lg">{props.entry.title}</h5>
-
-            <div className="col-start-2">
-                {props.entry.content && (<div
-                    dangerouslySetInnerHTML={{__html: props.dompurify.sanitize(marked.parse(props.entry.content) as string)}}
-                    className="text-gray-400 text-md"></div>)}
-            </div>
-        </div>
-    )
 }
 
 function ReleaseNavigation(props: { icon: ReactElement, side: "left" | "right", release: ChangelogRelease | null }) {
@@ -177,7 +93,7 @@ function ReleaseNavigation(props: { icon: ReactElement, side: "left" | "right", 
     )
 }
 
-export function EditorHost(props: { appId: string, releaseName: string | undefined, action: "new" | "edit" }) {
+function EditorHost(props: { appId: string, releaseName: string | undefined, action: "new" | "edit" }) {
     switch (props.action) {
         case "new":
             const appInfo = use(prisma.changelogApp.findUnique({where: {id: props.appId}}));
@@ -228,6 +144,113 @@ export function EditorHost(props: { appId: string, releaseName: string | undefin
                 </Suspense>
             );
     }
+}
+
+export default async function Changelogs({params}: { params: Promise<{ slug: string[] | null }> }) {
+    const [appId, releaseName, releaseAction] = (await params).slug?.slice(0, 3) ?? [];
+    const session = await auth();
+
+    if (appId && (releaseAction === "edit" || releaseAction === "new") && session?.user?.userPermissions === UserPermissions.ADMIN) {
+        return <EditorHost appId={appId} releaseName={releaseName} action={releaseAction}/>;
+    }
+
+    const {prismaQuery, redirectOnEmpty} = buildReleaseSelectionCriteria(appId, releaseName);
+    const release = await prisma.changelogRelease.findFirst({
+        ...prismaQuery,
+        include: {
+            app: true,
+            entries: true,
+            nextRelease: true,
+            previousRelease: true
+        }
+    });
+
+    // handle release not found
+    if (!release && redirectOnEmpty) {
+        return redirect(`/changelogs/${redirectOnEmpty}`);
+    } else if (!release) {
+        return redirect('/');
+    }
+
+    const DOMPurify = createDomPurify(new JSDOM('').window);
+
+    return (
+        <>
+            <Listing/>
+            <Card>
+                <CardHeader>
+                    <CardTitle>
+                        <div className="flex flex-row items-center justify-center gap-4">
+                            <ReleaseNavigation icon={<LuChevronLeft/>} release={release.previousRelease} side="left"/>
+
+                            <div className="flex flex-col justify-center gap-2 items-center">
+                                <div className="text-3xl space-x-3 inline">
+                                    <span className="font-semibold" style={release.app.color ? {color: release.app.color} : {}}>
+                                        {release.app.name}
+                                    </span>
+                                    <span>{release.releaseName}</span>
+                                </div>
+                                <span className="text-gray-300 text-lg font-medium">
+                                    {release.releaseDate.toLocaleDateString("en-GB", DATE_FORMATTING_OPTIONS)}
+                                </span>
+                            </div>
+
+                            <ReleaseNavigation icon={<LuChevronRight/>} release={release.nextRelease} side="right"/>
+                        </div>
+                        <Separator className="mt-6"/>
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    {release.releaseNote && (
+                        <>
+                            <div className="text-center" dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(marked.parse(release.releaseNote) as string)}}>
+                            </div>
+                            <Separator className="my-6"/>
+                        </>
+                    )}
+
+                    <div className="grid grid-cols-1 gap-8">
+                        {_.chain(release.entries)
+                            .groupBy(x => x.category)
+                            .map((entries, category) =>
+                                <ReleaseCategory key={category}
+                                                 entries={entries}
+                                                 category={category}
+                                                 dompurify={DOMPurify}/>)
+                            .value()}
+                    </div>
+                </CardContent>
+            </Card>
+
+            {session?.user?.userPermissions === UserPermissions.ADMIN && (
+                <Card>
+                    <CardContent className="p-6">
+                        <div className="flex flex-row items-center gap-4">
+                            <IconBox icon={<LuShield/>} color={release.app.color ?? '#e3e3e3'} size={40}/>
+                            <span className="text-xl font-semibold">
+                                Changelog Administration
+                            </span>
+
+                            <div className="ms-auto flex flex-wrap justify-end gap-2">
+                                <Button asChild variant="ghost">
+                                    <Link href={`/changelogs/${release.app.id}/${release.releaseName}/edit`}>
+                                        <LuPencil className="mr-2 h-5 w-5"/>
+                                        <span>Edit {release.releaseName}</span>
+                                    </Link>
+                                </Button>
+
+                                <Button asChild variant="ghost">
+                                    <Link href={`/changelogs/${release.app.id}/_/new`}>
+                                        <LuPlus className="mr-2 h-5 w-5"/>
+                                        <span>Create Release</span>
+                                    </Link>
+                                </Button>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+            )}
+        </>)
 }
 
 function buildReleaseSelectionCriteria(appId: string | null, releaseName: string | null): ChangelogSelectionCriteria {

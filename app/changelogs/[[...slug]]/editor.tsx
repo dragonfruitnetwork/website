@@ -1,16 +1,16 @@
 "use client";
 
 import {action} from "mobx";
+import Link from "next/link";
 import {observer} from "mobx-react-lite";
 import {useRouter} from "next/navigation";
 import {useCallback, useEffect, useMemo, useState} from "react";
-import {LuBadgeAlert, LuPencilRuler, LuPlus, LuSave, LuTrash} from "react-icons/lu";
+import {LuBadgeAlert, LuChevronLeft, LuPlus, LuSave, LuTrash} from "react-icons/lu";
 
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
 import {Switch} from "@/components/ui/switch";
 import {Button} from "@/components/ui/button";
-import {IconBox} from "@/components/icon-box";
 import {Textarea} from "@/components/ui/textarea";
 import {Card, CardContent} from "@/components/ui/card";
 import {AutoComplete} from "@/components/ui/autocomplete";
@@ -19,7 +19,7 @@ import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion";
 
-import {EntryIcon} from "./entryType";
+import {EntryTypeIcon} from "./entry-type-icon";
 import {MutableChangelogRelease, MutableChangelogReleaseEntry} from "./mutableChangelogRelease";
 
 import {
@@ -121,7 +121,12 @@ export const Editor = observer((props: EditorProps) => {
             <Card>
                 <CardContent className="p-6">
                     <div className="flex flex-row items-center gap-4">
-                        <IconBox icon={<LuPencilRuler/>} color={props.app.color ?? "#e3e3e3"} size={40}/>
+                        <Button asChild variant="ghost">
+                            <Link href={`/changelogs/${props.app.id}`}>
+                                <LuChevronLeft className="h-5 w-5"/>
+                            </Link>
+                        </Button>
+
                         <div className="grid grid-cols-1">
                             <span className="text-xl font-semibold" style={{color: props.app.color ?? undefined}}>
                                 {props.app.name}
@@ -180,11 +185,13 @@ const ReleaseEditor = observer((props: { release: MutableChangelogRelease }) => 
                 {props.release.entries.map(x => (
                     <ReleaseEntryEditor entry={x}
                                         key={x.localId}
-                                        loadSimilarCategories={q => props.release.categories.filter(x => x.includes(q))}
-                                        onDeleteRequested={action(() => props.release.entries.splice(props.release.entries.indexOf(x), 1))}/>
+                                        onDeleteRequested={() => props.release.removeReleaseEntry(x)}
+                                        loadSimilarCategories={q => props.release.categories.filter(x => x.includes(q))}/>
                 ))}
             </Accordion>
-            <Button variant="ghost" className="mx-auto mt-5"
+
+            <Button variant="ghost"
+                    className="mx-auto mt-5"
                     onClick={action(() => props.release.createNewReleaseEntry())}>
                 <LuPlus className="mr-2 h-5 w-5"/>
                 <span>Add Entry</span>
@@ -219,7 +226,7 @@ const ReleaseEntryEditor = observer((props: {
         <AccordionItem value={props.entry.localId}>
             <AccordionTrigger>
                 <div className={`flex flex-row items-center gap-3 ${props.entry.major ? "text-yellow-500" : ''}`}>
-                    <EntryIcon type={props.entry.type}/>
+                    <EntryTypeIcon type={props.entry.type}/>
                     <h5 className="text-lg">{props.entry.title}</h5>
                 </div>
             </AccordionTrigger>
