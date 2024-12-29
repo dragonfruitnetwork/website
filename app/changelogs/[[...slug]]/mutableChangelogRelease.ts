@@ -98,7 +98,13 @@ export class MutableChangelogRelease {
 
     @action
     createNewReleaseEntry() {
-        this._entries.push(new MutableChangelogReleaseEntry(null));
+        const newChange = new MutableChangelogReleaseEntry(null);
+        const untitledChangeCount = this._entries.filter(x => x.title.startsWith(newChange.title)).length;
+
+        newChange.title = `${newChange.title} ${untitledChangeCount + 1}`;
+
+        this._entries.push(newChange);
+        return newChange;
     }
 
     @action
