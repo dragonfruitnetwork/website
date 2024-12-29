@@ -13,7 +13,10 @@ export class MutableChangelogRelease {
     constructor(appId: string) {
         this.appId = appId;
         this.releaseDate = new Date();
-        this.releaseName = `${this.releaseDate.getFullYear()}.${this.releaseDate.getMonth() + 1}.${this.releaseDate.getDate().toFixed(2)}`;
+        this.releaseName = `${this.releaseDate.getFullYear()}.${this.releaseDate.getMonth() + 1}${this.releaseDate.getDate().toLocaleString('en-US', {
+            minimumIntegerDigits: 2,
+            useGrouping: false
+        })}`;
 
         makeObservable(this);
     }

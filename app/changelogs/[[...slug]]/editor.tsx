@@ -148,12 +148,12 @@ export const Editor = observer((props: EditorProps) => {
                 </CardContent>
             </Card>
 
-            <ReleaseEditor release={release} allowNameChanges={props.release != null}/>
+            <ReleaseEditor release={release}/>
         </div>
     );
 });
 
-const ReleaseEditor = observer((props: { release: MutableChangelogRelease, allowNameChanges: boolean }) => {
+const ReleaseEditor = observer((props: { release: MutableChangelogRelease }) => {
     return (<div className="space-y-5">
         <div className="space-y-2">
             <Label>Release Name</Label>
@@ -161,7 +161,6 @@ const ReleaseEditor = observer((props: { release: MutableChangelogRelease, allow
                    type="text"
                    placeholder="Release Name"
                    value={props.release.releaseName}
-                   disabled={!props.allowNameChanges}
                    onChange={action(c => props.release.releaseName = c.target.value)}/>
         </div>
 
