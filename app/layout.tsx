@@ -7,12 +7,14 @@ import {TooltipProvider} from "@/components/ui/tooltip";
 import {ThemeProvider} from "@/components/theme-provider";
 
 export const metadata: Metadata = {
+    twitter: {
+        card: "summary"
+    },
     openGraph: {
-        title: "DragonFruit Network",
-
         type: "website",
-        url: "https://dragonfruit.network",
         locale: "en_GB",
+        siteName: "DragonFruit Network",
+        url: "https://dragonfruit.network"
     }
 };
 
