@@ -1,7 +1,8 @@
 import "./globals.css";
 
-import type {Metadata, Viewport} from "next";
+import React from "react";
 import {SessionProvider} from "next-auth/react";
+import type {Metadata, Viewport} from "next";
 
 import {TooltipProvider} from "@/components/ui/tooltip";
 import {ThemeProvider} from "@/components/theme-provider";
