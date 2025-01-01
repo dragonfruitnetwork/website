@@ -1,9 +1,9 @@
-import React from "react";
+import React, {HTMLAttributeAnchorTarget} from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {FaDiscord, FaGithub} from "react-icons/fa6";
 import {MdOutlineSignalWifi4BarLock} from "react-icons/md";
-import {LuBookOpenCheck, LuCircleUser, LuGitPullRequest, LuMail} from "react-icons/lu";
+import {LuCircleUser, LuGitPullRequest, LuMail} from "react-icons/lu";
 
 import {cn} from "@/lib/utils";
 import {Button} from "@/components/ui/button";
@@ -64,12 +64,8 @@ export default function NavBar() {
                             <NavigationMenuTrigger>Services</NavigationMenuTrigger>
                             <NavigationMenuContent>
                                 <div className="grid grid-cols-1 gap-3 p-4 w-[350px]">
-                                    <MenuItem href="https://id.dragonfruit.network" title="Account" icon={<LuCircleUser/>}>
+                                    <MenuItem href="https://id.dragonfruit.network" target="_blank" title="Account" icon={<LuCircleUser/>}>
                                         <span>Manage your account</span>
-                                    </MenuItem>
-
-                                    <MenuItem href="/wiki" title="Wiki" icon={<LuBookOpenCheck/>}>
-                                        <span>View documentation on our products and services</span>
                                     </MenuItem>
 
                                     <MenuItem href="/changelogs" title="Changelogs" icon={<LuGitPullRequest/>}>
@@ -111,12 +107,14 @@ function MenuItem(props: {
     href: string,
     title: string,
     icon?: React.ReactNode,
+    target?: HTMLAttributeAnchorTarget,
     className?: string,
     children?: React.ReactNode
 }) {
     return (
         <Link passHref
               href={props.href}
+              target={props.target}
               className={cn("flex flex-row items-center gap-5 select-none space-y-1 rounded-md p-3 hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground", props.className)}>
             {props.icon && (
                 <div className="flex-shrink-0 h-[25px]">
