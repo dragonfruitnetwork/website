@@ -3,19 +3,14 @@
 import useSWR from "swr";
 import _, {ListIteratee} from "lodash";
 import {useMemo, useState} from "react";
-import {
-    LuArrowDown01,
-    LuArrowDown10,
-    LuArrowDownAZ,
-    LuArrowDownZA,
-    LuArrowUp10,
-    LuArrowUpAZ,
-    LuChevronDown,
-    LuChevronUp
-} from "react-icons/lu";
+import {LuArrowDown01, LuArrowDown10, LuArrowDownAZ, LuArrowDownZA} from "react-icons/lu";
 
+import {Label} from "@/components/ui/label";
+import {Switch} from "@/components/ui/switch";
 import {Button} from "@/components/ui/button";
-import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
+import {Separator} from "@/components/ui/separator";
+import {Card, CardContent} from "@/components/ui/card";
+import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
 import {
     Select,
     SelectContent,
@@ -26,11 +21,7 @@ import {
 } from "@/components/ui/select";
 
 import {OnionDb, OnionDbCountry} from "@/lib/oniondb";
-import {CountryCard} from "@/app/onionfruit/countries/country-card";
-import {ArrowDownZA} from "lucide-react";
-import { Label } from "@/components/ui/label";
-import {Switch} from "@/components/ui/switch";
-
+import {CountryCard, NodeStats} from "@/app/onionfruit/countries/country-card";
 
 enum CountryOrderingCriteria {
     TotalNodes = 'totalNodes',
@@ -58,7 +49,8 @@ export function OnionDbViewer() {
         return {
             totalNodes: _.sumBy(data.countries, x => x.totalNodeCount),
             totalEntryNodes: _.sumBy(data.countries, x => x.entryNodeCount),
-            totalExitNodes: _.sumBy(data.countries, x => x.exitNodeCount)
+            totalExitNodes: _.sumBy(data.countries, x => x.exitNodeCount),
+            totalOnlineNodes: _.sumBy(data.countries, x => x.onlineNodeCount)
         };
     }, [data]);
 
@@ -106,15 +98,12 @@ export function OnionDbViewer() {
     }
 
     return (
-        <div className="space-y-5">
-            <div className="flex flex-wrap items-center gap-4">
+        <div className="space-y-5 px-2">
+            <div className="flex flex-wrap items-center justify-center sm:justify-between gap-4">
                 <div className="flex items-center space-x-2">
-                    <Switch checked={!showNonEntryExitCountries}
-                            onCheckedChange={s => setShowNonEntryExitCountries(!s)}/>
+                    <Switch checked={!showNonEntryExitCountries} onCheckedChange={s => setShowNonEntryExitCountries(!s)}/>
                     <Label>Hide unselectable countries</Label>
                 </div>
-
-                <div className="flex-grow"></div>
 
                 <div className="flex items-center gap-2">
                     <Tooltip>
@@ -146,7 +135,32 @@ export function OnionDbViewer() {
                     </Select>
                 </div>
             </div>
-            <div className="grid grid-cols-[repeat(auto-fill,minmax(600px,1fr))] gap-4">
+
+            <Separator/>
+
+            <Card>
+                <CardContent className="pt-6 gap-4 grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))]">
+                    <NodeStats totalNodes={overallMetrics.totalNodes}
+                               countryNodes={overallMetrics.totalOnlineNodes}
+                               color="#03a9f4"
+                               nodeType="online"
+                               large/>
+
+                    <NodeStats totalNodes={overallMetrics.totalNodes}
+                               countryNodes={overallMetrics.totalExitNodes}
+                               color="#e91e63"
+                               nodeType="exit"
+                               large/>
+
+                    <NodeStats totalNodes={overallMetrics.totalNodes}
+                               countryNodes={overallMetrics.totalEntryNodes}
+                               color="#8bc34a"
+                               nodeType="entry"
+                               large/>
+                </CardContent>
+            </Card>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 {displayedCountries.map(country => <CountryCard country={country} key={country.countryCode} metrics={overallMetrics}/>)}
             </div>
         </div>

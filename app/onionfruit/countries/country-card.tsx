@@ -26,15 +26,15 @@ export function CountryCard(props: {
     )
 }
 
-function NodeStats(props: {totalNodes: number, countryNodes: number, color: string, nodeType: string}) {
+export function NodeStats(props: {totalNodes: number, countryNodes: number, color: string, nodeType: string, large?: boolean}) {
     const percentage = (props.countryNodes / props.totalNodes) * 100;
 
     return (
-        <div className="flex items-center gap-2" style={props.countryNodes ? undefined : {filter: "grayscale(100%)"}}>
-            <DonutChart color={props.color} percentage={percentage} size={35} disabled={!props.countryNodes} />
+        <div className={`flex items-center ${props.large && "justify-center"} gap-2`} style={props.countryNodes ? undefined : {filter: "grayscale(100%)"}}>
+            <DonutChart color={props.color} percentage={percentage} size={props.large ? 75 : 35} disabled={!props.countryNodes} />
             <div className={`${!props.countryNodes && "text-gray-400"}`}>
-                <h6>{props.countryNodes.toLocaleString()} {props.nodeType} node{props.countryNodes !== 1 && "s"}</h6>
-                <p className="text-sm">{percentage.toFixed(2)}% global share</p>
+                <h6 className={props.large ? "text-lg" : undefined}>{props.countryNodes.toLocaleString()} {props.nodeType} node{props.countryNodes !== 1 && "s"}</h6>
+                <p className={props.large ? undefined : "text-sm"}>{percentage.toFixed(2)}% global share</p>
             </div>
         </div>
     )
