@@ -8,7 +8,6 @@ import {LuArrowDown01, LuArrowDown10, LuArrowDownAZ, LuArrowDownZA} from "react-
 import {Label} from "@/components/ui/label";
 import {Switch} from "@/components/ui/switch";
 import {Button} from "@/components/ui/button";
-import {Separator} from "@/components/ui/separator";
 import {Card, CardContent} from "@/components/ui/card";
 import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
 import {
@@ -135,8 +134,6 @@ export function OnionDbViewer() {
                     </Select>
                 </div>
             </div>
-
-            <Separator/>
 
             <Card>
                 <CardContent className="pt-6 gap-4 grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))]">

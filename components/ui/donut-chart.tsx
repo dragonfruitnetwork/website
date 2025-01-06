@@ -6,13 +6,6 @@ export function DonutChart(props: {color: string, size?: number, disabled?: bool
     return (
         <svg width={props.size ?? 100} height={props.size ?? 100} viewBox="0 0 42 42" style={{transform: 'rotate(-90deg)'}}>
             <circle
-                className="donut-hole"
-                cx="21"
-                cy="21"
-                r={radius}
-                fill="transparent"
-            />
-            <circle
                 className="donut-ring"
                 cx="21"
                 cy="21"
