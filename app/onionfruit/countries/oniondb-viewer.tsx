@@ -50,6 +50,18 @@ export function OnionDbViewer() {
     const [orderingCriteria, setOrderingCriteria] = useState<CountryOrderingCriteria>(CountryOrderingCriteria.TotalNodes);
     const [ascendingOrder, setAscendingOrder] = useState(false);
 
+    const overallMetrics = useMemo(() => {
+        if (!data?.countries.length) {
+            return null;
+        }
+
+        return {
+            totalNodes: _.sumBy(data.countries, x => x.totalNodeCount),
+            totalEntryNodes: _.sumBy(data.countries, x => x.entryNodeCount),
+            totalExitNodes: _.sumBy(data.countries, x => x.exitNodeCount)
+        };
+    }, [data]);
+
     const displayedCountries = useMemo(() => {
         if (!data?.countries.length) {
             return null;
@@ -89,7 +101,7 @@ export function OnionDbViewer() {
         return <span className="text-xl text-center">Loading country info...</span>
     }
 
-    if (!displayedCountries?.length) {
+    if (!displayedCountries?.length || !overallMetrics) {
         return <span className="text-xl text-center">No countries found.</span>
     }
 
@@ -134,8 +146,8 @@ export function OnionDbViewer() {
                     </Select>
                 </div>
             </div>
-            <div className="grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-4">
-                {displayedCountries.map(country => <CountryCard country={country} key={country.countryCode}/>)}
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(600px,1fr))] gap-4">
+                {displayedCountries.map(country => <CountryCard country={country} key={country.countryCode} metrics={overallMetrics}/>)}
             </div>
         </div>
     );
