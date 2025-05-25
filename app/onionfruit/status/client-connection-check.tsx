@@ -1,7 +1,8 @@
 "use client";
 
+import useSWR from "swr";
+import {useMemo} from "react";
 import {COBEOptions} from "cobe";
-import {useEffect, useMemo, useState} from "react";
 
 import {capitalCityInfo} from "@/lib/capital-city-info";
 
@@ -18,14 +19,26 @@ interface OnionFruitConnectionStatusResponse {
 }
 
 export function ClientConnectionStatus() {
-    const [connectionStatus, setConnectionStatus] = useState<OnionFruitConnectionStatusResponse | null>(null);
+    const { data: connectionStatus, error, isLoading } = useSWR<OnionFruitConnectionStatusResponse, any, string>('https://onionfruit-api.dragonfruit.network/connectionstatus', url => fetch(url).then((res) => res.json()));
     const globeOptions: COBEOptions | undefined = useMemo(() => {
         if (!connectionStatus) {
             return undefined;
         }
 
-        const capitalLocation = capitalCityInfo[connectionStatus?.country_code ?? "US"];
-        return {
+        let color: [number, number, number] = [0x60, 0x7d, 0x8b];
+        let capitalLocation: [number, number] | null = null;
+
+        if (!error && connectionStatus) {
+            if (connectionStatus.is_tor) {
+                color = [0x74, 0xff, 0x03];
+            } else {
+                color = [0xf4, 0x43, 0x36];
+            }
+
+            capitalLocation = capitalCityInfo[connectionStatus.country_code ?? "US"];
+        }
+
+        const props: COBEOptions = {
             width: 800,
             height: 800,
             onRender: () => {
@@ -36,23 +49,21 @@ export function ClientConnectionStatus() {
             mapSamples: 16000,
             mapBrightness: 1.2,
             glowColor: [0.5, 0.5, 0.5],
-            baseColor: connectionStatus?.is_tor ? [116 / 255, 1, 3 / 255] : [244 / 255, 67 / 255, 54 / 255],
+            baseColor: color.map(c => c / 255) as [number, number, number],
             markerColor: [1, 1, 1],
             phi: 0,
             theta: 0.3,
-            markers: [
-                {location: capitalLocation, size: 0.05}
-            ]
+            markers: []
         };
+
+        if (capitalLocation) {
+            props.markers.push({location: capitalLocation, size: 0.05});
+        }
+
+        return props;
     }, [connectionStatus]);
 
-    useEffect(() => {
-        fetch("https://onionfruit-api.dragonfruit.network/connectionstatus")
-            .then(r => r.ok ? r.json() : null)
-            .then(setConnectionStatus);
-    }, []);
-
-    if (!connectionStatus) {
+    if (isLoading) {
         return (
             <div className="flex items-center justify-center h-full">
                 <span className="font-semibold text-2xl">Checking Connection Status...</span>
@@ -66,22 +77,38 @@ export function ClientConnectionStatus() {
                 <Globe config={globeOptions}/>
             </div>
 
-            <span className="text-2xl md:text-3xl text-center">This browser is {connectionStatus?.is_tor
-                ? <><span className="font-semibold" style={{color: "#74ff03"}}>Connected</span> to</>
-                : <><span className="font-semibold" style={{color: "#f44336"}}>Disconnected</span> from</>} Tor.
-            </span>
+            {error || !connectionStatus ? (
+                <>
+                    <span className="font-semibold text-2xl">An error occurred while trying to check if you're connected to Tor.</span>
+                    <span className="text-xl">Please reload the page and try again.</span>
+                </>
+            ) : (
+                <>
+                    <span className="text-2xl md:text-3xl text-center">This browser is {connectionStatus.is_tor
+                        ? <><span className="font-semibold" style={{color: "#74ff03"}}>Connected</span> to</>
+                        : <><span className="font-semibold" style={{color: "#f44336"}}>Disconnected</span> from</>} Tor.
+                    </span>
 
-            <div className="inline-flex flex-wrap gap-3 items-center justify-center text-lg select-none px-5">
-                <Tooltip>
-                    <TooltipTrigger>
-                        <span className="text-center">Country: <span className="font-semibold select-text">{connectionStatus.country_name}</span></span>
-                    </TooltipTrigger>
-                    <TooltipContent side="bottom">
-                        <span className="text-center">IP: {connectionStatus.ip_address ?? "Unknown IP"}</span>
-                    </TooltipContent>
-                </Tooltip>
-                <span className="text-center">ISP: <span className="font-semibold select-text">{connectionStatus.as_name ?? "Unknown"}</span></span>
-            </div>
+                    <div className="inline-flex flex-wrap gap-3 items-center justify-center text-lg select-none px-5">
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <span className="text-center">
+                                    Country: <span className="font-semibold select-text">{connectionStatus.country_name}</span>
+                                </span>
+                            </TooltipTrigger>
+                            <TooltipContent side="bottom">
+                                <span className="text-center">
+                                    IP: {connectionStatus.ip_address ?? "Unknown IP"}
+                                </span>
+                            </TooltipContent>
+                        </Tooltip>
+
+                        <span className="text-center">
+                            ISP: <span className="font-semibold select-text">{connectionStatus.as_name ?? "Unknown"}</span>
+                        </span>
+                    </div>
+                </>
+            )}
         </div>
     )
 }

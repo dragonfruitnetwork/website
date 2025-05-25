@@ -1,3 +1,5 @@
+import "server-only";
+
 import _ from "lodash";
 import {auth} from "@/auth";
 import {JSDOM} from "jsdom";
@@ -28,8 +30,17 @@ import {
     getChangelogRelease,
     updateChangelogRelease
 } from "@/server/changelogs";
+import {Metadata} from "next";
 
 export const dynamic = 'force-dynamic';
+export const metadata: Metadata = {
+    title: "Changelogs | DragonFruit Network",
+    description: "Stay up to date with the latest changes and updates to DragonFruit Products",
+    openGraph: {
+        title: "Changelogs",
+        description: "Stay up to date with the latest changes and updates to DragonFruit Products"
+    }
+}
 
 interface ChangelogSelectionCriteria {
     prismaQuery: Partial<Prisma.SelectSubset<Prisma.ChangelogReleaseFindFirstArgs, Prisma.ChangelogReleaseFindFirstArgs<DefaultArgs>>>;
@@ -76,18 +87,24 @@ function ReleaseCategory(props: {
 
 function ReleaseNavigation(props: { icon: ReactElement, side: "left" | "right", release: ChangelogRelease | null }) {
     if (!props.release) {
-        return React.cloneElement(props.icon, {color: "gray"});
+        return (
+            <Button variant="ghost">
+                {React.cloneElement(props.icon, {color: "gray"})}
+            </Button>
+        );
     }
 
     return (
         <Tooltip>
             <TooltipTrigger>
-                <a href={`/changelogs/${props.release.appId}/${props.release.releaseName}`}>
-                    {props.icon}
-                </a>
+                <Button asChild variant="ghost">
+                    <a href={`/changelogs/${props.release.appId}/${props.release.releaseName}`}>
+                        {props.icon}
+                    </a>
+                </Button>
             </TooltipTrigger>
             <TooltipContent side={props.side}>
-                v{props.release.releaseName}
+                {props.release.releaseName}
             </TooltipContent>
         </Tooltip>
     )

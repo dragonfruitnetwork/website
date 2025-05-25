@@ -1,5 +1,7 @@
 "use server";
 
+import 'server-only';
+
 import {z} from "zod";
 import _ from "lodash";
 import {prisma} from "@/prisma";

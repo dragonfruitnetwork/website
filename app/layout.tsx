@@ -1,18 +1,21 @@
 import "./globals.css";
 
-import type {Metadata, Viewport} from "next";
+import React from "react";
 import {SessionProvider} from "next-auth/react";
+import type {Metadata, Viewport} from "next";
 
 import {TooltipProvider} from "@/components/ui/tooltip";
 import {ThemeProvider} from "@/components/theme-provider";
 
 export const metadata: Metadata = {
+    twitter: {
+        card: "summary"
+    },
     openGraph: {
-        title: "DragonFruit Network",
-
         type: "website",
-        url: "https://dragonfruit.network",
         locale: "en_GB",
+        siteName: "DragonFruit Network",
+        url: "https://dragonfruit.network"
     }
 };
 

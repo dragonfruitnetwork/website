@@ -24,7 +24,11 @@ interface HomePageIconProps {
 
 export const metadata: Metadata = {
     title: 'Home | DragonFruit Network',
-    description: 'DragonFruit Network Software.',
+    description: 'The home of OnionFruit™, Kaplan and various open-source projects.',
+    openGraph: {
+        title: "Welcome to DragonFruit",
+        description: "The home of OnionFruit™, Kaplan and various open-source projects."
+    }
 }
 
 export default function Home() {
