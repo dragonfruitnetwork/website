@@ -16,7 +16,7 @@ namespace DragonFruit.Sakura
         {
             Typography = new Typography
             {
-                Default = new Default
+                Default = new DefaultTypography
                 {
                     FontFamily = ["Inter", "Segoe UI", "sans-serif"]
                 }

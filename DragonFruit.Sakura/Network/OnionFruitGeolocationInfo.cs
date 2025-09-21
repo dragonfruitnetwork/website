@@ -7,22 +7,22 @@ namespace DragonFruit.Sakura.Network
 {
     public class OnionFruitGeolocationInfo
     {
-        [JsonPropertyName("ip_address")]
+        [JsonPropertyName("ipAddress")]
         public string IPAddress { get; set; }
 
-        [JsonPropertyName("country_code")]
+        [JsonPropertyName("countryCode")]
         public string CountryCode { get; set; }
 
-        [JsonPropertyName("country_name")]
+        [JsonPropertyName("countryName")]
         public string CountryName { get; set; }
 
-        [JsonPropertyName("as_number")]
+        [JsonPropertyName("asNumber")]
         public int? AS { get; set; }
 
-        [JsonPropertyName("as_name")]
+        [JsonPropertyName("asName")]
         public string ASName { get; set; }
 
-        [JsonPropertyName("is_tor")]
+        [JsonPropertyName("isTor")]
         public bool? IsConnectedToTor { get; set; }
     }
 }
