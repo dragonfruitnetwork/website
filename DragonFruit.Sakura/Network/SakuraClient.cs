@@ -36,6 +36,8 @@ namespace DragonFruit.Sakura.Network
         JsonSerializable(typeof(ApiDistributionBranch)),
         JsonSerializable(typeof(IList<ApiDistributionBranch>)),
 
+        JsonSerializable(typeof(ApiWikiPage)),
+
         JsonSerializable(typeof(OnionFruitGeolocationInfo))
     ]
     public partial class SakuraSerializerContext : JsonSerializerContext;
