@@ -1,7 +1,5 @@
 @import 'tailwindcss';
-
 @plugin 'tailwindcss-animate';
-
 @custom-variant dark (&:is(.dark *));
 
 @theme {
@@ -147,9 +145,22 @@
   }
 }
 
-.onionfruit-gradient {
-  background: hsla(280, 84%, 41%, 1);
-  background: linear-gradient(90deg, hsla(280, 84%, 41%, 1) 0%, hsla(218, 97%, 56%, 1) 100%);
-  background: -moz-linear-gradient(90deg, hsla(280, 84%, 41%, 1) 0%, hsla(218, 97%, 56%, 1) 100%);
-  background: -webkit-linear-gradient(90deg, hsla(280, 84%, 41%, 1) 0%, hsla(218, 97%, 56%, 1) 100%);
-}
+.wiki-prose { @apply text-foreground leading-7; }
+.wiki-prose h1 { @apply text-4xl font-bold mt-8 mb-4; }
+.wiki-prose h2 { @apply text-3xl font-semibold mt-8 mb-3 border-b pb-2; }
+.wiki-prose h3 { @apply text-2xl font-semibold mt-6 mb-2; }
+.wiki-prose h4 { @apply text-xl font-semibold mt-4 mb-2; }
+.wiki-prose p { @apply my-4; }
+.wiki-prose a { @apply text-blue-400 underline-offset-2 hover:underline; }
+.wiki-prose ul { @apply list-disc pl-6 my-4; }
+.wiki-prose ol { @apply list-decimal pl-6 my-4; }
+.wiki-prose blockquote { @apply border-l-4 border-muted pl-4 italic text-muted-foreground my-4; }
+.wiki-prose code { @apply text-sm font-mono; }
+.wiki-prose :not(pre) > code { @apply bg-muted px-1.5 py-0.5 rounded; }
+.wiki-prose pre { @apply bg-muted rounded-lg overflow-x-auto my-4; }
+.wiki-prose table { @apply w-full my-6 rounded-lg overflow-hidden border border-border/60; border-collapse: separate; border-spacing: 0; }
+.wiki-prose th, .wiki-prose td { @apply px-6 py-5 text-left align-top text-sm; }
+.wiki-prose th { @apply bg-muted/60 font-semibold; }
+.wiki-prose tr + tr > * { @apply border-t border-border/60; }
+.wiki-prose td strong { @apply text-xs uppercase tracking-wider text-muted-foreground font-semibold mr-2; }
+.wiki-prose img { @apply max-w-full rounded-lg my-4; }
