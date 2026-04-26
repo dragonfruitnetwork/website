@@ -5,8 +5,8 @@ import 'server-only';
 import {z} from "zod";
 import _ from "lodash";
 import {prisma} from "@/prisma";
-import {ChangelogEntryType, Prisma} from "@prisma/client";
 import {actionClient, adminActionClient} from "@/lib/safe-action";
+import {ChangelogAuditAction, ChangelogEntryType, Prisma} from "@prisma/client";
 
 import {
     changelogReleaseIdentifierSchema,
@@ -45,7 +45,7 @@ export const getChangelogRelease = actionClient
  */
 export const createChangelogRelease = adminActionClient
     .inputSchema(changelogReleaseSchema)
-    .action(async ({parsedInput: args}) => prisma.$transaction(async tx => {
+    .action(async ({parsedInput: args, ctx}) => prisma.$transaction(async tx => {
         const previousRelease = await tx.changelogRelease.findFirst({
             where: {
                 AND: [
@@ -100,6 +100,18 @@ export const createChangelogRelease = adminActionClient
             });
         }
 
+        await tx.changelogAuditLog.create({
+            data: {
+                actorId: ctx.user.id,
+                actorEmail: ctx.user.email,
+                action: ChangelogAuditAction.CREATE,
+                appId: args.appId,
+                releaseId: newRelease.id,
+                releaseName: args.releaseName,
+                payload: JSON.parse(JSON.stringify(args)) as Prisma.InputJsonValue
+            }
+        });
+
         return newRelease;
     }, {isolationLevel: TransactionIsolationLevel.Serializable}));
 
@@ -108,11 +120,13 @@ export const createChangelogRelease = adminActionClient
  */
 export const deleteChangelogRelease = adminActionClient
     .inputSchema(changelogReleaseIdentifierSchema)
-    .action(async ({parsedInput: args}) => prisma.$transaction(async tx => {
+    .action(async ({parsedInput: args, ctx}) => prisma.$transaction(async tx => {
         const release = await tx.changelogRelease.findFirst({
             where: 'id' in args ? {id: args.id} : {appId: args.appId, releaseName: args.releaseName},
             select: {
                 id: true,
+                appId: true,
+                releaseName: true,
                 previousReleaseId: true,
                 nextRelease: {select: {id: true}}
             }
@@ -134,6 +148,18 @@ export const deleteChangelogRelease = adminActionClient
             where: {id: release.id}
         });
 
+        await tx.changelogAuditLog.create({
+            data: {
+                actorId: ctx.user.id,
+                actorEmail: ctx.user.email,
+                action: ChangelogAuditAction.DELETE,
+                appId: release.appId,
+                releaseId: release.id,
+                releaseName: release.releaseName,
+                payload: JSON.parse(JSON.stringify(release)) as Prisma.InputJsonValue
+            }
+        });
+
         return {removed: true};
     }));
 
@@ -146,7 +172,7 @@ export const deleteChangelogRelease = adminActionClient
  */
 export const updateChangelogRelease = adminActionClient
     .inputSchema(persistedChangelogReleaseSchema)
-    .action(async ({parsedInput: args}) => prisma.$transaction(async tx => {
+    .action(async ({parsedInput: args, ctx}) => prisma.$transaction(async tx => {
         const release = await tx.changelogRelease.findFirst({
             where: 'id' in args ? {id: args.id} : {appId: args.appId, releaseName: args.releaseName},
             include: {
@@ -190,11 +216,6 @@ export const updateChangelogRelease = adminActionClient
             }
         }
 
-        // check that the release has either an entry or notes
-        if (!release.entries.length && !args.releaseNote) {
-            throw new Error("RELEASE_MUST_HAVE_ENTRIES_OR_NOTES");
-        }
-
         // remove any entries that were not included in the update
         const removedEntryIds: number[] = _.difference(release.entries.map(x => x.id), args.entries?.map(x => x.id) ?? []).filter((id): id is number => id !== undefined);
 
@@ -204,7 +225,13 @@ export const updateChangelogRelease = adminActionClient
 
         // check if updating the release will break the chain
         if (release.nextRelease && release.previousRelease && (args.releaseDate < release.previousRelease.releaseDate || args.releaseDate > release.nextRelease.releaseDate)) {
-            // join next and previous releases together (remove current release from chain)
+            // detach the release from the chain first so the @unique slot is free during re-link
+            await tx.changelogRelease.update({
+                where: {id: release.id},
+                data: {previousReleaseId: null}
+            });
+
+            // close the gap left by the release
             await tx.changelogRelease.update({
                 where: {id: release.nextRelease.id},
                 data: {previousReleaseId: release.previousReleaseId}
@@ -241,7 +268,7 @@ export const updateChangelogRelease = adminActionClient
             }
         }
 
-        return tx.changelogRelease.update({
+        const updated = await tx.changelogRelease.update({
             where: {id: release.id},
             data: {
                 releaseName: args.releaseName,
@@ -253,4 +280,18 @@ export const updateChangelogRelease = adminActionClient
                 entries: true
             }
         });
+
+        await tx.changelogAuditLog.create({
+            data: {
+                actorId: ctx.user.id,
+                actorEmail: ctx.user.email,
+                action: ChangelogAuditAction.UPDATE,
+                appId: updated.appId,
+                releaseId: updated.id,
+                releaseName: updated.releaseName,
+                payload: JSON.parse(JSON.stringify(args)) as Prisma.InputJsonValue
+            }
+        });
+
+        return updated;
     }, {isolationLevel: TransactionIsolationLevel.Serializable}));

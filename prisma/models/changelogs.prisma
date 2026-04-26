@@ -58,3 +58,31 @@ enum ChangelogEntryType {
   BUG
   SECURITY
 }
+
+model ChangelogAuditLog {
+  id    Int @id @default(autoincrement())
+
+  actorId    String?
+  actorEmail String? @db.VarChar(255)
+
+  action      ChangelogAuditAction
+  appId       String? @db.VarChar(36)
+  releaseId   Int?
+  releaseName String?
+
+  payload Json?
+
+  createdAt DateTime @default(now())
+
+  @@index([releaseId])
+  @@index([appId, releaseName])
+  @@index([actorId])
+  @@index([createdAt])
+  @@map("changelog_audit_log")
+}
+
+enum ChangelogAuditAction {
+  CREATE
+  UPDATE
+  DELETE
+}
