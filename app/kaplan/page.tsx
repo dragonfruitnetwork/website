@@ -2,8 +2,7 @@ import React from "react";
 import Link from "next/link";
 import {Metadata} from "next";
 import {darken} from "polished";
-import {FaGithub, FaWindows} from "react-icons/fa6";
-import {TbWiper} from "react-icons/tb";
+import {FaGithub, FaHatCowboySide, FaWindows} from "react-icons/fa6";
 import {
     LuChevronRight,
     LuDownload,
@@ -130,7 +129,7 @@ function Hero() {
                  style={{backgroundColor: darken(0.3, PRODUCT_COLOR)}}>
             <div className="grid lg:grid-cols-[1.1fr_1fr] gap-10 items-center">
                 <div className="flex flex-col gap-5">
-                    <IconBox icon={<TbWiper/>} size={64} color={PRODUCT_COLOR}/>
+                    <IconBox icon={<FaHatCowboySide/>} size={64} color={PRODUCT_COLOR}/>
                     <div className="flex flex-col gap-2">
                         <h1 className="text-4xl lg:text-5xl font-semibold">Kaplan</h1>
                         <p className="text-xl text-gray-200">A portable MSIX/APPX removal utility.</p>

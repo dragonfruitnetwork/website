@@ -2,12 +2,12 @@ import React, {HTMLAttributeAnchorTarget} from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {FaDiscord, FaGithub} from "react-icons/fa6";
-import {MdOutlineSignalWifi4BarLock} from "react-icons/md";
 import {LuCircleUser, LuGitPullRequest, LuMail} from "react-icons/lu";
 
 import {cn} from "@/lib/utils";
 import {Button} from "@/components/ui/button";
 import {UserMenu} from "@/components/user-menu";
+import {OnionFruitIcon} from "@/components/icons/onionfruit-icon";
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -35,7 +35,7 @@ export default function NavBar() {
                                 <div className="grid gap-3 p-4 w-[400px] lg:w-[600px] lg:grid-cols-2">
                                     <div className="row-span-2">
                                         <Link href="/onionfruit" className="flex h-full w-full select-none flex-col justify-end rounded-md bg-linear-to-b from-muted/50 to-muted p-6 no-underline outline-hidden focus:shadow-md">
-                                            <MdOutlineSignalWifi4BarLock className="h-8 w-8"/>
+                                            <OnionFruitIcon className="h-8 w-8"/>
                                             <span className="text-lg pt-2 font-semibold">OnionFruit&trade;</span>
                                             <p className="text-sm pt-3 text-muted-foreground">
                                                 Bring your own browser and connect to the Tor network effortlessly

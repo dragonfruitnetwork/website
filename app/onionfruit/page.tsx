@@ -3,7 +3,6 @@ import Link from "next/link";
 import {Metadata} from "next";
 import {darken} from "polished";
 import {FaDiscord, FaGithub, FaWindows} from "react-icons/fa6";
-import {MdSignalWifi4BarLock} from "react-icons/md";
 import {
     LuAppWindow,
     LuCheck,
@@ -19,6 +18,7 @@ import {
 import {cn} from "@/lib/utils";
 import {Button} from "@/components/ui/button";
 import {IconBox} from "@/components/icon-box";
+import {OnionFruitIcon} from "@/components/icons/onionfruit-icon";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 
@@ -110,7 +110,7 @@ function Hero() {
                  style={{backgroundColor: darken(0.3, PRODUCT_COLOR)}}>
             <div className="grid lg:grid-cols-[1.1fr_1fr] gap-10 items-center">
                 <div className="flex flex-col gap-5">
-                    <IconBox icon={<MdSignalWifi4BarLock/>} size={64} color={PRODUCT_COLOR}/>
+                    <IconBox icon={<OnionFruitIcon/>} size={64} color={PRODUCT_COLOR}/>
                     <div className="flex flex-col gap-2">
                         <h1 className="text-4xl font-semibold">OnionFruit&trade;</h1>
                         <p className="text-xl text-gray-200">Connect to the Tor network with minimal effort.</p>

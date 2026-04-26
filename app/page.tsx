@@ -1,8 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import {darken} from "polished";
-import {TbWiper} from "react-icons/tb";
-import {FaGithub} from "react-icons/fa6";
+import {FaGithub, FaHatCowboySide} from "react-icons/fa6";
 import {MdSignalWifi4BarLock} from "react-icons/md";
 import {LuChevronRight, LuCircleUser} from "react-icons/lu";
 
@@ -51,7 +50,7 @@ export default function Home() {
                     </HomePageCard>
 
                     <div className="grid grid-cols-[repeat(auto-fit,minmax(500px,1fr))] gap-4">
-                        <HomePageCard color="#795548" title="Kaplan" icon={<TbWiper/>}>
+                        <HomePageCard color="#795548" title="Kaplan" icon={<FaHatCowboySide/>}>
                             <p className="pt-2 text-muted-foreground">
                                 Remove pre-installed software bundled with Windows 10/11.
                                 <br/>
