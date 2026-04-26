@@ -2,7 +2,7 @@ import React from "react";
 import {darken, lighten} from "polished";
 
 export function IconBox(props: {
-    icon: React.ReactElement,
+    icon: React.ReactElement<any>,
     color: string,
     size?: number
 }) {

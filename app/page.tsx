@@ -13,7 +13,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 
 interface HomePageIconProps {
-    icon: React.ReactElement;
+    icon: React.ReactElement<any>;
     children: React.ReactNode;
     title: string;
     color: string;

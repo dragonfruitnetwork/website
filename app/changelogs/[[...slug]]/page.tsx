@@ -85,7 +85,7 @@ function ReleaseCategory(props: {
     );
 }
 
-function ReleaseNavigation(props: { icon: ReactElement, side: "left" | "right", release: ChangelogRelease | null }) {
+function ReleaseNavigation(props: { icon: ReactElement<any>, side: "left" | "right", release: ChangelogRelease | null }) {
     if (!props.release) {
         return (
             <Button variant="ghost">
