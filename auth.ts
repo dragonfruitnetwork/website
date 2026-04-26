@@ -5,7 +5,7 @@ import {prisma} from "@/prisma";
 import {Provider} from "@auth/core/providers";
 import {PrismaAdapter} from "@auth/prisma-adapter";
 
-const providers: Provider[] = [];
+export const providers: Provider[] = [];
 
 if (process.env.AUTH_HINA_ID?.length) {
     providers.push({
@@ -48,6 +48,9 @@ if (process.env.AUTH_HINA_ID?.length) {
 export const {handlers, signIn, signOut, auth} = NextAuth({
     providers,
     adapter: PrismaAdapter(prisma),
+    pages: {
+        signIn: "/admin/login"
+    },
     theme: {
         logo: "/dragonfruit.png",
         brandColor: "#663bb9",
