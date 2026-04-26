@@ -6,7 +6,7 @@ export const actionClient = createSafeActionClient();
 export const adminActionClient = actionClient.use(async ({next}) => {
     const session = await auth();
 
-    if (session?.user?.userPermissions !== UserPermissions.ADMIN) {
+    if (!session?.user || session.user.userPermissions !== UserPermissions.ADMIN) {
         throw new Error("UNAUTHORIZED");
     }
 
