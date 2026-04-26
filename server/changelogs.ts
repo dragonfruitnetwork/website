@@ -20,7 +20,7 @@ import TransactionIsolationLevel = Prisma.TransactionIsolationLevel;
  * Get a specific release for a given app.
  */
 export const getChangelogRelease = actionClient
-    .schema(z.object({
+    .inputSchema(z.object({
         appId: z.string().nonempty(),
         releaseName: z.string().nonempty()
     }))
@@ -44,7 +44,7 @@ export const getChangelogRelease = actionClient
  * A release must have either release notes or at least one entry.
  */
 export const createChangelogRelease = adminActionClient
-    .schema(changelogReleaseSchema)
+    .inputSchema(changelogReleaseSchema)
     .action(async ({parsedInput: args}) => prisma.$transaction(async tx => {
         const previousRelease = await tx.changelogRelease.findFirst({
             where: {
@@ -107,7 +107,7 @@ export const createChangelogRelease = adminActionClient
  * Remove a changelog release by id or app/release name.
  */
 export const deleteChangelogRelease = adminActionClient
-    .schema(changelogReleaseIdentifierSchema)
+    .inputSchema(changelogReleaseIdentifierSchema)
     .action(async ({parsedInput: args}) => prisma.$transaction(async tx => {
         const release = await tx.changelogRelease.findFirst({
             where: 'id' in args ? {id: args.id} : {appId: args.appId, releaseName: args.releaseName},
@@ -145,7 +145,7 @@ export const deleteChangelogRelease = adminActionClient
  * All entries should be provided regardless even if they're not being updated. Any entry not included in the request will be removed.
  */
 export const updateChangelogRelease = adminActionClient
-    .schema(persistedChangelogReleaseSchema)
+    .inputSchema(persistedChangelogReleaseSchema)
     .action(async ({parsedInput: args}) => prisma.$transaction(async tx => {
         const release = await tx.changelogRelease.findFirst({
             where: 'id' in args ? {id: args.id} : {appId: args.appId, releaseName: args.releaseName},
