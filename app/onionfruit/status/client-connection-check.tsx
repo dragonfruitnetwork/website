@@ -6,16 +6,16 @@ import {COBEOptions} from "cobe";
 
 import {capitalCityInfo} from "@/lib/capital-city-info";
 
-import Globe from "@/components/ui/globe";
+import {Globe} from "@/components/ui/globe";
 import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
 
 interface OnionFruitConnectionStatusResponse {
-    ip_address: string;
-    is_tor: boolean | null;
-    country_code: string;
-    country_name: string;
-    as_number: number;
-    as_name: string;
+    ipAddress: string;
+    isTor: boolean | null;
+    countryCode: string;
+    countryName: string;
+    asNumber: number;
+    asName: string;
 }
 
 export function ClientConnectionStatus() {
@@ -29,20 +29,18 @@ export function ClientConnectionStatus() {
         let capitalLocation: [number, number] | null = null;
 
         if (!error && connectionStatus) {
-            if (connectionStatus.is_tor) {
+            if (connectionStatus.isTor) {
                 color = [0x74, 0xff, 0x03];
             } else {
                 color = [0xf4, 0x43, 0x36];
             }
 
-            capitalLocation = capitalCityInfo[connectionStatus.country_code ?? "US"];
+            capitalLocation = capitalCityInfo[connectionStatus.countryCode ?? "US"];
         }
 
-        const props: COBEOptions = {
+        return {
             width: 800,
             height: 800,
-            onRender: () => {
-            },
             devicePixelRatio: 2,
             dark: 1,
             diffuse: 0.4,
@@ -53,15 +51,9 @@ export function ClientConnectionStatus() {
             markerColor: [1, 1, 1],
             phi: 0,
             theta: 0.3,
-            markers: []
+            markers: capitalLocation ? [{location: capitalLocation, size: 0.05}] : []
         };
-
-        if (capitalLocation) {
-            props.markers.push({location: capitalLocation, size: 0.05});
-        }
-
-        return props;
-    }, [connectionStatus]);
+    }, [connectionStatus, error]);
 
     if (isLoading) {
         return (
@@ -84,7 +76,7 @@ export function ClientConnectionStatus() {
                 </>
             ) : (
                 <>
-                    <span className="text-2xl md:text-3xl text-center">This browser is {connectionStatus.is_tor
+                    <span className="text-2xl md:text-3xl text-center">This browser is {connectionStatus.isTor
                         ? <><span className="font-semibold" style={{color: "#74ff03"}}>Connected</span> to</>
                         : <><span className="font-semibold" style={{color: "#f44336"}}>Disconnected</span> from</>} Tor.
                     </span>
@@ -93,18 +85,18 @@ export function ClientConnectionStatus() {
                         <Tooltip>
                             <TooltipTrigger>
                                 <span className="text-center">
-                                    Country: <span className="font-semibold select-text">{connectionStatus.country_name}</span>
+                                    Country: <span className="font-semibold select-text">{connectionStatus.countryName}</span>
                                 </span>
                             </TooltipTrigger>
                             <TooltipContent side="bottom">
                                 <span className="text-center">
-                                    IP: {connectionStatus.ip_address ?? "Unknown IP"}
+                                    IP: {connectionStatus.ipAddress ?? "Unknown IP"}
                                 </span>
                             </TooltipContent>
                         </Tooltip>
 
                         <span className="text-center">
-                            ISP: <span className="font-semibold select-text">{connectionStatus.as_name ?? "Unknown"}</span>
+                            ISP: <span className="font-semibold select-text">{connectionStatus.asName ?? "Unknown"}</span>
                         </span>
                     </div>
                 </>
