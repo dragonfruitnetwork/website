@@ -23,6 +23,10 @@ export default function Footer() {
                           className="text-muted-foreground hover:text-foreground transition-colors">
                         Kaplan
                     </Link>
+                    <Link href="/wiki"
+                          className="text-muted-foreground hover:text-foreground transition-colors">
+                        Wiki
+                    </Link>
                     <Link href="/changelogs"
                           className="text-muted-foreground hover:text-foreground transition-colors">
                         Changelogs
