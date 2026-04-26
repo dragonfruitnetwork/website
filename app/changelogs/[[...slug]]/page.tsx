@@ -57,7 +57,7 @@ const DATE_FORMATTING_OPTIONS: Intl.DateTimeFormatOptions = {
 function ReleaseEntry(props: { entry: ChangelogReleaseEntry, dompurify: DOMPurify }) {
     return (
         <div
-            className={`grid grid-cols-[1rem,1fr] gap-x-3 gap-y-2 items-center ${props.entry.major ? "text-yellow-500" : ''}`}>
+            className={`grid grid-cols-[1rem_1fr] gap-x-3 gap-y-2 items-center ${props.entry.major ? "text-yellow-500" : ''}`}>
             <EntryTypeIcon type={props.entry.entryType}/>
             <h5 className="text-lg">{props.entry.title}</h5>
 

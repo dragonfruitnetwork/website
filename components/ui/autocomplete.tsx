@@ -6,7 +6,7 @@ import {cn} from "@/lib/utils";
 import {Check} from "lucide-react";
 import {useMemo, useState} from "react";
 import {Command as CommandPrimitive} from "cmdk";
-import {PopoverAnchor} from "@radix-ui/react-popover";
+import { Popover as PopoverPrimitive } from "radix-ui";
 
 import {
     Command,
@@ -79,7 +79,7 @@ export function AutoComplete<T extends string>({
         <div className="flex items-center">
             <Popover open={open} onOpenChange={setOpen}>
                 <Command shouldFilter={false}>
-                    <PopoverAnchor asChild>
+                    <PopoverPrimitive.Anchor asChild>
                         <CommandPrimitive.Input
                             asChild
                             value={searchValue}
@@ -91,7 +91,7 @@ export function AutoComplete<T extends string>({
                         >
                             <Input placeholder={placeholder}/>
                         </CommandPrimitive.Input>
-                    </PopoverAnchor>
+                    </PopoverPrimitive.Anchor>
                     {!open && <CommandList aria-hidden="true" className="hidden"/>}
                     <PopoverContent
                         asChild
@@ -104,7 +104,7 @@ export function AutoComplete<T extends string>({
                                 e.preventDefault();
                             }
                         }}
-                        className="w-[--radix-popover-trigger-width] p-0"
+                        className="w-(--radix-popover-trigger-width) p-0"
                     >
                         <CommandList>
                             {isLoading && (
@@ -125,7 +125,7 @@ export function AutoComplete<T extends string>({
                                         >
                                             <Check
                                                 className={cn(
-                                                    "mr-2 h-4 w-4",
+                                                    "me-2 h-4 w-4",
                                                     selectedValue === option.value
                                                         ? "opacity-100"
                                                         : "opacity-0"

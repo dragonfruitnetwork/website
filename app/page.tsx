@@ -98,7 +98,7 @@ function HomePageCard(props: HomePageIconProps) {
     const darkenedBg = props.color ? darken(0.3, props.color) : "unset";
     return (
         <div
-            className={cn("flex h-full w-full select-none flex-col rounded-md bg-muted p-6 mx-4 outline-none", props.className ?? '')}
+            className={cn("flex h-full w-full select-none flex-col rounded-md bg-muted p-6 mx-4 outline-hidden", props.className ?? '')}
             style={{backgroundColor: darkenedBg}}>
             <div className={props.spacerClass ? props.spacerClass : "mt-auto"}></div>
             <IconBox icon={props.icon} size={props.small ? 48 : 64} color={props.color}/>

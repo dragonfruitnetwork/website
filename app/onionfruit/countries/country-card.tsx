@@ -12,7 +12,7 @@ export function CountryCard(props: {
 
     return (
         <Card>
-            <CardContent className="pt-6 grid grid-cols-[64px,1fr] items-center gap-x-4 gap-y-2">
+            <CardContent className="pt-6 grid grid-cols-[64px_1fr] items-center gap-x-4 gap-y-2">
                 <img src={`https://cdn.jsdelivr.net/gh/twitter/twemoji@master/assets/svg/${cardCode}.svg`} alt={`${props.country.countryName} flag`} className="w-100"/>
                 <h2 className={`font-semibold text-xl ${props.country.entryNodeCount + props.country.exitNodeCount ? "" : "text-gray-500"}`}>{props.country.countryName}</h2>
 

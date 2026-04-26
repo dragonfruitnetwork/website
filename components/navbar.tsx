@@ -21,7 +21,7 @@ export default function NavBar() {
     return (
         <nav className="grid grid-cols-3 items-center justify-between px-5">
             <div>
-                <Link href="/" className="flex-shrink-0">
+                <Link href="/" className="shrink-0">
                     <Image src="/dragonfruit.png" width={45} height={45} alt="DragonFruit Logo"/>
                 </Link>
             </div>
@@ -34,7 +34,7 @@ export default function NavBar() {
                             <NavigationMenuContent>
                                 <div className="grid gap-3 p-4 w-[400px] lg:w-[600px] lg:grid-cols-2">
                                     <div className="row-span-2">
-                                        <Link href="/onionfruit" className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md">
+                                        <Link href="/onionfruit" className="flex h-full w-full select-none flex-col justify-end rounded-md bg-linear-to-b from-muted/50 to-muted p-6 no-underline outline-hidden focus:shadow-md">
                                             <MdOutlineSignalWifi4BarLock className="h-8 w-8"/>
                                             <span className="text-lg pt-2 font-semibold">OnionFruit&trade;</span>
                                             <p className="text-sm pt-3 text-muted-foreground">
@@ -117,7 +117,7 @@ function MenuItem(props: {
               target={props.target}
               className={cn("flex flex-row items-center gap-5 select-none space-y-1 rounded-md p-3 hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground", props.className)}>
             {props.icon && (
-                <div className="flex-shrink-0 h-[25px]">
+                <div className="shrink-0 h-[25px]">
                     {props.icon}
                 </div>
             )}

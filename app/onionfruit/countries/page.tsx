@@ -23,7 +23,7 @@ export default function Page() {
             <div className="space-y-10">
                 <div className="flex flex-col">
                     <Header/>
-                    <div className="flex flex-col gap-5 mt-[2.5rem] items-center">
+                    <div className="flex flex-col gap-5 mt-10 items-center">
                         <IconBox icon={<LuGlobeLock/>} color="#74ff03"/>
                         <div className="space-y-3">
                             <h1 className="font-semibold text-center text-4xl">OnionFruit™ Countries</h1>

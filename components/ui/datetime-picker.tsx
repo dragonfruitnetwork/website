@@ -3,7 +3,7 @@
 // datetime picker - https://time.rdsx.dev/
 
 import * as React from "react";
-import {CalendarIcon} from "@radix-ui/react-icons";
+import {CalendarIcon} from "lucide-react";
 import {format} from "date-fns";
 
 import {cn} from "@/lib/utils";
@@ -50,11 +50,11 @@ export function DateTimePicker(props: { value: Date | undefined; onChange: (date
                 <Button
                     variant="outline"
                     className={cn(
-                        "w-full justify-start text-left font-normal",
+                        "w-full justify-start text-start font-normal",
                         !props.value && "text-muted-foreground"
                     )}
                 >
-                    <CalendarIcon className="mr-2 h-4 w-4"/>
+                    <CalendarIcon className="me-2 h-4 w-4"/>
                     {props.value ? (
                         format(props.value, "MM/dd/yyyy hh:mm aa")
                     ) : (

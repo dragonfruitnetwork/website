@@ -10,7 +10,7 @@ export function IconBox(props: {
     const iconSize = props.size || 64;
 
     return (
-        <div className="flex items-center justify-center rounded-md p-5 outline-none" style={{backgroundColor: props.color, width: iconSize * 1.5, height: iconSize * 1.5}}>
+        <div className="flex items-center justify-center rounded-md p-5 outline-hidden" style={{backgroundColor: props.color, width: iconSize * 1.5, height: iconSize * 1.5}}>
             {React.cloneElement(props.icon, {size: iconSize, color: iconColor})}
         </div>
     );
