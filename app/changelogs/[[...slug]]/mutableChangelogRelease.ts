@@ -111,7 +111,7 @@ export class MutableChangelogRelease {
     removeReleaseEntry(entry: MutableChangelogReleaseEntry) {
         const ind = this._entries.indexOf(entry);
 
-        if (ind) {
+        if (ind !== -1) {
             this._entries.splice(ind, 1);
         }
     }
