@@ -1,13 +1,17 @@
 model User {
-  id       String    @id @default(cuid())
-  name     String
-  email    String    @unique
-  image    String?
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?   @db.Text
+
+  role       String?   @default("user")
+  banned     Boolean?  @default(false)
+  banReason  String?
+  banExpires DateTime?
+
   accounts Account[]
   sessions Session[]
-
-  emailVerified   DateTime?
-  userPermissions UserPermissions @default(USER)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -16,27 +20,40 @@ model User {
 }
 
 model Account {
-  id                String @id @default(cuid())
-  userId            String @unique
-  type              String
-  provider          String
-  providerAccountId String
-  user              User?  @relation(fields: [userId], references: [id])
+  id         String @id @default(cuid())
+  userId     String
+  accountId  String
+  providerId String
+
+  accessToken            String?   @db.Text
+  refreshToken           String?   @db.Text
+  idToken                String?   @db.Text
+  accessTokenExpiresAt   DateTime?
+  refreshTokenExpiresAt  DateTime?
+  scope                  String?
+  password               String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([provider, providerAccountId])
+  @@unique([providerId, accountId])
   @@index([userId])
   @@map("user_accounts")
 }
 
 model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id])
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+
+  ipAddress      String?
+  userAgent      String? @db.Text
+  impersonatedBy String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -45,7 +62,15 @@ model Session {
   @@map("user_sessions")
 }
 
-enum UserPermissions {
-  USER
-  ADMIN
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String   @db.Text
+  expiresAt  DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("user_verifications")
 }
