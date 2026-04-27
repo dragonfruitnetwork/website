@@ -6,7 +6,7 @@ import {z} from "zod";
 import _ from "lodash";
 import {prisma} from "@/prisma";
 import {actionClient, adminActionClient} from "@/lib/safe-action";
-import {ChangelogAuditAction, ChangelogEntryType, Prisma} from "@prisma/client";
+import {ChangelogAuditAction, ChangelogEntryType, Prisma} from "@/prisma/generated/prisma/client";
 
 import {
     changelogReleaseIdentifierSchema,

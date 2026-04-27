@@ -1,5 +1,5 @@
 import {auth} from "@/auth";
-import {UserPermissions} from "@prisma/client";
+import {UserPermissions} from "@/prisma/generated/prisma/client";
 import {createSafeActionClient} from "next-safe-action";
 
 export const actionClient = createSafeActionClient();

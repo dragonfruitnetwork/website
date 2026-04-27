@@ -9,8 +9,7 @@ import {prisma} from "@/prisma";
 import {redirect} from "next/navigation";
 import createDomPurify, {DOMPurify} from "dompurify";
 import React, {ReactElement, Suspense, use} from "react";
-import {DefaultArgs} from "@prisma/client/runtime/library";
-import {ChangelogRelease, ChangelogReleaseEntry, Prisma, UserPermissions} from "@prisma/client";
+import {ChangelogRelease, ChangelogReleaseEntry, Prisma, UserPermissions} from "@/prisma/generated/prisma/client";
 import {LuBadgeAlert, LuChevronLeft, LuChevronRight, LuPencil, LuPlus, LuShield} from "react-icons/lu";
 
 import Listing from "./listing";
@@ -43,7 +42,7 @@ export const metadata: Metadata = {
 }
 
 interface ChangelogSelectionCriteria {
-    prismaQuery: Partial<Prisma.SelectSubset<Prisma.ChangelogReleaseFindFirstArgs, Prisma.ChangelogReleaseFindFirstArgs<DefaultArgs>>>;
+    prismaQuery: Partial<Prisma.SelectSubset<Prisma.ChangelogReleaseFindFirstArgs, Prisma.ChangelogReleaseFindFirstArgs>>;
     redirectOnEmpty: string | null;
 }
 
