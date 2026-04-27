@@ -1,9 +1,8 @@
 import {Metadata} from "next";
 
-import {providers, signIn} from "@/auth";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import {Button} from "@/components/ui/button";
+import {GoogleSignInButton} from "./google-sign-in-button";
 
 export const metadata: Metadata = {
     title: "Admin Login | DragonFruit Network"
@@ -31,36 +30,7 @@ export default async function AdminLogin({searchParams}: { searchParams: SearchP
             )}
 
             <div className="flex flex-col gap-3">
-                {providers.map((provider) => {
-                    if (!("type" in provider) || (provider.type !== "oauth" && provider.type !== "oidc")) {
-                        return null;
-                    }
-
-                    const {id, name, style} = provider;
-                    return (
-                        <form
-                            key={id}
-                            action={async () => {
-                                "use server";
-                                await signIn(id, {redirectTo: callbackUrl ?? "/"});
-                            }}
-                        >
-                            <Button type="submit" className="w-full gap-2">
-                                {style?.logo && (
-                                    // eslint-disable-next-line @next/next/no-img-element
-                                    <img src={style.logo} alt="" className="h-5 w-5"/>
-                                )}
-                                Sign in with {name ?? id}
-                            </Button>
-                        </form>
-                    );
-                })}
-
-                {providers.length === 0 && (
-                    <p className="text-sm text-muted-foreground">
-                        No authentication providers are configured.
-                    </p>
-                )}
+                <GoogleSignInButton callbackUrl={callbackUrl ?? "/"}/>
             </div>
         </main>
         <Footer/>

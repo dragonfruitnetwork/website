@@ -6,10 +6,11 @@ import {JSDOM} from "jsdom";
 import Link from "next/link";
 import {marked} from "marked";
 import {prisma} from "@/prisma";
+import {headers} from "next/headers";
 import {redirect} from "next/navigation";
 import createDomPurify, {DOMPurify} from "dompurify";
 import React, {ReactElement, Suspense, use} from "react";
-import {ChangelogRelease, ChangelogReleaseEntry, Prisma, UserPermissions} from "@/prisma/generated/prisma/client";
+import {ChangelogRelease, ChangelogReleaseEntry, Prisma} from "@/prisma/generated/prisma/client";
 import {LuBadgeAlert, LuChevronLeft, LuChevronRight, LuPencil, LuPlus, LuShield} from "react-icons/lu";
 
 import Listing from "./listing";
@@ -164,9 +165,9 @@ function EditorHost(props: { appId: string, releaseName: string | undefined, act
 
 export default async function Changelogs({params}: { params: Promise<{ slug: string[] | null }> }) {
     const [appId, releaseName, releaseAction] = (await params).slug?.slice(0, 3) ?? [];
-    const session = await auth();
+    const session = await auth.api.getSession({headers: await headers()});
 
-    if (appId && (releaseAction === "edit" || releaseAction === "new") && session?.user?.userPermissions === UserPermissions.ADMIN) {
+    if (appId && (releaseAction === "edit" || releaseAction === "new") && session?.user?.role === "admin") {
         return <EditorHost appId={appId} releaseName={releaseName} action={releaseAction}/>;
     }
 
@@ -238,7 +239,7 @@ export default async function Changelogs({params}: { params: Promise<{ slug: str
                 </CardContent>
             </Card>
 
-            {session?.user?.userPermissions === UserPermissions.ADMIN && (
+            {session?.user?.role === "admin" && (
                 <Card>
                     <CardContent className="p-6">
                         <div className="flex flex-row items-center gap-4">
