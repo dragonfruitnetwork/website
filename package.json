@@ -2,18 +2,17 @@
   "name": "dragonfruit-web",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "eslint ."
   },
-  "prisma": {
-    "schema": "./prisma"
-  },
   "dependencies": {
     "@auth/prisma-adapter": "^2.9.1",
-    "@prisma/client": "^6",
+    "@prisma/adapter-mariadb": "^7.8.0",
+    "@prisma/client": "^7.8.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
@@ -51,10 +50,11 @@
     "@types/node": "^22",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
+    "dotenv": "^17.4.2",
     "eslint": "^9.39.4",
     "eslint-config-next": "^16.2.4",
     "postcss": "^8",
-    "prisma": "^6",
+    "prisma": "^7.8.0",
     "tailwindcss": "^4.2.4",
     "typescript": "^6"
   },
