@@ -62,17 +62,25 @@ export const Editor = observer((props: EditorProps) => {
         const releaseObject = release.createObject();
         const serverResult = release.id ? await props.updateReleaseAction(releaseObject) : await props.createReleaseAction(releaseObject);
 
+        console.log('save result', serverResult);
+
         if (!serverResult) {
             setErrors('An error occurred while saving the release.');
             return;
         }
 
-        if (serverResult?.validationErrors?._errors?.length) {
-            setErrors(serverResult.validationErrors._errors.join('\n'));
+        if (serverResult.serverError) {
+            setErrors(serverResult.serverError);
+            return;
         }
 
-        if (serverResult?.serverError) {
-            setErrors(serverResult.serverError);
+        if (serverResult.validationErrors) {
+            setErrors(JSON.stringify(serverResult.validationErrors, null, 2));
+            return;
+        }
+
+        if (!serverResult.data) {
+            setErrors('Server returned no data.');
             return;
         }
 
