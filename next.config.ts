@@ -12,6 +12,10 @@ if (authUrl) {
 }
 
 const nextConfig: NextConfig = {
+    output: "standalone",
+    outputFileTracingIncludes: {
+        "/**": ["./prisma/generated/prisma/**/*"],
+    },
     experimental: allowedOrigins ? { serverActions: { allowedOrigins } } : undefined,
 };
 
