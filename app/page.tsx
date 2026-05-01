@@ -34,11 +34,11 @@ export default function Home() {
     return (<>
             <Header/>
             <main className="container mx-auto mb-10">
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4 mx-4">
                     <HomePageCard color="#c71585"
                                   title="OnionFruit&trade;"
                                   icon={<MdSignalWifi4BarLock/>}
-                                  spacerClass="lg:h-[35vh] h-[15vh]">
+                                  spacerClass="lg:h-[35vh] h-[12vh] sm:h-[15vh]">
                         <p className="pt-2 text-muted-foreground">
                             The new, open-source Tor access client is now available.
                             Bring your own browser and connect to the Tor network effortlessly.
@@ -49,7 +49,7 @@ export default function Home() {
                         </Link>
                     </HomePageCard>
 
-                    <div className="grid grid-cols-[repeat(auto-fit,minmax(500px,1fr))] gap-4">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                         <HomePageCard color="#795548" title="Kaplan" icon={<FaHatCowboySide/>}>
                             <p className="pt-2 text-muted-foreground">
                                 Remove pre-installed software bundled with Windows 10/11.
@@ -97,7 +97,7 @@ function HomePageCard(props: HomePageIconProps) {
     const darkenedBg = props.color ? darken(0.3, props.color) : "unset";
     return (
         <div
-            className={cn("flex h-full w-full select-none flex-col rounded-md bg-muted p-6 mx-4 outline-hidden", props.className ?? '')}
+            className={cn("flex h-full w-full select-none flex-col rounded-md bg-muted p-5 sm:p-6 outline-hidden", props.className ?? '')}
             style={{backgroundColor: darkenedBg}}>
             <div className={props.spacerClass ? props.spacerClass : "mt-auto"}></div>
             <IconBox icon={props.icon} size={props.small ? 48 : 64} color={props.color}/>

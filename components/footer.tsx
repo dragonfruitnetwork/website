@@ -6,15 +6,56 @@ import {Separator} from "@/components/ui/separator";
 
 export default function Footer() {
     return (
-        <footer className="px-[10vw] pb-10 pt-12">
+        <footer className="px-6 sm:px-8 lg:px-[10vw] pb-8 pt-10 md:pb-10 md:pt-12">
             <Separator className="mb-8"/>
 
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <span className="text-sm text-muted-foreground">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 md:gap-4">
+                <nav className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm md:hidden">
+                    <div className="flex flex-col gap-2">
+                        <h3 className="text-xs font-semibold uppercase tracking-wider text-foreground">
+                            Projects
+                        </h3>
+                        <Link href="/onionfruit"
+                              className="text-muted-foreground hover:text-foreground transition-colors">
+                            OnionFruit&trade;
+                        </Link>
+                        <Link href="/kaplan"
+                              className="text-muted-foreground hover:text-foreground transition-colors">
+                            Kaplan
+                        </Link>
+                        <Link href="/wiki"
+                              className="text-muted-foreground hover:text-foreground transition-colors">
+                            Wiki
+                        </Link>
+                        <Link href="/changelogs"
+                              className="text-muted-foreground hover:text-foreground transition-colors">
+                            Changelogs
+                        </Link>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <h3 className="text-xs font-semibold uppercase tracking-wider text-foreground">
+                            Connect
+                        </h3>
+                        <Link href="https://github.com/dragonfruitnetwork" target="_blank" rel="noopener"
+                              className="text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1.5">
+                            <FaGithub/> GitHub
+                        </Link>
+                        <Link href="https://discord.gg/mcYJQNe" target="_blank" rel="noopener"
+                              className="text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1.5">
+                            <FaDiscord/> Discord
+                        </Link>
+                        <Link href="mailto:inbox@dragonfruit.network"
+                              className="text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1.5">
+                            <LuMail/> Email
+                        </Link>
+                    </div>
+                </nav>
+
+                <span className="text-sm text-muted-foreground order-last md:order-none">
                     &copy; {new Date().getUTCFullYear()} DragonFruit Network
                 </span>
 
-                <nav className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+                <nav className="hidden md:flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
                     <Link href="/onionfruit"
                           className="text-muted-foreground hover:text-foreground transition-colors">
                         OnionFruit&trade;

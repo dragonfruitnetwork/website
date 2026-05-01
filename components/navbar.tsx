@@ -7,6 +7,7 @@ import {LuBookOpen, LuCircleUser, LuGitPullRequest, LuMail} from "react-icons/lu
 import {cn} from "@/lib/utils";
 import {Button} from "@/components/ui/button";
 import {UserMenu} from "@/components/user-menu";
+import {MobileNav} from "@/components/mobile-nav";
 import {OnionFruitIcon} from "@/components/icons/onionfruit-icon";
 import {
     NavigationMenu,
@@ -19,14 +20,14 @@ import {
 
 export default function NavBar() {
     return (
-        <nav className="grid grid-cols-3 items-center justify-between px-5">
+        <nav className="flex items-center justify-between gap-2 px-5 md:grid md:grid-cols-3">
             <div>
                 <Link href="/" className="shrink-0">
                     <Image src="/dragonfruit.png" width={45} height={45} alt="DragonFruit Logo"/>
                 </Link>
             </div>
 
-            <div className="flex items-center justify-center">
+            <div className="hidden md:flex items-center justify-center">
                 <NavigationMenu>
                     <NavigationMenuList>
                         <NavigationMenuItem>
@@ -83,25 +84,31 @@ export default function NavBar() {
             </div>
 
             <div className="flex items-center justify-end gap-2">
-                <Button variant="ghost" size="icon" asChild>
-                    <Link href="mailto:inbox@dragonfruit.network">
-                        <LuMail/>
-                    </Link>
-                </Button>
+                <div className="hidden md:flex items-center gap-2">
+                    <Button variant="ghost" size="icon" asChild>
+                        <Link href="mailto:inbox@dragonfruit.network">
+                            <LuMail/>
+                        </Link>
+                    </Button>
 
-                <Button variant="ghost" size="icon" asChild>
-                    <Link href="https://discord.gg/mcYJQNe" target="_blank">
-                        <FaDiscord/>
-                    </Link>
-                </Button>
+                    <Button variant="ghost" size="icon" asChild>
+                        <Link href="https://discord.gg/mcYJQNe" target="_blank">
+                            <FaDiscord/>
+                        </Link>
+                    </Button>
 
-                <Button variant="ghost" size="icon" asChild>
-                    <Link href="https://github.com/dragonfruitnetwork" target="_blank">
-                        <FaGithub/>
-                    </Link>
-                </Button>
+                    <Button variant="ghost" size="icon" asChild>
+                        <Link href="https://github.com/dragonfruitnetwork" target="_blank">
+                            <FaGithub/>
+                        </Link>
+                    </Button>
+                </div>
 
                 <UserMenu/>
+
+                <div className="md:hidden">
+                    <MobileNav/>
+                </div>
             </div>
         </nav>
     )
