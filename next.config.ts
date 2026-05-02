@@ -1,22 +1,19 @@
 import type { NextConfig } from "next";
-
-const authUrl = process.env.AUTH_URL ?? process.env.NEXTAUTH_URL;
-let allowedOrigins: string[] | undefined;
-
-if (authUrl) {
-    try {
-        allowedOrigins = [new URL(authUrl).host];
-    } catch {
-        // ignore malformed AUTH_URL — fall back to Next.js same-origin defaults
-    }
-}
+import { withSentryConfig } from "@sentry/nextjs";
 
 const nextConfig: NextConfig = {
     output: "standalone",
     outputFileTracingIncludes: {
         "/**": ["./prisma/generated/prisma/**/*"],
     },
-    experimental: allowedOrigins ? { serverActions: { allowedOrigins } } : undefined,
+    reactCompiler: true
 };
 
-export default nextConfig;
+export default withSentryConfig(nextConfig, {
+    org: "dragonfruit",
+    project: "website",
+    sentryUrl: process.env.SENTRY_URL,
+    authToken: process.env.SENTRY_TOKEN,
+    silent: !process.env.CI,
+    widenClientFileUpload: true,
+});
