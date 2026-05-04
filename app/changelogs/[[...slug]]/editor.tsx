@@ -166,7 +166,7 @@ export const Editor = observer((props: EditorProps) => {
 
 const ReleaseEditor = observer((props: { release: MutableChangelogRelease }) => {
     return (<div className="space-y-5">
-        <div className="space-y-2">
+        <div className="grid gap-2">
             <Label>Release Name</Label>
             <Input required
                    type="text"
@@ -175,13 +175,13 @@ const ReleaseEditor = observer((props: { release: MutableChangelogRelease }) => 
                    onChange={action(c => props.release.releaseName = c.target.value)}/>
         </div>
 
-        <div className="space-y-2">
+        <div className="grid gap-2">
             <Label>Release Date</Label>
             <DateTimePicker value={props.release.releaseDate}
                             onChange={action(c => props.release.releaseDate = c)}/>
         </div>
 
-        <div className="space-y-2">
+        <div className="grid gap-2">
             <Label>Release Notes</Label>
             <Textarea value={props.release.releaseNote ?? undefined}
                       onChange={action(c => props.release.releaseNote = c.target.value)}/>
@@ -213,7 +213,7 @@ const ReleaseEntryEditor = observer((props: {
     loadSimilarCategories: (q: string) => string[],
     onDeleteRequested: () => void
 }) => {
-    const [categorySearch, setCategorySearch] = useState('');
+    const [categorySearch, setCategorySearch] = useState(props.entry.category ?? '');
     const autofilledCategories = useMemo(() => {
         const suggestions = props.loadSimilarCategories(categorySearch);
 
@@ -240,7 +240,7 @@ const ReleaseEntryEditor = observer((props: {
             </AccordionTrigger>
             <AccordionContent>
                 <div className="grid grid-cols-1 gap-6 py-3">
-                    <div className="space-y-2">
+                    <div className="grid gap-2">
                         <Label>Change Type</Label>
                         <Select value={props.entry.type}
                                 onValueChange={action(a => props.entry.type = a as "ADDITION" | "FIX" | "REMOVAL" | "DELAYED" | "INFO" | "BUG" | "SECURITY")}>
@@ -259,7 +259,7 @@ const ReleaseEntryEditor = observer((props: {
                         </Select>
                     </div>
 
-                    <div className="space-y-2">
+                    <div className="grid gap-2">
                         <Label>Title</Label>
                         <Input type="text"
                                placeholder="Title"
@@ -267,7 +267,7 @@ const ReleaseEntryEditor = observer((props: {
                                onChange={action(c => props.entry.title = c.target.value)}/>
                     </div>
 
-                    <div className="space-y-2">
+                    <div className="grid gap-2">
                         <Label>Category</Label>
                         <AutoComplete selectedValue={props.entry.category ?? ''}
                                       onSelectedValueChange={action((a: string) => props.entry.category = a)}
@@ -276,13 +276,13 @@ const ReleaseEntryEditor = observer((props: {
                                       onSearchValueChange={setCategorySearch}/>
                     </div>
 
-                    <div className="space-y-2">
+                    <div className="grid gap-2">
                         <Label>Description</Label>
                         <Textarea value={props.entry.description ?? undefined}
                                   onChange={action(c => props.entry.description = c.target.value)}/>
                     </div>
 
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center gap-2">
                         <Switch id="major-change"
                                 checked={props.entry.major}
                                 onCheckedChange={action(c => props.entry.major = c)}/>

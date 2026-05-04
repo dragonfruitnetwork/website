@@ -64,7 +64,7 @@ function ReleaseEntry(props: { entry: ChangelogReleaseEntry, dompurify: DOMPurif
             <div className="col-start-2">
                 {props.entry.content && (<div
                     dangerouslySetInnerHTML={{__html: props.dompurify.sanitize(marked.parse(props.entry.content) as string)}}
-                    className="text-gray-400 text-md"></div>)}
+                    className="text-gray-400 text-base"></div>)}
             </div>
         </div>
     )
