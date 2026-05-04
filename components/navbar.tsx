@@ -104,7 +104,9 @@ export default function NavBar() {
                     </Button>
                 </div>
 
-                <UserMenu/>
+                <div className="md:ml-4">
+                    <UserMenu/>
+                </div>
 
                 <div className="md:hidden">
                     <MobileNav/>
