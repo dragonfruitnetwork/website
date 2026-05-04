@@ -21,7 +21,7 @@ jobs:
       - name: Log in to Container Registry
         uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121
         with:
-          registry: lhr.ocir.io
+          registry: ${{ vars.DOCKER_REGISTRY }}
           username: ${{ secrets.OCI_USERNAME }}
           password: ${{ secrets.OCI_PASSWORD }}
 
@@ -29,7 +29,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@030e881283bb7a6894de51c315a6bfe6a94e05cf
         with:
-          images: lhr.ocir.io/${{ secrets.OCI_NAMESPACE }}/dragonfruit-website
+          images: ${{ vars.DOCKER_IMAGE }}
           tags: |
             type=ref,event=tag
             type=raw,value=latest,enable={{is_default_branch}}
@@ -40,6 +40,9 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            SENTRYURL=${{ vars.SENTRY_URL }}
+            SENTRYTOKEN=${{ secrets.SENTRY_TOKEN }}

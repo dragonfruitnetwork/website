@@ -35,5 +35,4 @@ export default withSentryConfig(nextConfig, {
     sentryUrl: process.env.SENTRY_URL,
     authToken: process.env.SENTRY_TOKEN,
     silent: !process.env.CI,
-    widenClientFileUpload: true,
 });

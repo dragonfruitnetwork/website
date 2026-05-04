@@ -4,6 +4,9 @@
 FROM node:24-alpine AS builder
 WORKDIR /app
 
+ARG SENTRYURL
+ARG SENTRYTOKEN
+
 RUN apk add --no-cache libc6-compat
 
 COPY package.json package-lock.json ./
@@ -11,18 +14,19 @@ RUN npm ci --include=dev
 
 COPY . .
 
-ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+ENV DATABASE_URL=mysql://placeholder:placeholder@localhost/placeholder
+ENV AUTH_URL=http://localhost:3000
+ENV AUTH_SECRET=placeholder
+ENV CI=true
+
+ENV SENTRY_URL=$SENTRYURL
+ENV SENTRY_TOKEN=$SENTRYTOKEN
 
 RUN npx prisma generate
-
-# DATABASE_URL must be defined for `next build` because @/prisma is imported
-# at module load. The placeholder is never connected to — no static page
-# issues queries — and it stays in the builder stage only.
-RUN DATABASE_URL="mysql://placeholder:placeholder@localhost/placeholder" \
-    AUTH_URL="http://localhost:3000" \
-    AUTH_SECRET="placeholder" \
-    npm run build
+RUN npm run build
 
 # ---------- runner stage ----------
 FROM node:24-alpine AS runner
