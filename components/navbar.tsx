@@ -23,7 +23,7 @@ export default function NavBar() {
         <nav className="flex items-center justify-between gap-2 px-5 md:grid md:grid-cols-3">
             <div>
                 <Link href="/" className="shrink-0">
-                    <Image src="/dragonfruit.png" width={45} height={45} alt="DragonFruit Logo"/>
+                    <Image src="/dragonfruit.png" width={512} height={512} className="w-[45px] h-[45px]" alt="DragonFruit Logo" loading="eager"/>
                 </Link>
             </div>
 
