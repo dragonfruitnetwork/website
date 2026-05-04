@@ -26,8 +26,8 @@ import Footer from "@/components/footer";
 const PRODUCT_COLOR = "#c71585";
 
 const REPO_URL = "https://github.com/dragonfruitnetwork/onionfruit";
-const RELEASES_URL = `${REPO_URL}/releases`;
-const LEGACY_RELEASES_URL = `${REPO_URL}/releases/latest`;
+const RELEASES_URL = `${REPO_URL}#running-onionfruit`;
+const LEGACY_RELEASES_URL = `${REPO_URL}/releases/latest/download/install.exe`;
 
 export const metadata: Metadata = {
     title: "OnionFruit™ - Tor Access Client",

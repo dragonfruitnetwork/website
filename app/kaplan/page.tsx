@@ -23,7 +23,7 @@ import Footer from "@/components/footer";
 
 const PRODUCT_COLOR = "#795548";
 const REPO_URL = "https://github.com/dragonfruitnetwork/kaplan";
-const RELEASES_URL = `${REPO_URL}/releases/latest`;
+const RELEASES_URL = `${REPO_URL}/releases/latest/download/kaplan-win-x64.exe`;
 
 export const metadata: Metadata = {
     title: "Kaplan - MSIX/APPX Removal Utility",
