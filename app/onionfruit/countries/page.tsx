@@ -9,7 +9,7 @@ import {OnionDbViewer} from "@/app/onionfruit/countries/oniondb-viewer";
 
 
 export const metadata: Metadata = {
-    title: "OnionFruit™ Countries | DragonFruit Network",
+    title: "OnionFruit™ Countries",
     description: "View server metrics and country information for the Tor network",
     openGraph: {
         title: "OnionFruit™ Countries",

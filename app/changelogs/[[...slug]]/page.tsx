@@ -34,7 +34,7 @@ import {Metadata} from "next";
 
 export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
-    title: "Changelogs | DragonFruit Network",
+    title: "Changelogs",
     description: "Stay up to date with the latest changes and updates to DragonFruit Products",
     openGraph: {
         title: "Changelogs",

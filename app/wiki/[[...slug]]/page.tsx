@@ -6,7 +6,7 @@ import Footer from "@/components/footer";
 import {WikiClient} from "./wiki-client";
 
 export const metadata: Metadata = {
-    title: "Wiki | DragonFruit Network",
+    title: "Wiki",
     description: "Documentation for DragonFruit projects and services.",
     openGraph: {
         title: "DragonFruit Wiki",
