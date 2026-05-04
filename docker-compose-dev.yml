@@ -1,0 +1,14 @@
+services:
+  mariadb:
+    container_name: mariadb
+    image: mariadb:11
+    ports:
+      - "3306:3306"
+    environment:
+      MARIADB_ROOT_PASSWORD: dragonfruitnet
+      MARIADB_DATABASE: dragonfruit
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+volumes:
+  mariadb_data: {}
