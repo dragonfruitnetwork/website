@@ -28,7 +28,7 @@ export default function Listing() {
                 {publicApps.map((x) => (
                     <a key={x.id}
                        href={`/changelogs/${x.id}/${x.releaseName}`}
-                       className="block p-1 no-underline w-[125px] hover:w-[150px] lg:hover:w-[175px] transition-all select-none">
+                       className="block p-1 no-underline w-[150px] hover:w-[180px] lg:hover:w-[210px] transition-all select-none">
                         <div className="rounded-full block h-[4px] mb-1 w-full" style={{backgroundColor: x.color}}/>
                         <h6 className="text-xs font-semibold">{x.name}</h6>
                         <h4 className="text-base">{x.releaseName}</h4>
