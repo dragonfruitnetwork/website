@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {Metadata} from "next";
 import {darken} from "polished";
 import {FaDiscord, FaGithub, FaWindows} from "react-icons/fa6";
@@ -27,8 +28,6 @@ const PRODUCT_COLOR = "#c71585";
 const REPO_URL = "https://github.com/dragonfruitnetwork/onionfruit";
 const RELEASES_URL = `${REPO_URL}/releases/latest`;
 const LEGACY_RELEASES_URL = `${REPO_URL}/releases`;
-
-const SCREENSHOT_URL = "https://dragonfruit.network/assets/onionfruit-ui.png";
 
 export const metadata: Metadata = {
     title: "OnionFruit™ - Tor Access Client | DragonFruit Network",
@@ -134,7 +133,7 @@ function Hero() {
                 </div>
 
                 <div className="hidden lg:flex items-center justify-center">
-                    <img src={SCREENSHOT_URL} alt="OnionFruit user interface" className="w-full max-w-xl h-auto drop-shadow-2xl"/>
+                    <Image src="/assets/onionfruit-main.png" width={2117} height={724} alt="OnionFruit user interface" className="w-full max-w-xl h-auto drop-shadow-2xl" loading="eager"/>
                 </div>
             </div>
         </section>
