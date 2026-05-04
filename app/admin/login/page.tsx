@@ -5,7 +5,8 @@ import Footer from "@/components/footer";
 import {GoogleSignInButton} from "./google-sign-in-button";
 
 export const metadata: Metadata = {
-    title: "Admin Login | DragonFruit Network"
+    title: "Admin Login",
+    robots: {index: false, follow: false}
 };
 
 type SearchParams = Promise<{ callbackUrl?: string; error?: string }>;

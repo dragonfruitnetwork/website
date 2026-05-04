@@ -26,11 +26,35 @@ const REPO_URL = "https://github.com/dragonfruitnetwork/kaplan";
 const RELEASES_URL = `${REPO_URL}/releases/latest`;
 
 export const metadata: Metadata = {
-    title: "Kaplan - MSIX/APPX Removal Utility | DragonFruit Network",
+    title: "Kaplan - MSIX/APPX Removal Utility",
     description: "Kaplan is a portable utility for removing MSIX/APPX-based programs from Windows 10 and 11.",
+    alternates: {canonical: "https://dragonfruit.network/kaplan"},
     openGraph: {
         title: "Kaplan",
-        description: "A portable MSIX/APPX removal utility for Windows."
+        description: "A portable MSIX/APPX removal utility for Windows.",
+        url: "https://dragonfruit.network/kaplan"
+    }
+};
+
+const softwareApplicationSchema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "Kaplan",
+    description: "A portable utility for removing MSIX/APPX-based programs from Windows 10 and 11.",
+    applicationCategory: "UtilitiesApplication",
+    operatingSystem: "Windows 10, Windows 11",
+    url: "https://dragonfruit.network/kaplan",
+    downloadUrl: RELEASES_URL,
+    license: "https://www.apache.org/licenses/LICENSE-2.0",
+    offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD"
+    },
+    publisher: {
+        "@type": "Organization",
+        name: "DragonFruit Network",
+        url: "https://dragonfruit.network"
     }
 };
 
@@ -120,6 +144,8 @@ export default function Page() {
             <CtaStrip/>
         </main>
         <Footer/>
+
+        <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(softwareApplicationSchema)}}/>
     </>);
 }
 

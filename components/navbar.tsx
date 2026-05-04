@@ -23,7 +23,7 @@ export default function NavBar() {
         <nav className="flex items-center justify-between gap-2 px-5 md:grid md:grid-cols-3">
             <div>
                 <Link href="/" className="shrink-0">
-                    <Image src="/dragonfruit.png" width={512} height={512} className="w-[45px] h-[45px]" alt="DragonFruit Logo" loading="eager"/>
+                    <Image src="/dragonfruit.png" width={512} height={512} className="w-[45px] h-[45px]" alt="DragonFruit Logo" priority/>
                 </Link>
             </div>
 
@@ -92,13 +92,13 @@ export default function NavBar() {
                     </Button>
 
                     <Button variant="ghost" size="icon" asChild>
-                        <Link href="https://discord.gg/mcYJQNe" target="_blank">
+                        <Link href="https://discord.gg/mcYJQNe" target="_blank" rel="noopener noreferrer">
                             <FaDiscord/>
                         </Link>
                     </Button>
 
                     <Button variant="ghost" size="icon" asChild>
-                        <Link href="https://github.com/dragonfruitnetwork" target="_blank">
+                        <Link href="https://github.com/dragonfruitnetwork" target="_blank" rel="noopener noreferrer">
                             <FaGithub/>
                         </Link>
                     </Button>

@@ -30,11 +30,35 @@ const RELEASES_URL = `${REPO_URL}/releases/latest`;
 const LEGACY_RELEASES_URL = `${REPO_URL}/releases`;
 
 export const metadata: Metadata = {
-    title: "OnionFruit™ - Tor Access Client | DragonFruit Network",
+    title: "OnionFruit™ - Tor Access Client",
     description: "Connect to the Tor network with minimal effort. A free, open-source Tor access client for Windows.",
+    alternates: {canonical: "https://dragonfruit.network/onionfruit"},
     openGraph: {
         title: "OnionFruit™",
-        description: "Connect to the Tor network with minimal effort."
+        description: "Connect to the Tor network with minimal effort.",
+        url: "https://dragonfruit.network/onionfruit"
+    }
+};
+
+const softwareApplicationSchema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "OnionFruit",
+    description: "A free, open-source Tor access client for Windows. Connect to the Tor network with minimal effort.",
+    applicationCategory: "SecurityApplication",
+    operatingSystem: "Windows 10, Windows 11",
+    url: "https://dragonfruit.network/onionfruit",
+    downloadUrl: RELEASES_URL,
+    license: "https://www.gnu.org/licenses/lgpl-3.0.html",
+    offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD"
+    },
+    publisher: {
+        "@type": "Organization",
+        name: "DragonFruit Network",
+        url: "https://dragonfruit.network"
     }
 };
 
@@ -100,6 +124,8 @@ export default function Page() {
             <DownloadSection/>
         </main>
         <Footer/>
+
+        <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(softwareApplicationSchema)}}/>
     </>);
 }
 
@@ -133,7 +159,7 @@ function Hero() {
                 </div>
 
                 <div className="hidden lg:flex items-center justify-center">
-                    <Image src="/assets/onionfruit-main.png" width={2117} height={724} alt="OnionFruit user interface" className="w-full max-w-xl h-auto drop-shadow-2xl" loading="eager"/>
+                    <Image src="/assets/onionfruit-main.png" width={2117} height={724} alt="OnionFruit user interface" className="w-full max-w-xl h-auto drop-shadow-2xl" priority/>
                 </div>
             </div>
         </section>

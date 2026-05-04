@@ -18,7 +18,10 @@ export const metadata: Metadata = {
 export default function Page() {
     return (<>
         <Header/>
-        <ClientConnectionStatus/>
+        <main>
+            <h1 className="sr-only">OnionFruit™ Connection Status</h1>
+            <ClientConnectionStatus/>
+        </main>
         <Footer/>
     </>);
 }

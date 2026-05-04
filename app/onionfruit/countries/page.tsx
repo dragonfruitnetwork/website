@@ -27,9 +27,9 @@ export default function Page() {
                         <IconBox icon={<LuGlobeLock/>} color="#74ff03"/>
                         <div className="space-y-3">
                             <h1 className="font-semibold text-center text-4xl">OnionFruit™ Countries</h1>
-                            <h4 className="text-center">
+                            <p className="text-center">
                                 Our web services provide up-to-date information on countries accessible through Tor&reg; directly to OnionFruit™ clients.
-                            </h4>
+                            </p>
                         </div>
                     </div>
                 </div>

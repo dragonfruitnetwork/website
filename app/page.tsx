@@ -34,6 +34,7 @@ export default function Home() {
     return (<>
             <Header/>
             <main className="container mx-auto mb-10">
+                <h1 className="sr-only">DragonFruit Network</h1>
                 <div className="flex flex-col gap-4 mx-4">
                     <HomePageCard color="#c71585"
                                   title="OnionFruit&trade;"
@@ -68,7 +69,7 @@ export default function Home() {
                                     Manage accounts used to sign into DragonFruit Services.
                                 </p>
 
-                                <Link href="https://id.dragonfruit.network" target="_blank"
+                                <Link href="https://id.dragonfruit.network" target="_blank" rel="noopener noreferrer"
                                       className="inline-flex items-center mt-4 text-sm">
                                     View <LuChevronRight className="ml-2 h-5 w-5"/>
                                 </Link>
@@ -79,7 +80,7 @@ export default function Home() {
                                     View a range of our open-source projects on GitHub.
                                 </p>
 
-                                <Link href="https://github.com/dragonfruitnetwork" target="_blank"
+                                <Link href="https://github.com/dragonfruitnetwork" target="_blank" rel="noopener noreferrer"
                                       className="inline-flex items-center mt-4 text-sm">
                                     View <LuChevronRight className="ml-2 h-5 w-5"/>
                                 </Link>
@@ -101,7 +102,7 @@ function HomePageCard(props: HomePageIconProps) {
             style={{backgroundColor: darkenedBg}}>
             <div className={props.spacerClass ? props.spacerClass : "mt-auto"}></div>
             <IconBox icon={props.icon} size={props.small ? 48 : 64} color={props.color}/>
-            <span className="text-xl pt-5 font-semibold">{props.title}</span>
+            <h2 className="text-xl pt-5 font-semibold">{props.title}</h2>
             {props.children}
         </div>
     );

@@ -7,8 +7,21 @@ import {TooltipProvider} from "@/components/ui/tooltip";
 import {ThemeProvider} from "@/components/theme-provider";
 
 export const metadata: Metadata = {
+    metadataBase: new URL("https://dragonfruit.network"),
+    title: {
+        default: "DragonFruit Network",
+        template: "%s | DragonFruit Network"
+    },
+    description: "Home of OnionFruit™ Tor access client, Kaplan MSIX/APPX removal utility and other open-source projects.",
+    applicationName: "DragonFruit Network",
+    robots: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1
+    },
     twitter: {
-        card: "summary"
+        card: "summary_large_image"
     },
     openGraph: {
         type: "website",
@@ -21,7 +34,26 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
     width: "device-width",
     initialScale: 1,
-    themeColor: "#663bb9",
+    themeColor: "#663bb9"
+};
+
+const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "DragonFruit Network",
+    url: "https://dragonfruit.network",
+    logo: "https://dragonfruit.network/dragonfruit.png",
+    sameAs: [
+        "https://github.com/dragonfruitnetwork",
+        "https://discord.gg/mcYJQNe"
+    ]
+};
+
+const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "DragonFruit Network",
+    url: "https://dragonfruit.network"
 };
 
 export default function RootLayout({children}: Readonly<{ children: React.ReactNode }>) {
@@ -35,6 +67,9 @@ export default function RootLayout({children}: Readonly<{ children: React.ReactN
                 </div>
             </TooltipProvider>
         </ThemeProvider>
+
+        <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(organizationSchema)}}/>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(websiteSchema)}}/>
         </body>
         </html>
     );
