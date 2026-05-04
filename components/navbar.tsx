@@ -86,19 +86,19 @@ export default function NavBar() {
             <div className="flex items-center justify-end gap-2">
                 <div className="hidden md:flex items-center gap-2">
                     <Button variant="ghost" size="icon" asChild>
-                        <Link href="mailto:inbox@dragonfruit.network">
+                        <Link href="mailto:inbox@dragonfruit.network" aria-label="Email DragonFruit">
                             <LuMail/>
                         </Link>
                     </Button>
 
                     <Button variant="ghost" size="icon" asChild>
-                        <Link href="https://discord.gg/mcYJQNe" target="_blank" rel="noopener noreferrer">
+                        <Link href="https://discord.gg/mcYJQNe" target="_blank" rel="noopener noreferrer" aria-label="DragonFruit Discord">
                             <FaDiscord/>
                         </Link>
                     </Button>
 
                     <Button variant="ghost" size="icon" asChild>
-                        <Link href="https://github.com/dragonfruitnetwork" target="_blank" rel="noopener noreferrer">
+                        <Link href="https://github.com/dragonfruitnetwork" target="_blank" rel="noopener noreferrer" aria-label="DragonFruit on GitHub">
                             <FaGithub/>
                         </Link>
                     </Button>
