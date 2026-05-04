@@ -6,7 +6,10 @@ const nextConfig: NextConfig = {
     outputFileTracingIncludes: {
         "/**": ["./prisma/generated/prisma/**/*"],
     },
-    reactCompiler: true
+    reactCompiler: true,
+    images: {
+        formats: ["image/avif", "image/webp"]
+    },
 };
 
 export default withSentryConfig(nextConfig, {
