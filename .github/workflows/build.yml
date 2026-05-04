@@ -1,4 +1,4 @@
-name: Build Container Image
+name: Build image
 on:
   release:
     types: [ published ]

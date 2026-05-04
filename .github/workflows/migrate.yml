@@ -1,4 +1,4 @@
-name: Apply Prisma migrations
+name: Apply migrations
 
 on:
   workflow_dispatch:
@@ -8,22 +8,13 @@ on:
         required: true
         type: string
 
-      mode:
-        description: 'Mode'
-        required: true
-        default: 'preview'
-        type: choice
-        options:
-          - preview
-          - deploy
-
 concurrency:
   group: prisma-migration
   cancel-in-progress: false
 
 jobs:
   migrate:
-    name: Migration (${{ github.event.inputs.mode }})
+    name: Apply migrations
     runs-on: ubuntu-latest
     environment: production
     timeout-minutes: 15
@@ -53,27 +44,7 @@ jobs:
           npx prisma migrate status 2>&1 | tee -a "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Preview migrations
-        if: github.event.inputs.mode == 'preview'
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: |
-          echo "## Pending SQL (preview only, no writes)" >> "$GITHUB_STEP_SUMMARY"
-          echo '```sql' >> "$GITHUB_STEP_SUMMARY"
-          set +e
-          npx prisma migrate diff \
-            --from-config-datasource \
-            --to-migrations prisma/migrations \
-            --script \
-            --exit-code 2>&1 | tee -a "$GITHUB_STEP_SUMMARY"
-          rc=${PIPESTATUS[0]}
-          echo '```' >> "$GITHUB_STEP_SUMMARY"
-          if [ "$rc" -ne 0 ] && [ "$rc" -ne 2 ]; then
-            exit "$rc"
-          fi
-
       - name: Deploy migrations
-        if: github.event_name != 'workflow_dispatch' || github.event.inputs.mode == 'deploy'
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
@@ -83,7 +54,6 @@ jobs:
           echo '```' >> "$GITHUB_STEP_SUMMARY"
 
       - name: Get post-migration status
-        if: github.event_name != 'workflow_dispatch' || github.event.inputs.mode == 'deploy'
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
