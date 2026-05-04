@@ -23,10 +23,12 @@ interface HomePageIconProps {
 
 export const metadata: Metadata = {
     title: 'Home | DragonFruit Network',
-    description: 'The home of OnionFruit™, Kaplan and various open-source projects.',
+    description: "The home of OnionFruit™, Kaplan and various open-source projects.",
+    alternates: {canonical: "https://dragonfruit.network"},
     openGraph: {
-        title: "Welcome to DragonFruit",
-        description: "The home of OnionFruit™, Kaplan and various open-source projects."
+        title: "DragonFruit Network",
+        description: "The home of OnionFruit™, Kaplan and various open-source projects.",
+        url: "https://dragonfruit.network"
     }
 }
 
