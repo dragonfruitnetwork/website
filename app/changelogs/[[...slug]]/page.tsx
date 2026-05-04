@@ -9,7 +9,7 @@ import {prisma} from "@/prisma";
 import {headers} from "next/headers";
 import {redirect} from "next/navigation";
 import createDomPurify, {DOMPurify} from "dompurify";
-import React, {ReactElement, Suspense, use} from "react";
+import React, {cache, ReactElement, Suspense, use} from "react";
 import {ChangelogRelease, ChangelogReleaseEntry, Prisma} from "@/prisma/generated/prisma/client";
 import {LuBadgeAlert, LuChevronLeft, LuChevronRight, LuPencil, LuPlus, LuShield} from "react-icons/lu";
 
@@ -33,13 +33,48 @@ import {
 import {Metadata} from "next";
 
 export const dynamic = 'force-dynamic';
-export const metadata: Metadata = {
-    title: "Changelogs",
-    description: "Stay up to date with the latest changes and updates to DragonFruit Products",
-    openGraph: {
+
+const DEFAULT_DESCRIPTION = "Stay up to date with the latest changes and updates to DragonFruit Products";
+
+const fetchRelease = cache((appId: string | undefined, releaseName: string | undefined) => {
+    const {prismaQuery} = buildReleaseSelectionCriteria(appId ?? null, releaseName ?? null);
+    return prisma.changelogRelease.findFirst({
+        ...prismaQuery,
+        include: {
+            app: true,
+            entries: true,
+            nextRelease: true,
+            previousRelease: true
+        }
+    });
+});
+
+export async function generateMetadata({params}: { params: Promise<{ slug: string[] | null }> }): Promise<Metadata> {
+    const [appId, releaseName, releaseAction] = (await params).slug?.slice(0, 3) ?? [];
+
+    const genericMetadata: Metadata = {
         title: "Changelogs",
-        description: "Stay up to date with the latest changes and updates to DragonFruit Products"
+        description: DEFAULT_DESCRIPTION,
+        openGraph: {title: "Changelogs", description: DEFAULT_DESCRIPTION}
+    };
+
+    if (!appId || releaseAction === "edit" || releaseAction === "new") {
+        return genericMetadata;
     }
+
+    const release = await fetchRelease(appId, releaseName);
+    if (!release) {
+        return genericMetadata;
+    }
+
+    const versionSuffix = releaseName ? ` ${release.releaseName}` : '';
+    const title = `${release.app.name}${versionSuffix} Changelog`;
+    const description = `Changes and updates in ${release.app.name} ${versionSuffix}.`;
+    return {
+        title,
+        description,
+        openGraph: {title, description}
+    };
 }
 
 interface ChangelogSelectionCriteria {
@@ -171,21 +206,16 @@ export default async function Changelogs({params}: { params: Promise<{ slug: str
         return <EditorHost appId={appId} releaseName={releaseName} action={releaseAction}/>;
     }
 
-    const {prismaQuery, redirectOnEmpty} = buildReleaseSelectionCriteria(appId, releaseName);
-    const release = await prisma.changelogRelease.findFirst({
-        ...prismaQuery,
-        include: {
-            app: true,
-            entries: true,
-            nextRelease: true,
-            previousRelease: true
-        }
-    });
+    const release = await fetchRelease(appId, releaseName);
 
     // handle release not found
-    if (!release && redirectOnEmpty) {
-        return redirect(`/changelogs/${redirectOnEmpty}`);
-    } else if (!release) {
+    if (!release) {
+        const {redirectOnEmpty} = buildReleaseSelectionCriteria(appId, releaseName);
+
+        if (redirectOnEmpty) {
+            return redirect(`/changelogs/${redirectOnEmpty}`);
+        }
+
         return redirect('/');
     }
 
