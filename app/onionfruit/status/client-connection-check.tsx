@@ -3,10 +3,12 @@
 import useSWR from "swr";
 import {useMemo} from "react";
 import {COBEOptions} from "cobe";
+import {LuGlobe} from "react-icons/lu";
 
 import {capitalCityInfo} from "@/lib/capital-city-info";
 
-import {Globe} from "@/components/ui/globe";
+import {GlobeWithFallback} from "@/components/ui/globe-with-fallback";
+import {IconBox} from "@/components/icon-box";
 import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
 
 interface OnionFruitConnectionStatusResponse {
@@ -20,6 +22,15 @@ interface OnionFruitConnectionStatusResponse {
 
 export function ClientConnectionStatus() {
     const { data: connectionStatus, error, isLoading } = useSWR<OnionFruitConnectionStatusResponse, any, string>('https://onionfruit-api.dragonfruit.network/connectionstatus', url => fetch(url).then((res) => res.json()));
+
+    const fallbackColor = useMemo(() => {
+        if (error || !connectionStatus) {
+            return "#607d8b";
+        }
+
+        return connectionStatus.isTor ? "#74ff03" : "#f44336";
+    }, [connectionStatus, error]);
+
     const globeOptions: COBEOptions | undefined = useMemo(() => {
         if (!connectionStatus) {
             return undefined;
@@ -66,7 +77,11 @@ export function ClientConnectionStatus() {
     return (
         <div className="flex flex-col gap-5 items-center justify-center">
             <div className="relative flex h-[600px] w-[600px] md:scale-100 sm:scale-75 scale-50 overflow-hidden">
-                <Globe config={globeOptions}/>
+                <GlobeWithFallback config={globeOptions} fallback={
+                    <div className="flex size-full items-center justify-center">
+                        <IconBox icon={<LuGlobe/>} color={fallbackColor}/>
+                    </div>
+                }/>
             </div>
 
             {error || !connectionStatus ? (

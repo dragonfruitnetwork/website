@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import createGlobe, { type COBEOptions } from "cobe"
 import { useMotionValue, useSpring } from "motion/react"
 
@@ -35,18 +35,35 @@ const GLOBE_CONFIG: COBEOptions = {
   ],
 }
 
+function isWebGLAvailable() {
+  if (typeof window === "undefined") return true
+  try {
+    const canvas = document.createElement("canvas")
+    return !!(
+      window.WebGLRenderingContext &&
+      (canvas.getContext("webgl") || canvas.getContext("experimental-webgl"))
+    )
+  } catch {
+    return false
+  }
+}
+
 export function Globe({
   className,
   config = GLOBE_CONFIG,
+  onError,
 }: {
   className?: string
   config?: COBEOptions
+  onError?: (error: unknown) => void
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const phiRef = useRef(0)
   const widthRef = useRef(0)
   const pointerInteracting = useRef<number | null>(null)
   const pointerInteractionMovement = useRef(0)
+
+  const [failed, setFailed] = useState(false)
 
   const r = useMotionValue(0)
   const rs = useSpring(r, {
@@ -71,6 +88,14 @@ export function Globe({
   }
 
   useEffect(() => {
+    if (!canvasRef.current) return
+
+    if (!isWebGLAvailable()) {
+      setFailed(true)
+      onError?.(new Error("WebGL is not available"))
+      return
+    }
+
     const onResize = () => {
       if (canvasRef.current) {
         widthRef.current = canvasRef.current.offsetWidth
@@ -80,11 +105,19 @@ export function Globe({
     window.addEventListener("resize", onResize)
     onResize()
 
-    const globe = createGlobe(canvasRef.current!, {
-      ...config,
-      width: widthRef.current * 2,
-      height: widthRef.current * 2,
-    })
+    let globe: ReturnType<typeof createGlobe>
+    try {
+      globe = createGlobe(canvasRef.current, {
+        ...config,
+        width: widthRef.current * 2,
+        height: widthRef.current * 2,
+      })
+    } catch (err) {
+      window.removeEventListener("resize", onResize)
+      setFailed(true)
+      onError?.(err)
+      return
+    }
 
     let frame = 0
     const loop = () => {
@@ -98,13 +131,17 @@ export function Globe({
     }
     frame = requestAnimationFrame(loop)
 
-    setTimeout(() => (canvasRef.current!.style.opacity = "1"), 0)
+    setTimeout(() => {
+      if (canvasRef.current) canvasRef.current.style.opacity = "1"
+    }, 0)
     return () => {
       cancelAnimationFrame(frame)
       globe.destroy()
       window.removeEventListener("resize", onResize)
     }
-  }, [rs, config])
+  }, [rs, config, onError])
+
+  if (failed) return null
 
   return (
     <div
