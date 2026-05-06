@@ -227,17 +227,17 @@ export default async function Changelogs({params}: { params: Promise<{ slug: str
             <Card>
                 <CardHeader>
                     <CardTitle>
-                        <div className="flex flex-row items-center justify-center gap-4">
+                        <div className="flex flex-row items-center justify-center gap-2 sm:gap-4">
                             <ReleaseNavigation icon={<LuChevronLeft/>} release={release.previousRelease} side="left"/>
 
-                            <div className="flex flex-col justify-center gap-2 items-center">
-                                <div className="text-3xl space-x-3 inline">
+                            <div className="min-w-0 flex-1 flex flex-col justify-center gap-2 items-center text-center">
+                                <div className="flex flex-row flex-wrap items-baseline justify-center gap-x-3 gap-y-1 text-xl sm:text-2xl md:text-3xl break-words">
                                     <span className="font-semibold" style={release.app.color ? {color: release.app.color} : {}}>
                                         {release.app.name}
                                     </span>
                                     <span>{release.releaseName}</span>
                                 </div>
-                                <span className="text-gray-300 text-lg font-medium">
+                                <span className="text-gray-300 text-sm sm:text-base md:text-lg font-medium">
                                     {release.releaseDate.toLocaleDateString("en-GB", DATE_FORMATTING_OPTIONS)}
                                 </span>
                             </div>
