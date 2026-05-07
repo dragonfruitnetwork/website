@@ -58,13 +58,14 @@
     "dotenv": "^17.4.2",
     "eslint": "^9.39.4",
     "eslint-config-next": "^16.2.4",
-    "postcss": "^8",
+    "postcss": "^8.5.14",
     "prisma": "^7.8.0",
     "tailwindcss": "^4.2.4",
     "typescript": "^6"
   },
   "overrides": {
-    "@types/react": "19.2.14",
-    "@types/react-dom": "19.2.3"
+    "@types/react": "$@types/react",
+    "@types/react-dom": "$@types/react-dom",
+    "postcss": "$postcss"
   }
 }
