@@ -12,18 +12,18 @@ interface AppReleaseInfo {
 
 export default function Listing() {
     const publicApps: AppReleaseInfo[] = use(prisma.$queryRaw`
-        SELECT id, name, color, releaseName
+        SELECT id, name, color, "releaseName"
         FROM (SELECT app.id,
                      app.name,
                      app.color,
-                     app.\`order\`,
-                     cr.releaseName,
-                     ROW_NUMBER() OVER (PARTITION BY cr.appId ORDER BY cr.releaseDate DESC, cr.id DESC) AS rn
+                     app."order",
+                     cr."releaseName",
+                     ROW_NUMBER() OVER (PARTITION BY cr."appId" ORDER BY cr."releaseDate" DESC, cr.id DESC) AS rn
               FROM changelog_apps app
-                       JOIN changelog_releases cr ON cr.appId = app.id
+                       JOIN changelog_releases cr ON cr."appId" = app.id
               WHERE app.public = true) ranked
         WHERE rn = 1
-        ORDER BY \`order\`;
+        ORDER BY "order";
     `);
 
     return (
