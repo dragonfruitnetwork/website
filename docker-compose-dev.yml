@@ -1,14 +1,14 @@
 services:
-  mariadb:
-    container_name: mariadb
-    image: mariadb:11
+  postgres:
+    container_name: postgres
+    image: postgres:18-alpine
     ports:
-      - "3306:3306"
+      - "5432:5432"
     environment:
-      MARIADB_ROOT_PASSWORD: dragonfruitnet
-      MARIADB_DATABASE: dragonfruit
+      POSTGRES_PASSWORD: dragonfruitnet
+      POSTGRES_DB: dragonfruit
     volumes:
-      - mariadb_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql
 
 volumes:
-  mariadb_data: {}
+  postgres_data: {}

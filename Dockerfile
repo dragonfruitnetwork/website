@@ -13,7 +13,7 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
 # placeholder variables for prisma/nextjs build
-ENV DATABASE_URL=mysql://placeholder:placeholder@localhost/placeholder
+ENV DATABASE_URL=postgresql://placeholder:placeholder@localhost/placeholder
 ENV AUTH_URL=http://localhost:3000
 ENV AUTH_SECRET=placeholder
 ENV CI=true
