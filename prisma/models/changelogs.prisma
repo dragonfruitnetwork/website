@@ -1,5 +1,5 @@
 model ChangelogApp {
-  id     String  @id @db.VarChar(36)
+  id     String  @id @db.Citext
   name   String  @unique @db.VarChar(128)
   color  String? @db.Char(7) // hex color code
   order  Int     @unique
@@ -13,10 +13,10 @@ model ChangelogApp {
 
 model ChangelogRelease {
   id    Int    @id @default(autoincrement())
-  appId String
+  appId String @db.Citext
 
   releaseName String
-  releaseNote String?  @db.LongText
+  releaseNote String?  @db.Text
   releaseDate DateTime @default(now())
 
   previousReleaseId Int? @unique
@@ -39,7 +39,7 @@ model ChangelogReleaseEntry {
 
   title    String
   category String?
-  content  String? @db.LongText
+  content  String? @db.Text
   major    Boolean @default(false)
 
   entryType ChangelogEntryType? @default(FIX)
@@ -66,7 +66,7 @@ model ChangelogAuditLog {
   actorEmail String? @db.VarChar(255)
 
   action      ChangelogAuditAction
-  appId       String? @db.VarChar(36)
+  appId       String? @db.Citext
   releaseId   Int?
   releaseName String?
 

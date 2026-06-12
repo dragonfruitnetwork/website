@@ -1,9 +1,10 @@
 generator client {
   provider = "prisma-client"
   output   = "./generated/prisma"
-  previewFeatures = ["relationJoins"]
+  previewFeatures = ["relationJoins", "postgresqlExtensions"]
 }
 
 datasource db {
-  provider = "mysql"
+  provider   = "postgresql"
+  extensions = [citext]
 }
