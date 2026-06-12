@@ -1,5 +1,5 @@
 import "server-only";
-import { PrismaMariaDb } from "@prisma/adapter-mariadb";
+import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@/prisma/generated/prisma/client";
 
 const globalForPrisma = globalThis as unknown as {
@@ -13,7 +13,7 @@ function createPrismaClient() {
         throw new Error("DATABASE_URL is not set");
     }
 
-    const adapter = new PrismaMariaDb(connectionString);
+    const adapter = new PrismaPg({ connectionString });
     return new PrismaClient({ adapter });
 }
 

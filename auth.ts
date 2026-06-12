@@ -8,7 +8,7 @@ import { prisma } from "@/prisma";
 
 export const auth = betterAuth({
     baseURL: process.env.AUTH_URL ?? process.env.NEXTAUTH_URL,
-    database: prismaAdapter(prisma, { provider: "mysql" }),
+    database: prismaAdapter(prisma, { provider: "postgresql" }),
     logger: {
         log: (level, message, ...args) => {
             if (level !== "error" && level !== "warn") return;
