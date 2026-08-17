@@ -21,7 +21,7 @@ cp .env.example .env.local
 # Edit .env.local with your preferred settings
 
 # Start a local database
-docker compose -f docker-compose.dev.yml up -d
+docker compose -f docker-compose-dev.yml up -d
 
 # Generate a prisma client from the defined schema
 npx prisma generate
