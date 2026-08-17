@@ -14,22 +14,28 @@ export class MutableChangelogReleaseEntry {
     readonly localId: string = Math.random().toString(36).substring(7);
 
     constructor(entry: ChangelogReleaseEntryData | null) {
-        makeObservable(this);
-
         this.id = entry?.id ?? null;
         this.title = entry?.title ?? "Untitled Change";
         this.description = entry?.content ?? '';
         this.category = entry?.category ?? '';
         this.major = entry?.major ?? false;
         this.type = entry?.entryType ?? "FIX";
+
+        makeObservable(this, {
+            title: observable,
+            description: observable,
+            category: observable,
+            major: observable,
+            type: observable,
+        });
     }
 
-    @observable title: string;
-    @observable description: string | null;
-    @observable category: string | null;
+    title: string;
+    description: string | null;
+    category: string | null;
 
-    @observable major: boolean;
-    @observable type: "ADDITION" | "FIX" | "REMOVAL" | "DELAYED" | "INFO" | "BUG" | "SECURITY";
+    major: boolean;
+    type: "ADDITION" | "FIX" | "REMOVAL" | "DELAYED" | "INFO" | "BUG" | "SECURITY";
 
     createObject(): z.infer<typeof changelogReleaseEntrySchema> {
         return {
@@ -53,23 +59,32 @@ export class MutableChangelogRelease {
             useGrouping: false
         })}`;
 
-        makeObservable(this);
+        makeObservable<MutableChangelogRelease, "_entries">(this, {
+            id: observable,
+            appId: observable,
+            releaseDate: observable,
+            releaseName: observable,
+            releaseNote: observable,
+            _entries: observable,
+            categories: computed,
+            importExistingRelease: action,
+            createNewReleaseEntry: action,
+            removeReleaseEntry: action,
+        });
     }
 
-    @observable id: number | null = null;
-    @observable appId: string;
-    @observable releaseDate: Date;
-    @observable releaseName: string;
-    @observable releaseNote: string | null = null;
+    id: number | null = null;
+    appId: string;
+    releaseDate: Date;
+    releaseName: string;
+    releaseNote: string | null = null;
 
-    @observable
     private _entries: MutableChangelogReleaseEntry[] = [];
 
     get entries(): ReadonlyArray<MutableChangelogReleaseEntry> {
         return this._entries;
     }
 
-    @computed
     get categories() {
         return _.chain(this.entries)
             .map(x => x.category)
@@ -78,7 +93,6 @@ export class MutableChangelogRelease {
             .value();
     }
 
-    @action
     importExistingRelease(release: ChangelogReleaseData) {
         if (!release) {
             return;
@@ -96,7 +110,6 @@ export class MutableChangelogRelease {
         }
     }
 
-    @action
     createNewReleaseEntry() {
         const newChange = new MutableChangelogReleaseEntry(null);
         const untitledChangeCount = this._entries.filter(x => x.title.startsWith(newChange.title)).length;
@@ -107,7 +120,6 @@ export class MutableChangelogRelease {
         return newChange;
     }
 
-    @action
     removeReleaseEntry(entry: MutableChangelogReleaseEntry) {
         const ind = this._entries.indexOf(entry);
 
