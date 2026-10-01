@@ -1,6 +1,6 @@
 services:
   postgres:
-    container_name: postgres
+    container_name: dfweb-postgres
     image: postgres:18-alpine
     ports:
       - "5432:5432"
