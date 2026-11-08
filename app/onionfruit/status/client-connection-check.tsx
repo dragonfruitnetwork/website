@@ -1,12 +1,12 @@
 "use client";
 
 import useSWR from "swr";
-import {useMemo} from "react";
 
 import {capitalCityInfo} from "@/lib/capital-city-info";
-
-import { DottedMap, type Marker } from "@/components/ui/dotted-map";
+import {DottedMap, type Marker} from "@/components/ui/dotted-map";
 import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
+
+const STATUS_URL = "https://onionfruit-api.dragonfruit.network/connectionstatus";
 
 const CONNECTED_COLOUR = "#74ff03";
 const DISCONNECTED_COLOUR = "#f44336";
@@ -21,19 +21,10 @@ interface OnionFruitConnectionStatusResponse {
     asName: string;
 }
 
+const fetcher = (url: string) => fetch(url).then(res => res.json() as Promise<OnionFruitConnectionStatusResponse>);
+
 export function ClientConnectionStatus() {
-    const { data: connectionStatus, error, isLoading } = useSWR<OnionFruitConnectionStatusResponse, any, string>('https://onionfruit-api.dragonfruit.network/connectionstatus', url => fetch(url).then((res) => res.json()));
-
-    const [marker, colour]: [Marker | null, string] = useMemo(() => {
-        if (error || !connectionStatus) {
-            return [null, UNKNOWN_STATUS_COLOUR];
-        }
-
-        const [lat, lng] = capitalCityInfo[connectionStatus.countryCode ?? "US"];
-        const marker: Marker = { lat, lng, size: 0.5 };
-
-        return [marker, connectionStatus.isTor ? CONNECTED_COLOUR : DISCONNECTED_COLOUR];
-    }, [connectionStatus, error]);
+    const { data: connectionStatus, isLoading } = useSWR<OnionFruitConnectionStatusResponse>(STATUS_URL, fetcher);
 
     if (isLoading) {
         return (
@@ -43,44 +34,49 @@ export function ClientConnectionStatus() {
         )
     }
 
+    if (!connectionStatus) {
+        return (
+            <div className="flex flex-col gap-5 items-center justify-center">
+                <div className="relative h-[500px] w-full">
+                    <DottedMap markerColor={UNKNOWN_STATUS_COLOUR} pulse dotRadius={0.25}/>
+                </div>
+
+                <span className="font-semibold text-2xl">An error occurred while trying to check if you're connected to Tor.</span>
+                <span className="text-xl">Please reload the page and try again.</span>
+            </div>
+        )
+    }
+
+    const isConnected = !!connectionStatus.isTor;
+    const statusColour = isConnected ? CONNECTED_COLOUR : DISCONNECTED_COLOUR;
+
+    const [lat, lng] = capitalCityInfo[connectionStatus.countryCode] ?? capitalCityInfo.US;
+    const markers: Marker[] = [{ lat, lng, size: 0.5 }];
+
     return (
         <div className="flex flex-col gap-5 items-center justify-center">
             <div className="relative h-[500px] w-full">
-                <DottedMap markers={marker ? [marker] : []} markerColor={colour} pulse dotRadius={0.25}/>
+                <DottedMap markers={markers} markerColor={statusColour} pulse dotRadius={0.25}/>
             </div>
 
-            {error || !connectionStatus ? (
-                <>
-                    <span className="font-semibold text-2xl">An error occurred while trying to check if you're connected to Tor.</span>
-                    <span className="text-xl">Please reload the page and try again.</span>
-                </>
-            ) : (
-                <>
-                    <span className="text-2xl md:text-3xl text-center">This browser is {connectionStatus.isTor
-                        ? <><span className="font-semibold" style={{color: CONNECTED_COLOUR}}>Connected</span> to</>
-                        : <><span className="font-semibold" style={{color: DISCONNECTED_COLOUR}}>Disconnected</span> from</>} Tor.
-                    </span>
+            <Tooltip>
+                <TooltipTrigger className="text-2xl md:text-3xl text-center cursor-help">
+                    This browser is <span className="font-semibold" style={{color: statusColour}}>{isConnected ? "Connected to" : "Disconnected from"}</span> Tor.
+                </TooltipTrigger>
+                <TooltipContent side="bottom">
+                    <span className="text-center">IP: {connectionStatus.ipAddress ?? "Unknown IP"}</span>
+                </TooltipContent>
+            </Tooltip>
 
-                    <div className="inline-flex flex-wrap gap-3 items-center justify-center text-lg select-none px-5">
-                        <Tooltip>
-                            <TooltipTrigger>
-                                <span className="text-center">
-                                    Country: <span className="font-semibold select-text">{connectionStatus.countryName}</span>
-                                </span>
-                            </TooltipTrigger>
-                            <TooltipContent side="bottom">
-                                <span className="text-center">
-                                    IP: {connectionStatus.ipAddress ?? "Unknown IP"}
-                                </span>
-                            </TooltipContent>
-                        </Tooltip>
+            <div className="inline-flex flex-wrap gap-3 items-center justify-center text-lg select-none px-5">
+                <span className="text-center">
+                    Country: <span className="font-semibold select-text">{connectionStatus.countryName}</span>
+                </span>
 
-                        <span className="text-center">
-                            ISP: <span className="font-semibold select-text">{connectionStatus.asName ?? "Unknown"}</span>
-                        </span>
-                    </div>
-                </>
-            )}
+                <span className="text-center">
+                    ISP: <span className="font-semibold select-text">{connectionStatus.asName ?? "Unknown"}</span>
+                </span>
+            </div>
         </div>
     )
 }
